@@ -1,0 +1,26 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/system",
+                "${workspaceFolder}/std_perif/inc",
+                "${workspaceFolder}/cmsis/inc"
+            ],
+            "defines": [
+                "ARM_MATH_CM4"
+            ],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "gnu17",
+            "cppStandard": "gnu++14",
+            "intelliSenseMode": "linux-gcc-x64",
+            "compilerArgs": [
+                "-DSTM32F429_439xx",
+                "-DUSE_STDPERIPH_DRIVER",
+                "-DUSE_FULL_ASSERT"
+            ]
+        }
+    ],
+    "version": 4
+}
