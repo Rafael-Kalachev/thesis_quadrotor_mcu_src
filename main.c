@@ -177,7 +177,7 @@ int main(void)
 	while(1) // this function can be called slower as you add data to be sent
 	{
   I2C_GenerateSTART(I2C3,ENABLE);
-    USART_SendNumber(3);
+//    USART_SendNumber(3);
   while( !I2C_GetFlagStatus(I2C3, I2C_FLAG_SB));	
 //  USART_SendNumber(4);
   I2C_Send7bitAddress(I2C3,0xD6, I2C_Direction_Transmitter);
@@ -206,8 +206,8 @@ int main(void)
   while(! I2C_GetFlagStatus(I2C3, I2C_FLAG_RXNE));
 
 
-  USART_SendNumber(a);
-  USART_SendText("\n");
+//  USART_SendNumber(a);
+//  USART_SendText("\n");
 
   for(a=100000000; a!=0; --a);
 
