@@ -234,7 +234,7 @@ int main(void)
   
 	while(1) // this function can be called slower as you add data to be sent
 	{
-		uint8_t bytes = 14;
+		uint8_t bytes = 1;
 		_i2c3_io_struct.address =  0xD6;
 		_i2c3_io_struct.buffer = buffer;
 		_i2c3_io_struct.register_address =0x0F;
@@ -413,8 +413,8 @@ void I2C3_EV_IRQHandler()
 		case I2C_IO_STATE_REGISTER_READ_SEND_RESTART:
 			if (I2C_GetFlagStatus(I2C3, I2C_FLAG_SB))
 			{
-				I2C_Send7bitAddress(I2C3,_i2c3_io_struct.address, I2C_Direction_Receiver);
-				_i2c3_io_struct.state = I2C_IO_STATE_REGISTER_READ_SEND_ADDRESS2;
+				I2C_Send7bitAddress(I2C3,_i2c3_io_struct.address, I2C_Direction_Transmitter);
+				_i2c3_io_struct.state = I2C_IO_STATE_REGISTER_WRITE_SEND_ADDRESS2;
 			}
 			else
 			{
@@ -427,54 +427,44 @@ void I2C3_EV_IRQHandler()
 		case I2C_IO_STATE_REGISTER_READ_SEND_ADDRESS2:
 			if (I2C_GetFlagStatus(I2C3, I2C_FLAG_ADDR))
 			{
-
 				if (_i2c3_io_struct.bytes_count == 1)
 				{
 					I2C3->CR1 &= ~(0b1<<10);
 				}
-
-				_i2c3_io_struct.state = I2C_IO_STATE_REGISTER_READ_READ_BYTE;
 				tempreg = I2C3->SR1;
 				tempreg = I2C3->SR2;
-
+				_i2c3_io_struct.state = I2C_IO_STATE_REGISTER_READ_READ_BYTE;
 			}
 			else
 			{
 				log_msg("ERROR: Expected ADDRESS_FLAG to be set\n");
 				_i2c3_io_struct.state = I2C_IO_STATE_ERROR;
 			}
-			break;
+			/* continue to write*/
 
 		case I2C_IO_STATE_REGISTER_READ_READ_BYTE:
 			if (I2C_GetFlagStatus(I2C3, I2C_FLAG_RXNE))
 			{
 				if (_i2c3_io_struct.bytes_count > 0)
 				{
-
+					if (_i2c3_io_struct.bytes_count < 2)
+					{
+						I2C3->CR1 |= 0b1<<9;
+						I2C3->CR1 &= ~(0b1<<10);
+						_i2c3_io_struct.state = I2C_IO_STATE_REGISTER_WRITE_STOP;
+					}
 					*_i2c3_io_struct.buffer = I2C_ReceiveData(I2C3);
 					++_i2c3_io_struct.buffer;
 					--_i2c3_io_struct.bytes_count;
-
-					if (_i2c3_io_struct.bytes_count == 1)
-					{
-						I2C3->CR1 &= ~(0b1<<10);
-					}
-
-					if (_i2c3_io_struct.bytes_count == 0)
-					{
-						I2C3->CR1 |= 0b1<<9;
-					}
-
 				}
 			}
 			else 
 			{
-				log_msg("ERROR: Expected RXNE flag to be set for transmission\n");
+				log_msg("ERROR: Expected TXE flag to be set for transmission\n");
 				_i2c3_io_struct.state = I2C_IO_STATE_ERROR;
 			}
+			
 			break;
-		
-
 
 		case I2C_IO_STATE_ERROR:
 			break;
