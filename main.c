@@ -122,10 +122,10 @@ typedef enum I2C_IO_STATE_ENUM
 
 typedef struct I2C_IO_STRUCT
 {
-    __IO uint8_t *buffer;
-    __IO uint8_t  address;
-    __IO uint8_t  register_address;
-    __IO uint8_t  bytes_count;
+	__IO uint8_t *buffer;
+	__IO uint8_t  address;
+	__IO uint8_t  register_address;
+	__IO uint8_t  bytes_count;
 	__IO i2c_io_state_enum state;
 } I2C_io_t;
 
@@ -234,7 +234,7 @@ int main(void)
   
 	while(1) // this function can be called slower as you add data to be sent
 	{
-		uint8_t bytes = 14;
+		uint8_t bytes = 5;
 		_i2c3_io_struct.address =  0xD6;
 		_i2c3_io_struct.buffer = buffer;
 		_i2c3_io_struct.register_address =0x0F;
@@ -245,7 +245,9 @@ int main(void)
 	while (!_i2c3_io_struct.state == I2C_IO_STATE_REGISTER_READ_STOP );
 		for(int i = 0 ; i < bytes; ++i)
 		{
+			USART_SendText(">");
 			USART_SendNumber(buffer[i]);
+			USART_SendText("<");
 		}
 
 		//  USART_SendNumber(a);
@@ -448,7 +450,7 @@ void I2C3_EV_IRQHandler()
 		case I2C_IO_STATE_REGISTER_READ_READ_BYTE:
 			if (I2C_GetFlagStatus(I2C3, I2C_FLAG_RXNE))
 			{
-				if (_i2c3_io_struct.bytes_count > 0)
+				//if (_i2c3_io_struct.bytes_count > 0)
 				{
 
 					*_i2c3_io_struct.buffer = I2C_ReceiveData(I2C3);
