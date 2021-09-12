@@ -260,7 +260,7 @@ int main(void)
 //		USART_SendText("\n");
 
 		_i2c3_io_struct.address =  0xD6;
-		_i2c3_io_struct.register_address =0x10;
+		_i2c3_io_struct.register_address =0x20;
 		_i2c3_io_struct.buffer = buffer;
 		_i2c3_io_struct.bytes_count = bytes;
 		_i2c3_io_struct.state = I2C_IO_STATE_REGISTER_READ_START;
@@ -394,6 +394,7 @@ void I2C3_EV_IRQHandler()
 			if (I2C_GetFlagStatus(I2C3, I2C_FLAG_SB))
 			{
 				/*SR1 is read by the status function, therefore interrupt is lowered*/
+				I2C3->CR1 |=  0b1 << 10; // ENABLE ACK			
 				I2C_Send7bitAddress(I2C3,_i2c3_io_struct.address, I2C_Direction_Transmitter);
 				_i2c3_io_struct.state = I2C_IO_STATE_REGISTER_READ_SEND_ADDRESS;
 			}
