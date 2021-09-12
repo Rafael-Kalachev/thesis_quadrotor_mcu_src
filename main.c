@@ -228,32 +228,54 @@ int main(void)
 	NVIC_Init(&nvic_i2c_init);
 	//USART_SendNumber(1);
 
+        nvic_i2c_init.NVIC_IRQChannel = I2C3_ER_IRQn;
+        nvic_i2c_init.NVIC_IRQChannelCmd = ENABLE;
+        nvic_i2c_init.NVIC_IRQChannelPreemptionPriority = 1;
+        nvic_i2c_init.NVIC_IRQChannelSubPriority = 0;
+        NVIC_Init(&nvic_i2c_init);
 
 
-
-  
+ 	int i; 
+	uint8_t bytes = 14;
 	while(1) // this function can be called slower as you add data to be sent
 	{
-		uint8_t bytes = 5;
+//		buffer[0] = 0x55;
+//		buffer[1] = 0x66;
+//		_i2c3_io_struct.address =  0xD6;
+//		_i2c3_io_struct.buffer = buffer;
+//		_i2c3_io_struct.register_address =0x10;
+//		_i2c3_io_struct.bytes_count = bytes;
+//		_i2c3_io_struct.state = I2C_IO_STATE_REGISTER_WRITE_START;
+//		I2C_GenerateSTART(I2C3,ENABLE);
+//
+//		while (_i2c3_io_struct.state != I2C_IO_STATE_REGISTER_WRITE_STOP);
+//	
+//		for( i = 0 ; i < bytes; ++i)
+//		{
+//			USART_SendText(">");
+//			USART_SendNumber(buffer[i]);
+//			USART_SendText("<");
+//		}
+//
+//		USART_SendText("\n");
+
 		_i2c3_io_struct.address =  0xD6;
+		_i2c3_io_struct.register_address =0x10;
 		_i2c3_io_struct.buffer = buffer;
-		_i2c3_io_struct.register_address =0x0F;
 		_i2c3_io_struct.bytes_count = bytes;
 		_i2c3_io_struct.state = I2C_IO_STATE_REGISTER_READ_START;
-		I2C_GenerateSTART(I2C3,ENABLE);
+		I2C_GenerateSTART(I2C3, ENABLE);
 
-	while (!_i2c3_io_struct.state == I2C_IO_STATE_REGISTER_READ_STOP );
-		for(int i = 0 ; i < bytes; ++i)
+		while(_i2c3_io_struct.state != I2C_IO_STATE_REGISTER_READ_STOP);
+
+		for( i = 0 ; i < bytes; ++i)
 		{
 			USART_SendText(">");
 			USART_SendNumber(buffer[i]);
 			USART_SendText("<");
 		}
 
-		//  USART_SendNumber(a);
-		//  USART_SendText("\n");
-
-		for(a=100000000; a!=0; --a);
+		for(a=10; a!=0; --a);
 
 	}
 }
@@ -294,7 +316,7 @@ void I2C3_EV_IRQHandler()
 				tempreg = I2C3->SR1;
 				tempreg = I2C3->SR2;
 				I2C_SendData(I2C3, _i2c3_io_struct.register_address);
-				_i2c3_io_struct.state = I2C_IO_STATE_REGISTER_WRITE_SEND_REGISTER_ADDRESS;
+				_i2c3_io_struct.state = I2C_IO_STATE_REGISTER_WRITE_WRITE_BYTE;
 			}
 			else
 			{
@@ -325,8 +347,8 @@ void I2C3_EV_IRQHandler()
 			}
 			else
 			{
-				log_msg("ERROR: Expected SB to be set after restart\n");
-				_i2c3_io_struct.state = I2C_IO_STATE_ERROR;
+//				log_msg("ERROR: Expected SB to be set after restart\n");
+//				_i2c3_io_struct.state = I2C_IO_STATE_ERROR;
 			}
 			break;
 		
@@ -342,7 +364,7 @@ void I2C3_EV_IRQHandler()
 				log_msg("ERROR: Expected ADDRESS_FLAG to be set\n");
 				_i2c3_io_struct.state = I2C_IO_STATE_ERROR;
 			}
-			/* continue to write*/
+			break;
 
 		case I2C_IO_STATE_REGISTER_WRITE_WRITE_BYTE:
 			if (I2C_GetFlagStatus(I2C3, I2C_FLAG_TXE))
@@ -465,6 +487,7 @@ void I2C3_EV_IRQHandler()
 					if (_i2c3_io_struct.bytes_count == 0)
 					{
 						I2C3->CR1 |= 0b1<<9;
+						_i2c3_io_struct.state = I2C_IO_STATE_REGISTER_READ_STOP;
 					}
 
 				}
