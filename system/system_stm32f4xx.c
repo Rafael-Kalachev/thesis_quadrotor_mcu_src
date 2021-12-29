@@ -222,6 +222,11 @@ void SystemInit(void)
   /* Disable all interrupts */
   RCC->CIR = 0x00000000;
 
+  /* Enable The FPU*/
+  uint32_t* CPACR = (uint32_t*)0xE000ED88;
+  *CPACR |=  0b00000000111100000000000000000000;
+
+
 #ifdef DATA_IN_ExtSRAM
   SystemInit_ExtMemCtl();
 #endif /* DATA_IN_ExtSRAM */

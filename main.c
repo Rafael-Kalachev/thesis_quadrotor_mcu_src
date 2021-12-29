@@ -106,6 +106,8 @@ float32_t C_f32[10*1];
 
 
 uint8_t buffer[15];
+float32_t inv_int16_max = (float32_t) 1 / (float32_t) INT16_MAX;
+
 
 typedef enum I2C_IO_STATE_ENUM
 {
@@ -146,9 +148,6 @@ int main(void)
 {
 
   int a = 0;
-  uint32_t* CPACR = (uint32_t*)0xE000ED88;
-
-  *CPACR |=  0b00000000111100000000000000000000;
   __enable_irq();
 
   // Init clock to GPIOB for USART
@@ -169,7 +168,7 @@ int main(void)
   RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE);
   // Init USART
   USART_InitTypeDef USART_InitStruct;
-  USART_InitStruct.USART_BaudRate = 9600;
+  USART_InitStruct.USART_BaudRate = 115200;
   USART_InitStruct.USART_WordLength = USART_WordLength_8b;
   USART_InitStruct.USART_StopBits = USART_StopBits_1;
   USART_InitStruct.USART_Parity = USART_Parity_No ;
@@ -290,8 +289,8 @@ int main(void)
         // CONFIGURE ACC GYRO  PARAMETERS
 		_i2c3_io_struct.address =  0xD6;
 		_i2c3_io_struct.register_address =0x10;
-		buffer[0] = 0x33; //addr: 0x10 (ACCELEROMETER samp_rate=52Hz, full_scale=+-2g, filter=50Hz)
-		buffer[1] = 0x30; //addr: 0x11 (GYRO samp_rate=52Hz, deg_per_second=245)
+		buffer[0] = 0x3B; //addr: 0x10 (ACCELEROMETER samp_rate=52Hz, full_scale=+-4g, filter=50Hz)
+		buffer[1] = 0x34; //addr: 0x11 (GYRO samp_rate=52Hz, deg_per_second=500)
 		buffer[2] = 0x04; //addr: 0x12 (DEFAULT)
 		buffer[3] = 0x00; //addr: 0x13 (DEFAULT)
 		buffer[4] = 0x00; //addr: 0x14 (DEFAULT)
@@ -318,48 +317,41 @@ int main(void)
 
 		while(_i2c3_io_struct.state != I2C_IO_STATE_REGISTER_READ_STOP);
 
-//		float32_t gyro_x =      (float32_t)((int16_t) buffer[2]  + ((int16_t) buffer[3] << 8 )) / (float32_t) INT16_MAX;
-//		float32_t gyro_y =      (float32_t)((int16_t) buffer[4]  + ((int16_t) buffer[5] << 8 )) / (float32_t) INT16_MAX;
-//		float32_t gyro_z =      (float32_t)((int16_t) buffer[6]  + ((int16_t) buffer[7] << 8 )) / (float32_t) INT16_MAX;
-//		float32_t acc_x =       (float32_t)((int16_t) buffer[8]  + ((int16_t) buffer[9] << 8 )) / (float32_t) INT16_MAX;
-//		float32_t acc_y =       (float32_t)((int16_t) buffer[10] + ((int16_t) buffer[11] << 8 )) / (float32_t) INT16_MAX;
-//		float32_t acc_z =       (float32_t)((int16_t) buffer[12] + ((int16_t) buffer[13] << 8 )) / (float32_t) INT16_MAX;
-
-		int16_t temperature = (int32_t) buffer[0] + ((int32_t) buffer[1] << 8 );
-		int16_t gyro_x	= (int32_t) buffer[2] + ((int32_t) buffer[3] << 8 );
-		int16_t gyro_y	= (int32_t) buffer[4] + ((int32_t) buffer[5] << 8 );
-		int16_t gyro_z	= (int32_t) buffer[6] + ((int32_t) buffer[7] << 8 );
-		int16_t acc_x	= (int32_t) buffer[8] + ((int32_t) buffer[9] << 8 );
-		int16_t acc_y	= (int32_t) buffer[10] + ((int32_t) buffer[11] << 8 );
-		int16_t acc_z	= (int32_t) buffer[12] + ((int32_t) buffer[13] << 8 );
 
 
+		float32_t temperature = ((int16_t)((int32_t) buffer[0]  + ((int32_t) buffer[1]  << 8 ))) * inv_int16_max;
+		float32_t gyro_x      = ((int16_t)((int32_t) buffer[2]  + ((int32_t) buffer[3]  << 8 ))) * inv_int16_max;
+		float32_t gyro_y      = ((int16_t)((int32_t) buffer[4]  + ((int32_t) buffer[5]  << 8 ))) * inv_int16_max;
+		float32_t gyro_z      = ((int16_t)((int32_t) buffer[6]  + ((int32_t) buffer[7]  << 8 ))) * inv_int16_max;
+		float32_t acc_x	      = ((int16_t)((int32_t) buffer[8]  + ((int32_t) buffer[9]  << 8 ))) * inv_int16_max;
+		float32_t acc_y	      = ((int16_t)((int32_t) buffer[10] + ((int32_t) buffer[11] << 8 ))) * inv_int16_max;
+		float32_t acc_z	      = ((int16_t)((int32_t) buffer[12] + ((int32_t) buffer[13] << 8 ))) * inv_int16_max;
+
+		
 
 		USART_SendText("temp=");
-		USART_SendNumber(temperature);
+		USART_SendNumber(temperature*1000);
 
 		USART_SendText(" , gyro_x=");
-		USART_SendNumber(gyro_x);
+		USART_SendNumber(gyro_x*1000);
 
 		USART_SendText(" , gyro_y=");
-		USART_SendNumber(gyro_y);
+		USART_SendNumber(gyro_y*1000);
 
 		USART_SendText(" , gyro_z=");
-		USART_SendNumber(gyro_z);
+		USART_SendNumber(gyro_z*1000);
 
 		USART_SendText(" , acc_x=");
-		USART_SendNumber(acc_x);
+		USART_SendNumber(acc_x*1000);
 
 		USART_SendText(" , acc_y=");
-		USART_SendNumber(acc_y);
+		USART_SendNumber(acc_y*1000);
 
 		USART_SendText(" , acc_z=");
-		USART_SendNumber(acc_z);
+		USART_SendNumber(acc_z*1000);
 		USART_SendText("\n");
 
 
-
-		
 		for(a=0; a < 10000000; ++a)
 		{
 			__NOP;
@@ -600,6 +592,6 @@ void I2C3_EV_IRQHandler()
 
 void I2C3_ER_IRQHandler()
 {
-	USART_SendText("i2c2_ER_handler");
+	log_msg("i2c2_ER_handler\n");
 
 }
