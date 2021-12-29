@@ -2,10 +2,7 @@
 #include "stm32f4xx.h"
 #include "cmsis/inc/arm_math.h"
 
-void log_msg(volatile char *s)
-{
-	USART_SendText(s);
-}
+
 
 
 // This functions send text or char array passed as argument over USART
@@ -20,10 +17,15 @@ void USART_SendText(volatile char *s)
 }
 
 // This function sends numbers up to 32bit over USART
-void USART_SendNumber(uint32_t x)
+void USART_SendNumber(int32_t x)
 {
   char value[10]; //a temp array to hold results of conversion
   int i = 0; //loop index
+  if(x < 0 )
+  {
+	  x= -x;
+	  USART_SendData(USART1, '-');
+  }
 
   do
   {
@@ -37,6 +39,11 @@ void USART_SendNumber(uint32_t x)
     while( !USART_GetFlagStatus(USART1, USART_FLAG_TXE) );
     USART_SendData(USART1, value[--i]);
   }
+}
+
+void log_msg(volatile char *s)
+{
+	USART_SendText(s);
 }
 
 
@@ -236,7 +243,10 @@ int main(void)
 
 
  	int i; 
-	uint8_t bytes = 14;
+	uint8_t bytes = 16;
+	char ftoa_res[10];
+	ftoa_res[0] = 'E';
+	ftoa_res[1] = 0;
 	while(1) // this function can be called slower as you add data to be sent
 	{
 //		buffer[0] = 0x55;
@@ -277,45 +287,84 @@ int main(void)
 		while(_i2c3_io_struct.state != I2C_IO_STATE_REGISTER_WRITE_STOP);
 
 
-                // CONFIGURE ACC GYRO  PARAMETERS
-                _i2c3_io_struct.address =  0xD6;
-                _i2c3_io_struct.register_address =0x10;
-                buffer[0] = 0x33; //addr: 0x10 (ACCELEROMETER samp_rate=52Hz, full_scale=+-2g, filter=50Hz)
-                buffer[1] = 0x30; //addr: 0x11 (GYRO samp_rate=52Hz, deg_per_second=245)
-                buffer[2] = 0x04; //addr: 0x12 (DEFAULT)
-                buffer[3] = 0x00; //addr: 0x13 (DEFAULT)
-                buffer[4] = 0x00; //addr: 0x14 (DEFAULT)
-                buffer[5] = 0x00; //addr: 0x15 (DEFAULT)
+        // CONFIGURE ACC GYRO  PARAMETERS
+		_i2c3_io_struct.address =  0xD6;
+		_i2c3_io_struct.register_address =0x10;
+		buffer[0] = 0x33; //addr: 0x10 (ACCELEROMETER samp_rate=52Hz, full_scale=+-2g, filter=50Hz)
+		buffer[1] = 0x30; //addr: 0x11 (GYRO samp_rate=52Hz, deg_per_second=245)
+		buffer[2] = 0x04; //addr: 0x12 (DEFAULT)
+		buffer[3] = 0x00; //addr: 0x13 (DEFAULT)
+		buffer[4] = 0x00; //addr: 0x14 (DEFAULT)
+		buffer[5] = 0x00; //addr: 0x15 (DEFAULT)
 		buffer[6] = 0x00; //addr: 0x16 (DEFAULT)
 		buffer[7] = 0x00; //addr: 0x17 (DEFAULT)
 		buffer[8] = 0x38; //addr: 0x18 (DEFAULT)
 		buffer[9] = 0x38; //addr: 0x19 (DEFAULT)
-                _i2c3_io_struct.buffer = buffer;
-                _i2c3_io_struct.bytes_count = 10;
-                _i2c3_io_struct.state = I2C_IO_STATE_REGISTER_WRITE_START;
-                I2C_GenerateSTART(I2C3, ENABLE);
+		_i2c3_io_struct.buffer = buffer;
+		_i2c3_io_struct.bytes_count = 10;
+		_i2c3_io_struct.state = I2C_IO_STATE_REGISTER_WRITE_START;
+		I2C_GenerateSTART(I2C3, ENABLE);
 
-                while(_i2c3_io_struct.state != I2C_IO_STATE_REGISTER_WRITE_STOP);
+		while(_i2c3_io_struct.state != I2C_IO_STATE_REGISTER_WRITE_STOP);
+
+		// DATA GATHER 
+
+		_i2c3_io_struct.address =  0xD6;
+		_i2c3_io_struct.register_address =0x20;
+		_i2c3_io_struct.buffer = buffer;
+		_i2c3_io_struct.bytes_count = 14;
+		_i2c3_io_struct.state = I2C_IO_STATE_REGISTER_READ_START;
+		I2C_GenerateSTART(I2C3, ENABLE);
+
+		while(_i2c3_io_struct.state != I2C_IO_STATE_REGISTER_READ_STOP);
+
+//		float32_t gyro_x =      (float32_t)((int16_t) buffer[2]  + ((int16_t) buffer[3] << 8 )) / (float32_t) INT16_MAX;
+//		float32_t gyro_y =      (float32_t)((int16_t) buffer[4]  + ((int16_t) buffer[5] << 8 )) / (float32_t) INT16_MAX;
+//		float32_t gyro_z =      (float32_t)((int16_t) buffer[6]  + ((int16_t) buffer[7] << 8 )) / (float32_t) INT16_MAX;
+//		float32_t acc_x =       (float32_t)((int16_t) buffer[8]  + ((int16_t) buffer[9] << 8 )) / (float32_t) INT16_MAX;
+//		float32_t acc_y =       (float32_t)((int16_t) buffer[10] + ((int16_t) buffer[11] << 8 )) / (float32_t) INT16_MAX;
+//		float32_t acc_z =       (float32_t)((int16_t) buffer[12] + ((int16_t) buffer[13] << 8 )) / (float32_t) INT16_MAX;
+
+		int16_t temperature = (int32_t) buffer[0] + ((int32_t) buffer[1] << 8 );
+		int16_t gyro_x	= (int32_t) buffer[2] + ((int32_t) buffer[3] << 8 );
+		int16_t gyro_y	= (int32_t) buffer[4] + ((int32_t) buffer[5] << 8 );
+		int16_t gyro_z	= (int32_t) buffer[6] + ((int32_t) buffer[7] << 8 );
+		int16_t acc_x	= (int32_t) buffer[8] + ((int32_t) buffer[9] << 8 );
+		int16_t acc_y	= (int32_t) buffer[10] + ((int32_t) buffer[11] << 8 );
+		int16_t acc_z	= (int32_t) buffer[12] + ((int32_t) buffer[13] << 8 );
 
 
 
-                _i2c3_io_struct.address =  0xD6;
-                _i2c3_io_struct.register_address =0x20;
-                _i2c3_io_struct.buffer = buffer;
-                _i2c3_io_struct.bytes_count = 13;
-                _i2c3_io_struct.state = I2C_IO_STATE_REGISTER_READ_START;
-                I2C_GenerateSTART(I2C3, ENABLE);
+		USART_SendText("temp=");
+		USART_SendNumber(temperature);
 
-                while(_i2c3_io_struct.state != I2C_IO_STATE_REGISTER_READ_STOP);
+		USART_SendText(" , gyro_x=");
+		USART_SendNumber(gyro_x);
 
-		for( i = 0 ; i < bytes; ++i)
+		USART_SendText(" , gyro_y=");
+		USART_SendNumber(gyro_y);
+
+		USART_SendText(" , gyro_z=");
+		USART_SendNumber(gyro_z);
+
+		USART_SendText(" , acc_x=");
+		USART_SendNumber(acc_x);
+
+		USART_SendText(" , acc_y=");
+		USART_SendNumber(acc_y);
+
+		USART_SendText(" , acc_z=");
+		USART_SendNumber(acc_z);
+		USART_SendText("\n");
+
+
+
+		
+		for(a=0; a < 10000000; ++a)
 		{
-			
-//			USART_SendNumber(buffer[i]);
-//			USART_SendText(",");
+			__NOP;
 		}
 
-		for(a=10; a!=0; --a);
 
 	}
 }

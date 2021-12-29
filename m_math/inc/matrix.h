@@ -7,7 +7,6 @@ This module contains matrix definitions and calculations
 /**
  * INCLUDES
  **/
-	#include "system/conf.h"
 	#include "m_common/inc/assert.h"
 	#include "m_common/inc/result.h"
 	#include "m_math/inc/math.h"

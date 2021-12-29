@@ -2,8 +2,8 @@
 This module contains matrix definitions and calculations
 */
 
-#ifndef M_MAT_H
-#define M_MAT_H
+#ifndef RESULT_H
+#define RESULT_H
 /**
  * INCLUDES
  **/
@@ -39,4 +39,4 @@ typedef enum RESULT
  **/
 
 
-#endif /*M_MAT_H*/
+#endif /*RESULT_H*/

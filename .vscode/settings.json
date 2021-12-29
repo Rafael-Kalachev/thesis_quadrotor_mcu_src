@@ -3,6 +3,8 @@
         "stm32f4xx.h": "c",
         "system_stm32f4xx.h": "c",
         "arm_math.h": "c",
-        "stm32f4xx_conf.h": "c"
+        "stm32f4xx_conf.h": "c",
+        "assert.h": "c",
+        "float.h": "c"
     }
 }

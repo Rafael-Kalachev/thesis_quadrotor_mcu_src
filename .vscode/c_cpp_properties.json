@@ -6,7 +6,8 @@
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/system",
                 "${workspaceFolder}/std_perif/inc",
-                "${workspaceFolder}/cmsis/inc"
+                "${workspaceFolder}/cmsis/inc",
+                "${workspaceFolder}/"
             ],
             "defines": [
                 "ARM_MATH_CM4"
