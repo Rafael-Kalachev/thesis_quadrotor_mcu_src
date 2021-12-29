@@ -259,20 +259,60 @@ int main(void)
 //
 //		USART_SendText("\n");
 
+
+		// CONFIGURE ACC GYRO   FIFO
 		_i2c3_io_struct.address =  0xD6;
-		_i2c3_io_struct.register_address =0x20;
+		_i2c3_io_struct.register_address =0x06;
+		buffer[0] = 0x00; //addr: 0x06
+		buffer[1] = 0x00; //addr: 0x07
+		buffer[2] = 0x00; //addr: 0x08
+		buffer[3] = 0x00; //addr: 0x09
+		buffer[4] = 0x00; //addr: 0x0A
+		buffer[5] = 0x00; //addr: 0x0B
 		_i2c3_io_struct.buffer = buffer;
-		_i2c3_io_struct.bytes_count = bytes;
-		_i2c3_io_struct.state = I2C_IO_STATE_REGISTER_READ_START;
+		_i2c3_io_struct.bytes_count = 6;
+		_i2c3_io_struct.state = I2C_IO_STATE_REGISTER_WRITE_START;
 		I2C_GenerateSTART(I2C3, ENABLE);
 
-		while(_i2c3_io_struct.state != I2C_IO_STATE_REGISTER_READ_STOP);
+		while(_i2c3_io_struct.state != I2C_IO_STATE_REGISTER_WRITE_STOP);
+
+
+                // CONFIGURE ACC GYRO  PARAMETERS
+                _i2c3_io_struct.address =  0xD6;
+                _i2c3_io_struct.register_address =0x10;
+                buffer[0] = 0x33; //addr: 0x10 (ACCELEROMETER samp_rate=52Hz, full_scale=+-2g, filter=50Hz)
+                buffer[1] = 0x30; //addr: 0x11 (GYRO samp_rate=52Hz, deg_per_second=245)
+                buffer[2] = 0x04; //addr: 0x12 (DEFAULT)
+                buffer[3] = 0x00; //addr: 0x13 (DEFAULT)
+                buffer[4] = 0x00; //addr: 0x14 (DEFAULT)
+                buffer[5] = 0x00; //addr: 0x15 (DEFAULT)
+		buffer[6] = 0x00; //addr: 0x16 (DEFAULT)
+		buffer[7] = 0x00; //addr: 0x17 (DEFAULT)
+		buffer[8] = 0x38; //addr: 0x18 (DEFAULT)
+		buffer[9] = 0x38; //addr: 0x19 (DEFAULT)
+                _i2c3_io_struct.buffer = buffer;
+                _i2c3_io_struct.bytes_count = 10;
+                _i2c3_io_struct.state = I2C_IO_STATE_REGISTER_WRITE_START;
+                I2C_GenerateSTART(I2C3, ENABLE);
+
+                while(_i2c3_io_struct.state != I2C_IO_STATE_REGISTER_WRITE_STOP);
+
+
+
+                _i2c3_io_struct.address =  0xD6;
+                _i2c3_io_struct.register_address =0x20;
+                _i2c3_io_struct.buffer = buffer;
+                _i2c3_io_struct.bytes_count = 13;
+                _i2c3_io_struct.state = I2C_IO_STATE_REGISTER_READ_START;
+                I2C_GenerateSTART(I2C3, ENABLE);
+
+                while(_i2c3_io_struct.state != I2C_IO_STATE_REGISTER_READ_STOP);
 
 		for( i = 0 ; i < bytes; ++i)
 		{
-			USART_SendText(">");
-			USART_SendNumber(buffer[i]);
-			USART_SendText("<");
+			
+//			USART_SendNumber(buffer[i]);
+//			USART_SendText(",");
 		}
 
 		for(a=10; a!=0; --a);
