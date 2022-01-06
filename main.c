@@ -1,6 +1,7 @@
 /* This code shows how to use USART and send messages to RS232 module to PC */
 #include "stm32f4xx.h"
 #include "cmsis/inc/arm_math.h"
+#include "m_math/inc/convert.h"
 
 
 
@@ -19,25 +20,30 @@ void USART_SendText(volatile char *s)
 // This function sends numbers up to 32bit over USART
 void USART_SendNumber(int32_t x)
 {
-  char value[10]; //a temp array to hold results of conversion
-  int i = 0; //loop index
-  if(x < 0 )
-  {
-	  x= -x;
-	  USART_SendData(USART1, '-');
-  }
+	char value[10]; //a temp array to hold results of conversion
+	int count = int_to_str(x, value, 0);
+	int i = 0;
 
-  do
-  {
-    value[i++] = (char)(x % 10) + '0'; //convert integer to character
-    x /= 10;
-  } while(x);
+	for(i = 0; i < count; ++i)
+	{
+		//USART_SendNumber8b(USARTx, value[--i]);
+    	while( !USART_GetFlagStatus(USART1, USART_FLAG_TXE) );
+    	USART_SendData(USART1, value[i]);
+	}
+}
 
-  while(i) //send data
+// This function sends numbers up to 32bit over USART
+void USART_SendFloat(float32_t x, uint8_t precision)
+{
+  char value[15]; //a temp array to hold results of conversion
+  int count = float_to_str(x, value, precision, 0);
+  int i = 0;
+
+  for(i = 0; i < count; ++i)
   {
     //USART_SendNumber8b(USARTx, value[--i]);
     while( !USART_GetFlagStatus(USART1, USART_FLAG_TXE) );
-    USART_SendData(USART1, value[--i]);
+    USART_SendData(USART1, value[i]);
   }
 }
 
@@ -243,68 +249,46 @@ int main(void)
 
  	int i; 
 	uint8_t bytes = 16;
-	char ftoa_res[10];
-	ftoa_res[0] = 'E';
-	ftoa_res[1] = 0;
+
+	// CONFIGURE ACC GYRO   FIFO
+	_i2c3_io_struct.address =  0xD6;
+	_i2c3_io_struct.register_address =0x06;
+	buffer[0] = 0x00; //addr: 0x06
+	buffer[1] = 0x00; //addr: 0x07
+	buffer[2] = 0x00; //addr: 0x08
+	buffer[3] = 0x00; //addr: 0x09
+	buffer[4] = 0x00; //addr: 0x0A
+	buffer[5] = 0x00; //addr: 0x0B
+	_i2c3_io_struct.buffer = buffer;
+	_i2c3_io_struct.bytes_count = 6;
+	_i2c3_io_struct.state = I2C_IO_STATE_REGISTER_WRITE_START;
+	I2C_GenerateSTART(I2C3, ENABLE);
+
+	while(_i2c3_io_struct.state != I2C_IO_STATE_REGISTER_WRITE_STOP);
+
+	// CONFIGURE ACC GYRO  PARAMETERS
+	_i2c3_io_struct.address =  0xD6;
+	_i2c3_io_struct.register_address =0x10;
+	buffer[0] = 0x3B; //addr: 0x10 (ACCELEROMETER samp_rate=52Hz, full_scale=+-4g, filter=50Hz)
+	buffer[1] = 0x34; //addr: 0x11 (GYRO samp_rate=52Hz, deg_per_second=500)
+	buffer[2] = 0x04; //addr: 0x12 (DEFAULT)
+	buffer[3] = 0x00; //addr: 0x13 (DEFAULT)
+	buffer[4] = 0x00; //addr: 0x14 (DEFAULT)
+	buffer[5] = 0x00; //addr: 0x15 (DEFAULT)
+	buffer[6] = 0x00; //addr: 0x16 (DEFAULT)
+	buffer[7] = 0x00; //addr: 0x17 (DEFAULT)
+	buffer[8] = 0x38; //addr: 0x18 (DEFAULT)
+	buffer[9] = 0x38; //addr: 0x19 (DEFAULT)
+	_i2c3_io_struct.buffer = buffer;
+	_i2c3_io_struct.bytes_count = 10;
+	_i2c3_io_struct.state = I2C_IO_STATE_REGISTER_WRITE_START;
+	I2C_GenerateSTART(I2C3, ENABLE);
+
+	while(_i2c3_io_struct.state != I2C_IO_STATE_REGISTER_WRITE_STOP);
+
+
 	while(1) // this function can be called slower as you add data to be sent
 	{
-//		buffer[0] = 0x55;
-//		buffer[1] = 0x66;
-//		_i2c3_io_struct.address =  0xD6;
-//		_i2c3_io_struct.buffer = buffer;
-//		_i2c3_io_struct.register_address =0x10;
-//		_i2c3_io_struct.bytes_count = bytes;
-//		_i2c3_io_struct.state = I2C_IO_STATE_REGISTER_WRITE_START;
-//		I2C_GenerateSTART(I2C3,ENABLE);
-//
-//		while (_i2c3_io_struct.state != I2C_IO_STATE_REGISTER_WRITE_STOP);
-//	
-//		for( i = 0 ; i < bytes; ++i)
-//		{
-//			USART_SendText(">");
-//			USART_SendNumber(buffer[i]);
-//			USART_SendText("<");
-//		}
-//
-//		USART_SendText("\n");
-
-
-		// CONFIGURE ACC GYRO   FIFO
-		_i2c3_io_struct.address =  0xD6;
-		_i2c3_io_struct.register_address =0x06;
-		buffer[0] = 0x00; //addr: 0x06
-		buffer[1] = 0x00; //addr: 0x07
-		buffer[2] = 0x00; //addr: 0x08
-		buffer[3] = 0x00; //addr: 0x09
-		buffer[4] = 0x00; //addr: 0x0A
-		buffer[5] = 0x00; //addr: 0x0B
-		_i2c3_io_struct.buffer = buffer;
-		_i2c3_io_struct.bytes_count = 6;
-		_i2c3_io_struct.state = I2C_IO_STATE_REGISTER_WRITE_START;
-		I2C_GenerateSTART(I2C3, ENABLE);
-
-		while(_i2c3_io_struct.state != I2C_IO_STATE_REGISTER_WRITE_STOP);
-
-
-        // CONFIGURE ACC GYRO  PARAMETERS
-		_i2c3_io_struct.address =  0xD6;
-		_i2c3_io_struct.register_address =0x10;
-		buffer[0] = 0x3B; //addr: 0x10 (ACCELEROMETER samp_rate=52Hz, full_scale=+-4g, filter=50Hz)
-		buffer[1] = 0x34; //addr: 0x11 (GYRO samp_rate=52Hz, deg_per_second=500)
-		buffer[2] = 0x04; //addr: 0x12 (DEFAULT)
-		buffer[3] = 0x00; //addr: 0x13 (DEFAULT)
-		buffer[4] = 0x00; //addr: 0x14 (DEFAULT)
-		buffer[5] = 0x00; //addr: 0x15 (DEFAULT)
-		buffer[6] = 0x00; //addr: 0x16 (DEFAULT)
-		buffer[7] = 0x00; //addr: 0x17 (DEFAULT)
-		buffer[8] = 0x38; //addr: 0x18 (DEFAULT)
-		buffer[9] = 0x38; //addr: 0x19 (DEFAULT)
-		_i2c3_io_struct.buffer = buffer;
-		_i2c3_io_struct.bytes_count = 10;
-		_i2c3_io_struct.state = I2C_IO_STATE_REGISTER_WRITE_START;
-		I2C_GenerateSTART(I2C3, ENABLE);
-
-		while(_i2c3_io_struct.state != I2C_IO_STATE_REGISTER_WRITE_STOP);
 
 		// DATA GATHER 
 
@@ -317,8 +301,6 @@ int main(void)
 
 		while(_i2c3_io_struct.state != I2C_IO_STATE_REGISTER_READ_STOP);
 
-
-
 		float32_t temperature = ((int16_t)((int32_t) buffer[0]  + ((int32_t) buffer[1]  << 8 ))) * inv_int16_max;
 		float32_t gyro_x      = ((int16_t)((int32_t) buffer[2]  + ((int32_t) buffer[3]  << 8 ))) * inv_int16_max;
 		float32_t gyro_y      = ((int16_t)((int32_t) buffer[4]  + ((int32_t) buffer[5]  << 8 ))) * inv_int16_max;
@@ -327,32 +309,31 @@ int main(void)
 		float32_t acc_y	      = ((int16_t)((int32_t) buffer[10] + ((int32_t) buffer[11] << 8 ))) * inv_int16_max;
 		float32_t acc_z	      = ((int16_t)((int32_t) buffer[12] + ((int32_t) buffer[13] << 8 ))) * inv_int16_max;
 
-		
-
 		USART_SendText("temp=");
-		USART_SendNumber(temperature*1000);
+		USART_SendFloat(temperature, 5);
 
 		USART_SendText(" , gyro_x=");
-		USART_SendNumber(gyro_x*1000);
+		USART_SendFloat(gyro_x, 5);
 
 		USART_SendText(" , gyro_y=");
-		USART_SendNumber(gyro_y*1000);
+		USART_SendFloat(gyro_y, 5);
 
 		USART_SendText(" , gyro_z=");
-		USART_SendNumber(gyro_z*1000);
+		USART_SendFloat(gyro_z, 5);
 
 		USART_SendText(" , acc_x=");
-		USART_SendNumber(acc_x*1000);
+		USART_SendFloat(acc_x, 5);
 
 		USART_SendText(" , acc_y=");
-		USART_SendNumber(acc_y*1000);
+		USART_SendFloat(acc_y, 5);
 
 		USART_SendText(" , acc_z=");
-		USART_SendNumber(acc_z*1000);
+		USART_SendFloat(acc_z, 5);
+
 		USART_SendText("\n");
 
 
-		for(a=0; a < 10000000; ++a)
+		for(a=0; a < 1; ++a)
 		{
 			__NOP;
 		}
