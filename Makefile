@@ -16,7 +16,7 @@ PROJECT_DEPS += std_perif/src/misc.o
 PROJECT_DEPS += m_math/src/convert.o
 
 # Project specific modules
-PROJECT_DEPS += m_project_specific/src/usart.o
+#PROJECT_DEPS += m_project_specific/src/usart.o
 
 all: $(PROJECT)
 
