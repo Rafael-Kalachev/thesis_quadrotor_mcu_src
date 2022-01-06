@@ -8,6 +8,9 @@ This module contains matrix definitions and calculations
  * INCLUDES
  **/
 
+#include "cmsis/inc/arm_math.h"
+
+
 /**
  * MACROS
  **/

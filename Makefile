@@ -13,6 +13,11 @@ PROJECT_DEPS += cmsis/lib/libarm_cortexM4lf_math.a
 PROJECT_DEPS += std_perif/src/stm32f4xx_i2c.o
 PROJECT_DEPS += std_perif/src/misc.o
 
+PROJECT_DEPS += m_math/src/convert.o
+
+# Project specific modules
+PROJECT_DEPS += m_project_specific/src/usart.o
+
 all: $(PROJECT)
 
 test.elf:   main.o $(PROJECT_DEPS)

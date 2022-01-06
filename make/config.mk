@@ -50,7 +50,7 @@ C_FLAGS  :=
 # for debugging
 C_FLAGS	+= -g
 # optimization level
-C_FLAGS	+= -O2
+C_FLAGS	+= -O0
 # configure for the cortex m4
 C_FLAGS	+= -mlittle-endian -mthumb -mcpu=cortex-m4 -mthumb-interwork
 # configure FPU
