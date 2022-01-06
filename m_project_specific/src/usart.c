@@ -1,6 +1,6 @@
-
 #include "stm32f4xx.h"
 #include "m_project_specific/inc/usart.h"
+#include "m_math/inc/convert.h"
 
 // This functions send text or char array passed as argument over USART
 void USART_SendText(volatile char *s)
