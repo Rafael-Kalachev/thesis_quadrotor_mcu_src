@@ -3,6 +3,8 @@
 #include "cmsis/inc/arm_math.h"
 #include "m_math/inc/convert.h"
 #include "m_project_specific/inc/usart.h"
+#include "m_project_specific/inc/extended_kalman_filter.h"
+
 
 
 void log_msg(volatile char *s)
@@ -11,38 +13,23 @@ void log_msg(volatile char *s)
 }
 
 
-float32_t A_f32[10*10] = 
+float32_t A_f32[3*3] = 
 {
-	1.0,	2.0,	3.0,	4.0,	5.0,	6.0,	7.0,	8.0,	9.0,	10.0,
-	1.0,	2.0,	3.0,	4.0,	5.0,	6.0,	7.0,	8.0,	9.0,	10.0,
-	1.0,	2.0,	3.0,	4.0,	5.0,	6.0,	7.0,	8.0,	9.0,	10.0,
-	1.0,	2.0,	3.0,	4.0,	5.0,	6.0,	7.0,	8.0,	9.0,	10.0,
-	1.0,	2.0,	3.0,	4.0,	5.0,	6.0,	7.0,	8.0,	9.0,	10.0,
-	1.0,	2.0,	3.0,	4.0,	5.0,	6.0,	7.0,	8.0,	9.0,	10.0,
-	1.0,	2.0,	3.0,	4.0,	5.0,	6.0,	7.0,	8.0,	9.0,	10.0,
-	1.0,	2.0,	3.0,	4.0,	5.0,	6.0,	7.0,	8.0,	9.0,	10.0,
-	1.0,	2.0,	3.0,	4.0,	5.0,	6.0,	7.0,	8.0,	9.0,	10.0,
-	1.0,	2.0,	3.0,	4.0,	5.0,	6.0,	7.0,	8.0,	9.0,	10.0
+	 4.0 , -2.0 ,  1.0,
+	 5.0 ,  0.0 ,  3.0,
+	-1.0 ,  2.0 ,  6.0
 };
 
-float32_t B_f32[10*1] =
+float32_t A_inv_f32[3*3] =
 {
-	10.0,
-	9.0,
-	8.0,
-	7.0,
-	6.0,
-	5.0,
-	4.0,
-	3.0,
-	2.0,
-	1.0
+	1,1,1,
+	1,1,1,
+	1,1,1
 };
-
-float32_t C_f32[10*1];
 
 
 uint8_t buffer[15];
+
 float32_t inv_int16_max = (float32_t) 1 / (float32_t) INT16_MAX;
 
 
@@ -195,9 +182,32 @@ int main(void)
 	while(_i2c3_io_struct.state != I2C_IO_STATE_REGISTER_WRITE_STOP);
 
 
+
+
+	// MAIN LOOP
+	arm_matrix_instance_f32 A;
+	A.numCols = 3;
+	A.numRows = 3;
+	A.pData = A_f32;
+	
+	arm_matrix_instance_f32 A_inv;
+	A_inv.numCols = 3;
+	A_inv.numRows = 3;
+	A_inv.pData = A_inv_f32;
+	
+	arm_mat_inverse_f32(&A, &A_inv);
+
+	USART_SendMatrix(&A, 3);
+	USART_SendMatrix(&A_inv, 3);
+
+	USART_SendText(">");
+	ekf_init();
+	USART_SendText("<\n");
+
+
 	while(1) // this function can be called slower as you add data to be sent
 	{
-
+		
 		// DATA GATHER 
 
 		_i2c3_io_struct.address =  0xD6;
@@ -241,10 +251,14 @@ int main(void)
 		USART_SendText("\n");
 
 
-		for(a=0; a < 1; ++a)
+
+
+
+		for(a=0; a < 100000000; ++a)
 		{
 			__NOP;
 		}
+
 
 
 	}

@@ -44,6 +44,7 @@ void USART_SendNumber(int32_t x);
 // This function sends numbers up to 32bit over USART
 void USART_SendFloat(float32_t x, uint8_t precision);
 
+void USART_SendMatrix(arm_matrix_instance_f32* matrix, uint8_t precision);
 
 void USART_project_specific_init();
 

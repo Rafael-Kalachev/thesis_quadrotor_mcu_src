@@ -5,12 +5,13 @@
 // This functions send text or char array passed as argument over USART
 void USART_SendText(volatile char *s)
 {
-  while(*s){
-    // wait until data register is empty
-    while( !USART_GetFlagStatus(USART1, USART_FLAG_TXE) );
-    USART_SendData(USART1, *s);
-    s++;
-  }
+	while(*s)
+	{
+		// wait until data register is empty
+		while( !USART_GetFlagStatus(USART1, USART_FLAG_TXE) );
+		USART_SendData(USART1, *s);
+		s++;
+	}
 }
 
 // This function sends numbers up to 32bit over USART
@@ -23,25 +24,48 @@ void USART_SendNumber(int32_t x)
 	for(i = 0; i < count; ++i)
 	{
 		//USART_SendNumber8b(USARTx, value[--i]);
-    	while( !USART_GetFlagStatus(USART1, USART_FLAG_TXE) );
-    	USART_SendData(USART1, value[i]);
+		while( !USART_GetFlagStatus(USART1, USART_FLAG_TXE) );
+		USART_SendData(USART1, value[i]);
 	}
 }
 
 // This function sends numbers up to 32bit over USART
 void USART_SendFloat(float32_t x, uint8_t precision)
 {
-  char value[20]; //a temp array to hold results of conversion
-  int count = float_to_str(x, value, precision, 0);
-  int i = 0;
+	char value[20]; //a temp array to hold results of conversion
+	int count = float_to_str(x, value, precision, 0);
+	int i = 0;
 
-  for(i = 0; i < count; ++i)
-  {
-    //USART_SendNumber8b(USARTx, value[--i]);
-    while( !USART_GetFlagStatus(USART1, USART_FLAG_TXE) );
-    USART_SendData(USART1, value[i]);
-  }
+	for(i = 0; i < count; ++i)
+	{
+		//USART_SendNumber8b(USARTx, value[--i]);
+		while( !USART_GetFlagStatus(USART1, USART_FLAG_TXE) );
+		USART_SendData(USART1, value[i]);
+	}
 }
+
+// This function sends numbers up to 32bit over USART
+void USART_SendMatrix(arm_matrix_instance_f32* matrix, uint8_t precision)
+{
+	int row_i = 0;
+	int col_i = 0;
+	float32_t *val_ptr=matrix->pData;
+	char value[20]; //a temp array to hold results of conversion
+
+	for(row_i = 0; row_i < matrix->numRows; ++row_i)
+	{
+
+		for(col_i = 0; col_i < matrix->numCols; ++col_i)
+		{
+			USART_SendFloat(*val_ptr, precision);
+			USART_SendText("\t");
+			++val_ptr;
+    	}
+		USART_SendText("\n");
+	}
+}
+
+
 
 
 void USART_project_specific_init()

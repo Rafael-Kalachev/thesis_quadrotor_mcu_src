@@ -279,6 +279,9 @@ void SystemInit(void)
   * @param  None
   * @retval None
   */
+
+int __errno=0;
+
 void SystemCoreClockUpdate(void)
 {
   uint32_t tmp = 0, pllvco = 0, pllp = 2, pllsource = 0, pllm = 2;

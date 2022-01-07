@@ -54,4 +54,6 @@ int float_to_str(float32_t number, char* out_str, uint8_t after_point, uint8_t b
 */
 int int_to_str(int number, char* out_str, uint8_t digits);
 
+
+
 #endif /*M_MATH_CONVERT_H*/
