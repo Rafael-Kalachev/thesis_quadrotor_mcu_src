@@ -5,7 +5,8 @@
 #include "m_project_specific/inc/usart.h"
 #include "m_project_specific/inc/extended_kalman_filter.h"
 
-
+#define PINS   ( GPIO_Pin_8 |  GPIO_Pin_9 |  GPIO_Pin_10 | GPIO_Pin_11)
+#define GPIO_PORT  (GPIOA)
 
 void log_msg(volatile char *s)
 {
@@ -181,8 +182,16 @@ int main(void)
 
 	while(_i2c3_io_struct.state != I2C_IO_STATE_REGISTER_WRITE_STOP);
 
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
 
 
+	GPIO_InitStruct.GPIO_Pin  = PINS;
+	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
+	GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_InitStruct.GPIO_OType = GPIO_OType_OD;
+	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;
+
+	GPIO_Init(GPIO_PORT, &GPIO_InitStruct);	
 
 	// MAIN LOOP
 	arm_matrix_instance_f32 A;
@@ -209,7 +218,6 @@ int main(void)
 	{
 		
 		// DATA GATHER 
-
 		_i2c3_io_struct.address =  0xD6;
 		_i2c3_io_struct.register_address =0x20;
 		_i2c3_io_struct.buffer = buffer;
@@ -252,13 +260,17 @@ int main(void)
 
 
 
-
-
-		for(a=0; a < 100000000; ++a)
+		GPIO_SetBits(GPIO_PORT, PINS );
+		for(a=0; a < 5000000; ++a)
 		{
 			__NOP;
 		}
+		GPIO_ResetBits(GPIO_PORT, PINS );
 
+		for(a=0; a < 5000000; ++a)
+		{
+			__NOP;
+		}
 
 
 	}
