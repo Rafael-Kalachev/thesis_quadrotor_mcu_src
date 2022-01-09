@@ -136,11 +136,11 @@ int main(void)
 	NVIC_Init(&nvic_i2c_init);
 	//USART_SendNumber(1);
 
-        nvic_i2c_init.NVIC_IRQChannel = I2C3_ER_IRQn;
-        nvic_i2c_init.NVIC_IRQChannelCmd = ENABLE;
-        nvic_i2c_init.NVIC_IRQChannelPreemptionPriority = 1;
-        nvic_i2c_init.NVIC_IRQChannelSubPriority = 0;
-        NVIC_Init(&nvic_i2c_init);
+	nvic_i2c_init.NVIC_IRQChannel = I2C3_ER_IRQn;
+	nvic_i2c_init.NVIC_IRQChannelCmd = ENABLE;
+	nvic_i2c_init.NVIC_IRQChannelPreemptionPriority = 1;
+	nvic_i2c_init.NVIC_IRQChannelSubPriority = 0;
+	NVIC_Init(&nvic_i2c_init);
 
 
  	int i; 
@@ -183,7 +183,9 @@ int main(void)
 
 	while(_i2c3_io_struct.state != I2C_IO_STATE_REGISTER_WRITE_STOP);
 
+	// CONFIGURE GPIO
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);
 
 
 	GPIO_InitStruct.GPIO_Pin  = PINS;
@@ -193,6 +195,33 @@ int main(void)
 	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;
 
 	GPIO_Init(GPIO_PORT, &GPIO_InitStruct);	
+
+	// CONFIGURE TIMER
+
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
+ 
+	TIM_TimeBaseInitTypeDef timerInitStructure; 
+	timerInitStructure.TIM_Prescaler = 41;
+	timerInitStructure.TIM_CounterMode = TIM_CounterMode_Up;
+	timerInitStructure.TIM_Period = 20000;
+	timerInitStructure.TIM_ClockDivision = TIM_CKD_DIV1;
+	timerInitStructure.TIM_RepetitionCounter = 0;
+	TIM_TimeBaseInit(TIM2, &timerInitStructure);
+
+	//	ENABLE IRQ TIM
+
+	NVIC_InitTypeDef nvicStructure;
+	nvicStructure.NVIC_IRQChannel = TIM2_IRQn;
+	nvicStructure.NVIC_IRQChannelPreemptionPriority = 0;
+	nvicStructure.NVIC_IRQChannelSubPriority = 1;
+	nvicStructure.NVIC_IRQChannelCmd = ENABLE;
+	NVIC_Init(&nvicStructure);
+
+	TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE);
+
+	//	ENABLE TIMER 
+	TIM_Cmd(TIM2, ENABLE);
+
 
 	// MAIN LOOP
 	arm_matrix_instance_f32 A;
@@ -261,7 +290,7 @@ int main(void)
 		USART_SendText("\n");
 
 		
-
+		/*
 		GPIO_SetBits(GPIO_PORT, PINS );
 		for(a=0; a < 5000000; ++a)
 		{
@@ -273,7 +302,7 @@ int main(void)
 		{
 			__NOP;
 		}
-
+		*/
 
 	}
 }
@@ -511,4 +540,13 @@ void I2C3_ER_IRQHandler()
 {
 	log_msg("i2c2_ER_handler\n");
 
+}
+
+void TIM2_IRQHandler()
+{
+	if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)
+	{
+		TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
+		GPIO_ToggleBits(GPIO_PORT, PINS);
+	}
 }
