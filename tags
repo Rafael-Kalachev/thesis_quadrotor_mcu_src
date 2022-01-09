@@ -9,6 +9,16 @@
 %.hex	make/rules.mk	/^%.hex: %.elf$/;"	t
 %.o	make/rules.mk	/^%.o: %.c$/;"	t
 %.o	make/rules.mk	/^%.o: %.s$/;"	t
+0	.vscode/c_cpp_properties.json	/^                "${workspaceFolder}\/**",$/;"	s	array:configurations.0.includePath
+0	.vscode/c_cpp_properties.json	/^                "-DSTM32F429_439xx",$/;"	s	array:configurations.0.compilerArgs
+0	.vscode/c_cpp_properties.json	/^                "ARM_MATH_CM4"$/;"	s	array:configurations.0.defines
+0	.vscode/c_cpp_properties.json	/^        {$/;"	o	array:configurations
+1	.vscode/c_cpp_properties.json	/^                "${workspaceFolder}\/system",$/;"	s	array:configurations.0.includePath
+1	.vscode/c_cpp_properties.json	/^                "-DUSE_STDPERIPH_DRIVER",$/;"	s	array:configurations.0.compilerArgs
+2	.vscode/c_cpp_properties.json	/^                "${workspaceFolder}\/std_perif\/inc",$/;"	s	array:configurations.0.includePath
+2	.vscode/c_cpp_properties.json	/^                "-DUSE_FULL_ASSERT"$/;"	s	array:configurations.0.compilerArgs
+3	.vscode/c_cpp_properties.json	/^                "${workspaceFolder}\/cmsis\/inc",$/;"	s	array:configurations.0.includePath
+4	.vscode/c_cpp_properties.json	/^                "${workspaceFolder}\/"$/;"	s	array:configurations.0.includePath
 A0	cmsis/inc/arm_math.h	/^    float32_t A0;          \/**< The derived gain, A0 = Kp + Ki + Kd . *\/$/;"	m	struct:__anonf33cb1db0e08	typeref:typename:float32_t
 A0	cmsis/inc/arm_math.h	/^    q15_t A0;    \/**< The derived gain, A0 = Kp + Ki + Kd . *\/$/;"	m	struct:__anonf33cb1db0c08	typeref:typename:q15_t
 A0	cmsis/inc/arm_math.h	/^    q31_t A0;            \/**< The derived gain, A0 = Kp + Ki + Kd . *\/$/;"	m	struct:__anonf33cb1db0d08	typeref:typename:q31_t
@@ -613,7 +623,18 @@ ARR	system/stm32f4xx.h	/^  __IO uint32_t ARR;         \/*!< TIM auto-reload regi
 AS	make/tools.mk	/^AS	:= $(CC_TOOLCHAIN_PATH)$(CC_TOOLCAHIN_SEPARATOR)$(CC_TOOLCHAIN_PREFIX)gcc$/;"	m
 ASSERT_EQ	m_common/inc/assert.h	/^		#define ASSERT_EQ(/;"	d
 ATACMD_BitNumber	std_perif/src/stm32f4xx_sdio.c	/^#define ATACMD_BitNumber /;"	d	file:
+ATMAI_f32	old/main_matrix2.c	/^float32_t ATMAI_f32[16];$/;"	v	typeref:typename:float32_t[16]
+ATMA_f32	old/main_matrix2.c	/^float32_t ATMA_f32[16];$/;"	v	typeref:typename:float32_t[16]
+AT_f32	old/main_matrix2.c	/^float32_t AT_f32[16];$/;"	v	typeref:typename:float32_t[16]
 AWCR	system/stm32f4xx.h	/^  __IO uint32_t AWCR;          \/*!< LTDC Active Width Configuration Register,            Addres/;"	m	struct:__anonbe95b8122808	typeref:typename:__IO uint32_t
+A_f32	main.c	/^float32_t A_f32[3*3] = $/;"	v	typeref:typename:float32_t[]
+A_f32	old/i2c_was_working.c	/^float32_t A_f32[10*10] = $/;"	v	typeref:typename:float32_t[]
+A_f32	old/i2c_working_no_it.c	/^float32_t A_f32[10*10] = $/;"	v	typeref:typename:float32_t[]
+A_f32	old/main_RF.c	/^float32_t A_f32[10*10] = $/;"	v	typeref:typename:float32_t[]
+A_f32	old/main_it_no.c	/^float32_t A_f32[10*10] = $/;"	v	typeref:typename:float32_t[]
+A_f32	old/main_matrix.c	/^float32_t A_f32[10*10] = $/;"	v	typeref:typename:float32_t[]
+A_f32	old/main_matrix2.c	/^float32_t A_f32[16] =$/;"	v	typeref:typename:float32_t[16]
+A_inv_f32	main.c	/^float32_t A_inv_f32[3*3] =$/;"	v	typeref:typename:float32_t[]
 AcknowledgeRequest	std_perif/inc/stm32f4xx_dsi.h	/^  uint32_t AcknowledgeRequest;  \/*!< Acknowledge Request Enable$/;"	m	struct:__anon967edc350508	typeref:typename:uint32_t
 AutomaticClockLaneControl	std_perif/inc/stm32f4xx_dsi.h	/^  uint32_t AutomaticClockLaneControl; \/*!< Automatic clock lane control$/;"	m	struct:__anon967edc350108	typeref:typename:uint32_t
 AutomaticRefresh	std_perif/inc/stm32f4xx_dsi.h	/^  uint32_t AutomaticRefresh;      \/*!< Automatic refresh mode$/;"	m	struct:__anon967edc350408	typeref:typename:uint32_t
@@ -683,6 +704,12 @@ BTCR	system/stm32f4xx.h	/^  __IO uint32_t BTCR[8];    \/*!< NOR\/PSRAM chip-sele
 BTR	system/stm32f4xx.h	/^  __IO uint32_t              BTR;                 \/*!< CAN bit timing register,             Add/;"	m	struct:__anonbe95b8120908	typeref:typename:__IO uint32_t
 BWTR	system/stm32f4xx.h	/^  __IO uint32_t BWTR[7];    \/*!< NOR\/PSRAM write timing registers, Address offset: 0x104-0x11C/;"	m	struct:__anonbe95b8121908	typeref:typename:__IO uint32_t[7]
 BWTR	system/stm32f4xx.h	/^  __IO uint32_t BWTR[7];    \/*!< NOR\/PSRAM write timing registers, Address offset: 0x104-0x11C/;"	m	struct:__anonbe95b8121e08	typeref:typename:__IO uint32_t[7]
+B_f32	old/i2c_was_working.c	/^float32_t B_f32[10*1] =$/;"	v	typeref:typename:float32_t[]
+B_f32	old/i2c_working_no_it.c	/^float32_t B_f32[10*1] =$/;"	v	typeref:typename:float32_t[]
+B_f32	old/main_RF.c	/^float32_t B_f32[10*1] =$/;"	v	typeref:typename:float32_t[]
+B_f32	old/main_it_no.c	/^float32_t B_f32[10*1] =$/;"	v	typeref:typename:float32_t[]
+B_f32	old/main_matrix.c	/^float32_t B_f32[10*1] =$/;"	v	typeref:typename:float32_t[]
+B_f32	old/main_matrix2.c	/^float32_t B_f32[2*2];$/;"	v	typeref:typename:float32_t[]
 BitAction	std_perif/inc/stm32f4xx_gpio.h	/^}BitAction;$/;"	t	typeref:enum:__anon6d24a0a40503
 Bit_RESET	std_perif/inc/stm32f4xx_gpio.h	/^  Bit_RESET = 0,$/;"	e	enum:__anon6d24a0a40503
 Bit_SET	std_perif/inc/stm32f4xx_gpio.h	/^  Bit_SET$/;"	e	enum:__anon6d24a0a40503
@@ -708,6 +735,7 @@ CALIB	cmsis/inc/core_sc000.h	/^  __I  uint32_t CALIB;                   \/*!< Of
 CALIB	cmsis/inc/core_sc300.h	/^  __I  uint32_t CALIB;                   \/*!< Offset: 0x00C (R\/ )  SysTick Calibration Registe/;"	m	struct:__anona8b8b8030c08	typeref:typename:__I uint32_t
 CALIBR	system/stm32f4xx.h	/^  __IO uint32_t CALIBR;  \/*!< RTC calibration register,                                 Address/;"	m	struct:__anonbe95b8122c08	typeref:typename:__IO uint32_t
 CALR	system/stm32f4xx.h	/^  __IO uint32_t CALR;    \/*!< RTC calibration register,                                 Address/;"	m	struct:__anonbe95b8122c08	typeref:typename:__IO uint32_t
+CAL_D	m_project_specific/src/extended_kalman_filter.c	/^#define CAL_D /;"	d	file:
 CAN1	system/stm32f4xx.h	/^#define CAN1 /;"	d
 CAN1_BASE	system/stm32f4xx.h	/^#define CAN1_BASE /;"	d
 CAN1_RX0_IRQn	system/stm32f4xx.h	/^  CAN1_RX0_IRQn               = 20,     \/*!< CAN1 RX0 Interrupt                                /;"	e	enum:IRQn
@@ -2573,6 +2601,12 @@ CYCCNT	cmsis/inc/core_cm3.h	/^  __IO uint32_t CYCCNT;                  \/*!< Off
 CYCCNT	cmsis/inc/core_cm4.h	/^  __IO uint32_t CYCCNT;                  \/*!< Offset: 0x004 (R\/W)  Cycle Count Register       /;"	m	struct:__anone87a5a5e0f08	typeref:typename:__IO uint32_t
 CYCCNT	cmsis/inc/core_sc300.h	/^  __IO uint32_t CYCCNT;                  \/*!< Offset: 0x004 (R\/W)  Cycle Count Register       /;"	m	struct:__anona8b8b8030f08	typeref:typename:__IO uint32_t
 C_FLAGS	make/config.mk	/^C_FLAGS  :=$/;"	m
+C_f32	old/i2c_was_working.c	/^float32_t C_f32[10*1];$/;"	v	typeref:typename:float32_t[]
+C_f32	old/i2c_working_no_it.c	/^float32_t C_f32[10*1];$/;"	v	typeref:typename:float32_t[]
+C_f32	old/main_RF.c	/^float32_t C_f32[10*1];$/;"	v	typeref:typename:float32_t[]
+C_f32	old/main_it_no.c	/^float32_t C_f32[10*1];$/;"	v	typeref:typename:float32_t[]
+C_f32	old/main_matrix.c	/^float32_t C_f32[10*1];$/;"	v	typeref:typename:float32_t[]
+C_f32	old/main_matrix2.c	/^float32_t C_f32[16];$/;"	v	typeref:typename:float32_t[16]
 CanRxMsg	std_perif/inc/stm32f4xx_can.h	/^} CanRxMsg;$/;"	t	typeref:struct:__anon9662fa270408
 CanTxMsg	std_perif/inc/stm32f4xx_can.h	/^} CanTxMsg;$/;"	t	typeref:struct:__anon9662fa270308
 CheckITStatus	std_perif/src/stm32f4xx_can.c	/^static ITStatus CheckITStatus(uint32_t CAN_Reg, uint32_t It_Bit)$/;"	f	typeref:typename:ITStatus	file:
@@ -6161,6 +6195,7 @@ EXTI_TypeDef	system/stm32f4xx.h	/^} EXTI_TypeDef;$/;"	t	typeref:struct:__anonbe9
 ErrorStatus	system/stm32f4xx.h	/^typedef enum {ERROR = 0, SUCCESS = !ERROR} ErrorStatus;$/;"	t	typeref:enum:__anonbe95b8120303
 ExtId	std_perif/inc/stm32f4xx_can.h	/^  uint32_t ExtId;  \/*!< Specifies the extended identifier.$/;"	m	struct:__anon9662fa270308	typeref:typename:uint32_t
 ExtId	std_perif/inc/stm32f4xx_can.h	/^  uint32_t ExtId;  \/*!< Specifies the extended identifier.$/;"	m	struct:__anon9662fa270408	typeref:typename:uint32_t
+F	m_project_specific/src/extended_kalman_filter.c	/^arm_matrix_instance_f32 F = {.numCols=7, .numRows=7, .pData=F_f32};$/;"	v	typeref:typename:arm_matrix_instance_f32
 FA1R	system/stm32f4xx.h	/^  __IO uint32_t              FA1R;                \/*!< CAN filter activation register,      Add/;"	m	struct:__anonbe95b8120908	typeref:typename:__IO uint32_t
 FCR	system/stm32f4xx.h	/^  __IO uint32_t FCR;      \/*!< QUADSPI Flag Clear register,                        Address offs/;"	m	struct:__anonbe95b8123208	typeref:typename:__IO uint32_t
 FCR	system/stm32f4xx.h	/^  __IO uint32_t FCR;    \/*!< DMA stream x FIFO control register       *\/$/;"	m	struct:__anonbe95b8121108	typeref:typename:__IO uint32_t
@@ -8502,6 +8537,7 @@ FUNCTION2	cmsis/inc/core_sc300.h	/^  __IO uint32_t FUNCTION2;               \/*!
 FUNCTION3	cmsis/inc/core_cm3.h	/^  __IO uint32_t FUNCTION3;               \/*!< Offset: 0x058 (R\/W)  Function Register 3        /;"	m	struct:__anone87a561d0f08	typeref:typename:__IO uint32_t
 FUNCTION3	cmsis/inc/core_cm4.h	/^  __IO uint32_t FUNCTION3;               \/*!< Offset: 0x058 (R\/W)  Function Register 3        /;"	m	struct:__anone87a5a5e0f08	typeref:typename:__IO uint32_t
 FUNCTION3	cmsis/inc/core_sc300.h	/^  __IO uint32_t FUNCTION3;               \/*!< Offset: 0x058 (R\/W)  Function Register 3        /;"	m	struct:__anona8b8b8030f08	typeref:typename:__IO uint32_t
+F_f32	m_project_specific/src/extended_kalman_filter.c	/^float32_t F_f32[7*7];$/;"	v	typeref:typename:float32_t[]
 FillZerobss	startup/startup_stm32f4xx.s	/^FillZerobss:$/;"	l
 FlagStatus	system/stm32f4xx.h	/^typedef enum {RESET = 0, SET = !RESET} FlagStatus, ITStatus;$/;"	t	typeref:enum:__anonbe95b8120103
 FrameBTAAcknowledgeEnable	std_perif/inc/stm32f4xx_dsi.h	/^  uint32_t FrameBTAAcknowledgeEnable;    \/*!< Frame bus-turn-around acknowledge enable$/;"	m	struct:__anon967edc350308	typeref:typename:uint32_t
@@ -8860,6 +8896,7 @@ GPIO_OType	std_perif/inc/stm32f4xx_gpio.h	/^  GPIOOType_TypeDef GPIO_OType;   \/
 GPIO_OType_OD	std_perif/inc/stm32f4xx_gpio.h	/^  GPIO_OType_OD = 0x01$/;"	e	enum:__anon6d24a0a40203
 GPIO_OType_PP	std_perif/inc/stm32f4xx_gpio.h	/^  GPIO_OType_PP = 0x00,$/;"	e	enum:__anon6d24a0a40203
 GPIO_PIN_MASK	std_perif/inc/stm32f4xx_gpio.h	/^#define GPIO_PIN_MASK /;"	d
+GPIO_PORT	main.c	/^#define GPIO_PORT /;"	d	file:
 GPIO_PUPDR_PUPDR0	system/stm32f4xx.h	/^#define GPIO_PUPDR_PUPDR0 /;"	d
 GPIO_PUPDR_PUPDR0_0	system/stm32f4xx.h	/^#define GPIO_PUPDR_PUPDR0_0 /;"	d
 GPIO_PUPDR_PUPDR0_1	system/stm32f4xx.h	/^#define GPIO_PUPDR_PUPDR0_1 /;"	d
@@ -8967,6 +9004,7 @@ GPIO_WriteBit	std_perif/src/stm32f4xx_gpio.c	/^void GPIO_WriteBit(GPIO_TypeDef* 
 GPSR	system/stm32f4xx.h	/^  __IO uint32_t GPSR;           \/*!< DSI Host Generic Packet Status Register,                  /;"	m	struct:__anonbe95b8121408	typeref:typename:__IO uint32_t
 GTPR	system/stm32f4xx.h	/^  __IO uint16_t GTPR;       \/*!< USART Guard time and prescaler register, Address offset: 0x18 /;"	m	struct:__anonbe95b8123508	typeref:typename:__IO uint16_t
 GVCIDR	system/stm32f4xx.h	/^  __IO uint32_t GVCIDR;         \/*!< DSI Host Generic VCID Register,                           /;"	m	struct:__anonbe95b8121408	typeref:typename:__IO uint32_t
+H	m_project_specific/src/extended_kalman_filter.c	/^arm_matrix_instance_f32 H = {.numCols=7, .numRows=3, .pData=H_f32};$/;"	v	typeref:typename:arm_matrix_instance_f32
 HASH	system/stm32f4xx.h	/^#define HASH /;"	d
 HASH_AlgoMode	std_perif/inc/stm32f4xx_hash.h	/^  uint32_t HASH_AlgoMode;      \/*!< HASH or HMAC. This parameter can be a value $/;"	m	struct:__anon6e6fb7b90108	typeref:typename:uint32_t
 HASH_AlgoMode_HASH	std_perif/inc/stm32f4xx_hash.h	/^#define HASH_AlgoMode_HASH /;"	d
@@ -9073,6 +9111,7 @@ HSI_VALUE	system/stm32f4xx.h	/^  #define HSI_VALUE /;"	d
 HSPolarity	std_perif/inc/stm32f4xx_dsi.h	/^  uint32_t HSPolarity;                   \/*!< HSYNC pin polarity$/;"	m	struct:__anon967edc350308	typeref:typename:uint32_t
 HSPolarity	std_perif/inc/stm32f4xx_dsi.h	/^  uint32_t HSPolarity;            \/*!< HSYNC pin polarity$/;"	m	struct:__anon967edc350408	typeref:typename:uint32_t
 HTR	system/stm32f4xx.h	/^  __IO uint32_t HTR;    \/*!< ADC watchdog higher threshold register,      Address offset: 0x24 /;"	m	struct:__anonbe95b8120408	typeref:typename:__IO uint32_t
+H_f32	m_project_specific/src/extended_kalman_filter.c	/^float32_t H_f32[3*7];$/;"	v	typeref:typename:float32_t[]
 HighSpeedReadTimeout	std_perif/inc/stm32f4xx_dsi.h	/^  uint32_t HighSpeedReadTimeout;         \/*!< High-speed read time-out                         /;"	m	struct:__anon967edc350708	typeref:typename:uint32_t
 HighSpeedTransmissionTimeout	std_perif/inc/stm32f4xx_dsi.h	/^  uint32_t HighSpeedTransmissionTimeout; \/*!< High-speed transmission time-out                 /;"	m	struct:__anon967edc350708	typeref:typename:uint32_t
 HighSpeedWritePrespMode	std_perif/inc/stm32f4xx_dsi.h	/^  uint32_t HighSpeedWritePrespMode;      \/*!< High-speed write presp mode$/;"	m	struct:__anon967edc350708	typeref:typename:uint32_t
@@ -9086,11 +9125,19 @@ I2C1_ER_IRQn	system/stm32f4xx.h	/^  I2C1_ER_IRQn                = 32,     \/*!< 
 I2C1_EV_IRQn	system/stm32f4xx.h	/^  I2C1_EV_IRQn                = 31,     \/*!< I2C1 Event Interrupt                              /;"	e	enum:IRQn
 I2C2	system/stm32f4xx.h	/^#define I2C2 /;"	d
 I2C2_BASE	system/stm32f4xx.h	/^#define I2C2_BASE /;"	d
+I2C2_ER_IRQHandler	old/i2c_was_working.c	/^void I2C2_ER_IRQHandler()$/;"	f	typeref:typename:void
+I2C2_ER_IRQHandler	old/i2c_working_no_it.c	/^void I2C2_ER_IRQHandler()$/;"	f	typeref:typename:void
 I2C2_ER_IRQn	system/stm32f4xx.h	/^  I2C2_ER_IRQn                = 34,     \/*!< I2C2 Error Interrupt                              /;"	e	enum:IRQn
+I2C2_EV_IRQHandler	old/i2c_was_working.c	/^void I2C2_EV_IRQHandler()$/;"	f	typeref:typename:void
+I2C2_EV_IRQHandler	old/i2c_working_no_it.c	/^void I2C2_EV_IRQHandler()$/;"	f	typeref:typename:void
 I2C2_EV_IRQn	system/stm32f4xx.h	/^  I2C2_EV_IRQn                = 33,     \/*!< I2C2 Event Interrupt                              /;"	e	enum:IRQn
 I2C3	system/stm32f4xx.h	/^#define I2C3 /;"	d
 I2C3_BASE	system/stm32f4xx.h	/^#define I2C3_BASE /;"	d
+I2C3_ER_IRQHandler	main.c	/^void I2C3_ER_IRQHandler()$/;"	f	typeref:typename:void
+I2C3_ER_IRQHandler	old/main_it_no.c	/^void I2C3_ER_IRQHandler()$/;"	f	typeref:typename:void
 I2C3_ER_IRQn	system/stm32f4xx.h	/^  I2C3_ER_IRQn                = 73,     \/*!< I2C3 error interrupt                              /;"	e	enum:IRQn
+I2C3_EV_IRQHandler	main.c	/^void I2C3_EV_IRQHandler()$/;"	f	typeref:typename:void
+I2C3_EV_IRQHandler	old/main_it_no.c	/^void I2C3_EV_IRQHandler()$/;"	f	typeref:typename:void
 I2C3_EV_IRQn	system/stm32f4xx.h	/^  I2C3_EV_IRQn                = 72,     \/*!< I2C3 event interrupt                              /;"	e	enum:IRQn
 I2C_ARPCmd	std_perif/src/stm32f4xx_i2c.c	/^void I2C_ARPCmd(I2C_TypeDef* I2Cx, FunctionalState NewState)$/;"	f	typeref:typename:void
 I2C_Ack	std_perif/inc/stm32f4xx_i2c.h	/^  uint16_t I2C_Ack;                 \/*!< Enables or disables the acknowledgement.$/;"	m	struct:__anon96b598930108	typeref:typename:uint16_t
@@ -9195,6 +9242,42 @@ I2C_GetFlagStatus	std_perif/src/stm32f4xx_i2c.c	/^FlagStatus I2C_GetFlagStatus(I
 I2C_GetITStatus	std_perif/src/stm32f4xx_i2c.c	/^ITStatus I2C_GetITStatus(I2C_TypeDef* I2Cx, uint32_t I2C_IT)$/;"	f	typeref:typename:ITStatus
 I2C_GetLastEvent	std_perif/src/stm32f4xx_i2c.c	/^uint32_t I2C_GetLastEvent(I2C_TypeDef* I2Cx)$/;"	f	typeref:typename:uint32_t
 I2C_GetPEC	std_perif/src/stm32f4xx_i2c.c	/^uint8_t I2C_GetPEC(I2C_TypeDef* I2Cx)$/;"	f	typeref:typename:uint8_t
+I2C_IO_STATE_ENUM	main.c	/^typedef enum I2C_IO_STATE_ENUM$/;"	g	file:
+I2C_IO_STATE_ENUM	old/main_it_no.c	/^typedef enum I2C_IO_STATE_ENUM$/;"	g	file:
+I2C_IO_STATE_ERROR	main.c	/^	I2C_IO_STATE_ERROR$/;"	e	enum:I2C_IO_STATE_ENUM	file:
+I2C_IO_STATE_ERROR	old/main_it_no.c	/^	I2C_IO_STATE_ERROR$/;"	e	enum:I2C_IO_STATE_ENUM	file:
+I2C_IO_STATE_NOT_INITIALIZED	main.c	/^	I2C_IO_STATE_NOT_INITIALIZED,$/;"	e	enum:I2C_IO_STATE_ENUM	file:
+I2C_IO_STATE_NOT_INITIALIZED	old/main_it_no.c	/^	I2C_IO_STATE_NOT_INITIALIZED,$/;"	e	enum:I2C_IO_STATE_ENUM	file:
+I2C_IO_STATE_REGISTER_READ_READ_BYTE	main.c	/^	I2C_IO_STATE_REGISTER_READ_READ_BYTE,$/;"	e	enum:I2C_IO_STATE_ENUM	file:
+I2C_IO_STATE_REGISTER_READ_READ_BYTE	old/main_it_no.c	/^	I2C_IO_STATE_REGISTER_READ_READ_BYTE,$/;"	e	enum:I2C_IO_STATE_ENUM	file:
+I2C_IO_STATE_REGISTER_READ_SEND_ADDRESS	main.c	/^	I2C_IO_STATE_REGISTER_READ_SEND_ADDRESS,$/;"	e	enum:I2C_IO_STATE_ENUM	file:
+I2C_IO_STATE_REGISTER_READ_SEND_ADDRESS	old/main_it_no.c	/^	I2C_IO_STATE_REGISTER_READ_SEND_ADDRESS,$/;"	e	enum:I2C_IO_STATE_ENUM	file:
+I2C_IO_STATE_REGISTER_READ_SEND_ADDRESS2	main.c	/^	I2C_IO_STATE_REGISTER_READ_SEND_ADDRESS2,$/;"	e	enum:I2C_IO_STATE_ENUM	file:
+I2C_IO_STATE_REGISTER_READ_SEND_ADDRESS2	old/main_it_no.c	/^	I2C_IO_STATE_REGISTER_READ_SEND_ADDRESS2,$/;"	e	enum:I2C_IO_STATE_ENUM	file:
+I2C_IO_STATE_REGISTER_READ_SEND_REGISTER_ADDRESS	main.c	/^	I2C_IO_STATE_REGISTER_READ_SEND_REGISTER_ADDRESS,$/;"	e	enum:I2C_IO_STATE_ENUM	file:
+I2C_IO_STATE_REGISTER_READ_SEND_REGISTER_ADDRESS	old/main_it_no.c	/^	I2C_IO_STATE_REGISTER_READ_SEND_REGISTER_ADDRESS,$/;"	e	enum:I2C_IO_STATE_ENUM	file:
+I2C_IO_STATE_REGISTER_READ_SEND_RESTART	main.c	/^	I2C_IO_STATE_REGISTER_READ_SEND_RESTART,$/;"	e	enum:I2C_IO_STATE_ENUM	file:
+I2C_IO_STATE_REGISTER_READ_SEND_RESTART	old/main_it_no.c	/^	I2C_IO_STATE_REGISTER_READ_SEND_RESTART,$/;"	e	enum:I2C_IO_STATE_ENUM	file:
+I2C_IO_STATE_REGISTER_READ_START	main.c	/^	I2C_IO_STATE_REGISTER_READ_START,$/;"	e	enum:I2C_IO_STATE_ENUM	file:
+I2C_IO_STATE_REGISTER_READ_START	old/main_it_no.c	/^	I2C_IO_STATE_REGISTER_READ_START,$/;"	e	enum:I2C_IO_STATE_ENUM	file:
+I2C_IO_STATE_REGISTER_READ_STOP	main.c	/^	I2C_IO_STATE_REGISTER_READ_STOP,$/;"	e	enum:I2C_IO_STATE_ENUM	file:
+I2C_IO_STATE_REGISTER_READ_STOP	old/main_it_no.c	/^	I2C_IO_STATE_REGISTER_READ_STOP,$/;"	e	enum:I2C_IO_STATE_ENUM	file:
+I2C_IO_STATE_REGISTER_WRITE_SEND_ADDRESS	main.c	/^	I2C_IO_STATE_REGISTER_WRITE_SEND_ADDRESS,$/;"	e	enum:I2C_IO_STATE_ENUM	file:
+I2C_IO_STATE_REGISTER_WRITE_SEND_ADDRESS	old/main_it_no.c	/^	I2C_IO_STATE_REGISTER_WRITE_SEND_ADDRESS,$/;"	e	enum:I2C_IO_STATE_ENUM	file:
+I2C_IO_STATE_REGISTER_WRITE_SEND_ADDRESS2	main.c	/^	I2C_IO_STATE_REGISTER_WRITE_SEND_ADDRESS2,$/;"	e	enum:I2C_IO_STATE_ENUM	file:
+I2C_IO_STATE_REGISTER_WRITE_SEND_ADDRESS2	old/main_it_no.c	/^	I2C_IO_STATE_REGISTER_WRITE_SEND_ADDRESS2,$/;"	e	enum:I2C_IO_STATE_ENUM	file:
+I2C_IO_STATE_REGISTER_WRITE_SEND_REGISTER_ADDRESS	main.c	/^	I2C_IO_STATE_REGISTER_WRITE_SEND_REGISTER_ADDRESS,$/;"	e	enum:I2C_IO_STATE_ENUM	file:
+I2C_IO_STATE_REGISTER_WRITE_SEND_REGISTER_ADDRESS	old/main_it_no.c	/^	I2C_IO_STATE_REGISTER_WRITE_SEND_REGISTER_ADDRESS,$/;"	e	enum:I2C_IO_STATE_ENUM	file:
+I2C_IO_STATE_REGISTER_WRITE_SEND_RESTART	main.c	/^	I2C_IO_STATE_REGISTER_WRITE_SEND_RESTART,$/;"	e	enum:I2C_IO_STATE_ENUM	file:
+I2C_IO_STATE_REGISTER_WRITE_SEND_RESTART	old/main_it_no.c	/^	I2C_IO_STATE_REGISTER_WRITE_SEND_RESTART,$/;"	e	enum:I2C_IO_STATE_ENUM	file:
+I2C_IO_STATE_REGISTER_WRITE_START	main.c	/^	I2C_IO_STATE_REGISTER_WRITE_START,$/;"	e	enum:I2C_IO_STATE_ENUM	file:
+I2C_IO_STATE_REGISTER_WRITE_START	old/main_it_no.c	/^	I2C_IO_STATE_REGISTER_WRITE_START,$/;"	e	enum:I2C_IO_STATE_ENUM	file:
+I2C_IO_STATE_REGISTER_WRITE_STOP	main.c	/^	I2C_IO_STATE_REGISTER_WRITE_STOP,$/;"	e	enum:I2C_IO_STATE_ENUM	file:
+I2C_IO_STATE_REGISTER_WRITE_STOP	old/main_it_no.c	/^	I2C_IO_STATE_REGISTER_WRITE_STOP,$/;"	e	enum:I2C_IO_STATE_ENUM	file:
+I2C_IO_STATE_REGISTER_WRITE_WRITE_BYTE	main.c	/^	I2C_IO_STATE_REGISTER_WRITE_WRITE_BYTE,$/;"	e	enum:I2C_IO_STATE_ENUM	file:
+I2C_IO_STATE_REGISTER_WRITE_WRITE_BYTE	old/main_it_no.c	/^	I2C_IO_STATE_REGISTER_WRITE_WRITE_BYTE,$/;"	e	enum:I2C_IO_STATE_ENUM	file:
+I2C_IO_STRUCT	main.c	/^typedef struct I2C_IO_STRUCT$/;"	s	file:
+I2C_IO_STRUCT	old/main_it_no.c	/^typedef struct I2C_IO_STRUCT$/;"	s	file:
 I2C_ITConfig	std_perif/src/stm32f4xx_i2c.c	/^void I2C_ITConfig(I2C_TypeDef* I2Cx, uint16_t I2C_IT, FunctionalState NewState)$/;"	f	typeref:typename:void
 I2C_IT_ADD10	std_perif/inc/stm32f4xx_i2c.h	/^#define I2C_IT_ADD10 /;"	d
 I2C_IT_ADDR	std_perif/inc/stm32f4xx_i2c.h	/^#define I2C_IT_ADDR /;"	d
@@ -9286,6 +9369,8 @@ I2C_StructInit	std_perif/src/stm32f4xx_i2c.c	/^void I2C_StructInit(I2C_InitTypeD
 I2C_TRISE_TRISE	system/stm32f4xx.h	/^#define  I2C_TRISE_TRISE /;"	d
 I2C_TransmitPEC	std_perif/src/stm32f4xx_i2c.c	/^void I2C_TransmitPEC(I2C_TypeDef* I2Cx, FunctionalState NewState)$/;"	f	typeref:typename:void
 I2C_TypeDef	system/stm32f4xx.h	/^} I2C_TypeDef;$/;"	t	typeref:struct:__anonbe95b8122508
+I2C_io_t	main.c	/^} I2C_io_t;$/;"	t	typeref:struct:I2C_IO_STRUCT	file:
+I2C_io_t	old/main_it_no.c	/^} I2C_io_t;$/;"	t	typeref:struct:I2C_IO_STRUCT	file:
 I2S2ext	system/stm32f4xx.h	/^#define I2S2ext /;"	d
 I2S2ext_BASE	system/stm32f4xx.h	/^#define I2S2ext_BASE /;"	d
 I2S3ext	system/stm32f4xx.h	/^#define I2S3ext /;"	d
@@ -10449,6 +10534,7 @@ JSQR	system/stm32f4xx.h	/^  __IO uint32_t JSQR;   \/*!< ADC injected sequence re
 JSQR_JL_RESET	std_perif/src/stm32f4xx_adc.c	/^#define JSQR_JL_RESET /;"	d	file:
 JSQR_JL_SET	std_perif/src/stm32f4xx_adc.c	/^#define JSQR_JL_SET /;"	d	file:
 JSQR_JSQ_SET	std_perif/src/stm32f4xx_adc.c	/^#define JSQR_JSQ_SET /;"	d	file:
+K	m_project_specific/src/extended_kalman_filter.c	/^arm_matrix_instance_f32 K = {.numCols=3, .numRows=3, .pData=K_f32};$/;"	v	typeref:typename:arm_matrix_instance_f32
 K0LR	system/stm32f4xx.h	/^  __IO uint32_t K0LR;       \/*!< CRYP key left  register 0,                                Addr/;"	m	struct:__anonbe95b8123708	typeref:typename:__IO uint32_t
 K0RR	system/stm32f4xx.h	/^  __IO uint32_t K0RR;       \/*!< CRYP key right register 0,                                Addr/;"	m	struct:__anonbe95b8123708	typeref:typename:__IO uint32_t
 K1LR	system/stm32f4xx.h	/^  __IO uint32_t K1LR;       \/*!< CRYP key left  register 1,                                Addr/;"	m	struct:__anonbe95b8123708	typeref:typename:__IO uint32_t
@@ -10461,6 +10547,7 @@ KEYR	system/stm32f4xx.h	/^  __IO uint32_t KEYR;     \/*!< FLASH key register,   
 KR	system/stm32f4xx.h	/^  __IO uint32_t KR;   \/*!< IWDG Key register,       Address offset: 0x00 *\/$/;"	m	struct:__anonbe95b8122708	typeref:typename:__IO uint32_t
 KR_KEY_ENABLE	std_perif/src/stm32f4xx_iwdg.c	/^#define KR_KEY_ENABLE /;"	d	file:
 KR_KEY_RELOAD	std_perif/src/stm32f4xx_iwdg.c	/^#define KR_KEY_RELOAD /;"	d	file:
+K_f32	m_project_specific/src/extended_kalman_filter.c	/^float32_t K_f32[3*3];$/;"	v	typeref:typename:float32_t[]
 Kd	cmsis/inc/arm_math.h	/^    float32_t Kd;               \/**< The derivative gain. *\/$/;"	m	struct:__anonf33cb1db0e08	typeref:typename:float32_t
 Kd	cmsis/inc/arm_math.h	/^    q15_t Kd;           \/**< The derivative gain. *\/$/;"	m	struct:__anonf33cb1db0c08	typeref:typename:q15_t
 Kd	cmsis/inc/arm_math.h	/^    q31_t Kd;            \/**< The derivative gain. *\/$/;"	m	struct:__anonf33cb1db0d08	typeref:typename:q31_t
@@ -11207,10 +11294,12 @@ MSR	system/stm32f4xx.h	/^  __IO uint32_t              MSR;                 \/*!<
 MUL	m_math/inc/math.h	/^	#define MUL(/;"	d
 MVFR0	cmsis/inc/core_cm4.h	/^  __I  uint32_t MVFR0;                   \/*!< Offset: 0x010 (R\/ )  Media and FP Feature Regist/;"	m	struct:__anone87a5a5e1208	typeref:typename:__I uint32_t
 MVFR1	cmsis/inc/core_cm4.h	/^  __I  uint32_t MVFR1;                   \/*!< Offset: 0x014 (R\/ )  Media and FP Feature Regist/;"	m	struct:__anone87a5a5e1208	typeref:typename:__I uint32_t
+M_MATH_CONVERT_H	m_math/inc/convert.h	/^#define M_MATH_CONVERT_H$/;"	d
 M_MATH_H	m_math/inc/math.h	/^#define M_MATH_H$/;"	d
 M_MATRIX_H	m_math/inc/matrix.h	/^#define M_MATRIX_H$/;"	d
 M_MAT_H	m_common/inc/assert.h	/^#define M_MAT_H$/;"	d
-M_MAT_H	m_common/inc/result.h	/^#define M_MAT_H$/;"	d
+M_PROJECT_SPECIFIC_EXTENDED_KALMAN_FILTER_H	m_project_specific/inc/extended_kalman_filter.h	/^#define M_PROJECT_SPECIFIC_EXTENDED_KALMAN_FILTER_H$/;"	d
+M_PROJECT_SPECIFIC_USART_H	m_project_specific/inc/usart.h	/^#define M_PROJECT_SPECIFIC_USART_H$/;"	d
 MemoryManagement_IRQn	system/stm32f4xx.h	/^  MemoryManagement_IRQn       = -12,    \/*!< 4 Cortex-M4 Memory Management Interrupt           /;"	e	enum:IRQn
 Mode	std_perif/inc/stm32f4xx_dsi.h	/^  uint32_t Mode;                         \/*!< Video mode type$/;"	m	struct:__anon967edc350308	typeref:typename:uint32_t
 N	cmsis/inc/arm_math.h	/^    uint16_t N;                         \/**< length of the DCT4. *\/$/;"	m	struct:__anonf33cb1db1f08	typeref:typename:uint16_t
@@ -11231,6 +11320,7 @@ N	cmsis/inc/core_sc300.h	/^    uint32_t N:1;                        \/*!< bit:  
 NDTR	system/stm32f4xx.h	/^  __IO uint32_t NDTR;   \/*!< DMA stream x number of data register     *\/$/;"	m	struct:__anonbe95b8121108	typeref:typename:__IO uint32_t
 NIEN_BitNumber	std_perif/src/stm32f4xx_sdio.c	/^#define NIEN_BitNumber /;"	d	file:
 NLR	system/stm32f4xx.h	/^  __IO uint32_t NLR;           \/*!< DMA2D Number of Line Register,                  Address off/;"	m	struct:__anonbe95b8121308	typeref:typename:__IO uint32_t
+NO_ASSERT	system/conf.h	/^#define NO_ASSERT/;"	d
 NO_MODIF_ALPHA_VALUE	std_perif/inc/stm32f4xx_dma2d.h	/^#define NO_MODIF_ALPHA_VALUE /;"	d
 NVIC	cmsis/inc/core_cm0.h	/^#define NVIC /;"	d
 NVIC	cmsis/inc/core_cm0plus.h	/^#define NVIC /;"	d
@@ -11443,6 +11533,7 @@ OTG_HS_EP1_OUT_IRQn	system/stm32f4xx.h	/^  OTG_HS_EP1_OUT_IRQn         = 74,    
 OTG_HS_IRQn	system/stm32f4xx.h	/^  OTG_HS_IRQn                 = 77,     \/*!< USB OTG HS global interrupt                       /;"	e	enum:IRQn
 OTG_HS_WKUP_IRQn	system/stm32f4xx.h	/^  OTG_HS_WKUP_IRQn            = 76,     \/*!< USB OTG HS Wakeup through EXTI interrupt          /;"	e	enum:IRQn
 OTYPER	system/stm32f4xx.h	/^  __IO uint32_t OTYPER;   \/*!< GPIO port output type register,        Address offset: 0x04     /;"	m	struct:__anonbe95b8122308	typeref:typename:__IO uint32_t
+P	m_project_specific/src/extended_kalman_filter.c	/^arm_matrix_instance_f32 P = {.numCols=7, .numRows=7, .pData=P_f32};$/;"	v	typeref:typename:arm_matrix_instance_f32
 PAR	system/stm32f4xx.h	/^  __IO uint32_t PAR;    \/*!< DMA stream x peripheral address register *\/$/;"	m	struct:__anonbe95b8121108	typeref:typename:__IO uint32_t
 PATT2	system/stm32f4xx.h	/^  __IO uint32_t PATT2;      \/*!< NAND Flash Attribute memory space timing register 2, Address o/;"	m	struct:__anonbe95b8121a08	typeref:typename:__IO uint32_t
 PATT2	system/stm32f4xx.h	/^  __IO uint32_t PATT2;      \/*!< NAND Flash Attribute memory space timing register 2, Address o/;"	m	struct:__anonbe95b8121f08	typeref:typename:__IO uint32_t
@@ -11507,6 +11598,7 @@ PID6	cmsis/inc/core_sc300.h	/^  __I  uint32_t PID6;                    \/*!< Off
 PID7	cmsis/inc/core_cm3.h	/^  __I  uint32_t PID7;                    \/*!< Offset: 0xFDC (R\/ )  ITM Peripheral Identificati/;"	m	struct:__anone87a561d0d08	typeref:typename:__I uint32_t
 PID7	cmsis/inc/core_cm4.h	/^  __I  uint32_t PID7;                    \/*!< Offset: 0xFDC (R\/ )  ITM Peripheral Identificati/;"	m	struct:__anone87a5a5e0d08	typeref:typename:__I uint32_t
 PID7	cmsis/inc/core_sc300.h	/^  __I  uint32_t PID7;                    \/*!< Offset: 0xFDC (R\/ )  ITM Peripheral Identificati/;"	m	struct:__anona8b8b8030d08	typeref:typename:__I uint32_t
+PINS	main.c	/^#define PINS /;"	d	file:
 PIO4	system/stm32f4xx.h	/^  __IO uint32_t PIO4;       \/*!< PC Card  I\/O space timing register 4,              Address of/;"	m	struct:__anonbe95b8121c08	typeref:typename:__IO uint32_t
 PIO4	system/stm32f4xx.h	/^  __IO uint32_t PIO4;       \/*!< PC Card  I\/O space timing register 4,              Address of/;"	m	struct:__anonbe95b8122108	typeref:typename:__IO uint32_t
 PIR	system/stm32f4xx.h	/^  __IO uint32_t PIR;      \/*!< QUADSPI Polling Interval register,                  Address offs/;"	m	struct:__anonbe95b8123208	typeref:typename:__IO uint32_t
@@ -11547,6 +11639,7 @@ PROGRAMMER_TOOLS_PATH	make/tools.mk	/^PROGRAMMER_TOOLS_PATH	:= $/;"	m
 PROGRAMMER_TOOLS_PREFIX	make/tools.mk	/^PROGRAMMER_TOOLS_PREFIX	:=$/;"	m
 PROGRAMMER_TOOLS_SEPARATOR	make/tools.mk	/^PROGRAMMER_TOOLS_SEPARATOR	:= $/;"	m
 PROJECT	Makefile	/^PROJECT := test.bin$/;"	m
+PROJECT_DEPS	Makefile	/^PROJECT_DEPS:=  $/;"	m
 PSC	system/stm32f4xx.h	/^  __IO uint16_t PSC;         \/*!< TIM prescaler,                       Address offset: 0x28 *\/$/;"	m	struct:__anonbe95b8123408	typeref:typename:__IO uint16_t
 PSMAR	system/stm32f4xx.h	/^  __IO uint32_t PSMAR;    \/*!< QUADSPI Polling Status Match register,              Address offs/;"	m	struct:__anonbe95b8123208	typeref:typename:__IO uint32_t
 PSMKR	system/stm32f4xx.h	/^  __IO uint32_t PSMKR;    \/*!< QUADSPI Polling Status Mask register,               Address offs/;"	m	struct:__anonbe95b8123208	typeref:typename:__IO uint32_t
@@ -11670,6 +11763,7 @@ PWR_WakeUpPinCmd	std_perif/src/stm32f4xx_pwr.c	/^void PWR_WakeUpPinCmd(uint32_t 
 PWR_WakeUp_Pin1	std_perif/inc/stm32f4xx_pwr.h	/^#define PWR_WakeUp_Pin1 /;"	d
 PWR_WakeUp_Pin2	std_perif/inc/stm32f4xx_pwr.h	/^#define PWR_WakeUp_Pin2 /;"	d
 PWR_WakeUp_Pin3	std_perif/inc/stm32f4xx_pwr.h	/^#define PWR_WakeUp_Pin3 /;"	d
+P_f32	m_project_specific/src/extended_kalman_filter.c	/^float32_t P_f32[7*7];$/;"	v	typeref:typename:float32_t[]
 PacketSize	std_perif/inc/stm32f4xx_dsi.h	/^  uint32_t PacketSize;                   \/*!< Video packet size                                /;"	m	struct:__anon967edc350308	typeref:typename:uint32_t
 PendSV_IRQn	system/stm32f4xx.h	/^  PendSV_IRQn                 = -2,     \/*!< 14 Cortex-M4 Pend SV Interrupt                    /;"	e	enum:IRQn
 Q	cmsis/inc/core_cm0.h	/^    uint32_t Q:1;                        \/*!< bit:     27  Saturation condition flag          */;"	m	struct:__anone87a495a010a::__anone87a495a0208	typeref:typename:uint32_t:1
@@ -11684,6 +11778,7 @@ Q	cmsis/inc/core_sc000.h	/^    uint32_t Q:1;                        \/*!< bit:  
 Q	cmsis/inc/core_sc000.h	/^    uint32_t Q:1;                        \/*!< bit:     27  Saturation condition flag          */;"	m	struct:__anona8826e80050a::__anona8826e800608	typeref:typename:uint32_t:1
 Q	cmsis/inc/core_sc300.h	/^    uint32_t Q:1;                        \/*!< bit:     27  Saturation condition flag          */;"	m	struct:__anona8b8b803010a::__anona8b8b8030208	typeref:typename:uint32_t:1
 Q	cmsis/inc/core_sc300.h	/^    uint32_t Q:1;                        \/*!< bit:     27  Saturation condition flag          */;"	m	struct:__anona8b8b803050a::__anona8b8b8030608	typeref:typename:uint32_t:1
+Q	m_project_specific/src/extended_kalman_filter.c	/^arm_matrix_instance_f32 Q = {.numCols=7, .numRows=7, .pData=Q_f32};$/;"	v	typeref:typename:arm_matrix_instance_f32
 QSPI_AbortRequest	std_perif/src/stm32f4xx_qspi.c	/^void QSPI_AbortRequest(void)$/;"	f	typeref:typename:void
 QSPI_AutoPollingModeStopCmd	std_perif/src/stm32f4xx_qspi.c	/^void QSPI_AutoPollingModeStopCmd(FunctionalState NewState)$/;"	f	typeref:typename:void
 QSPI_AutoPollingMode_Config	std_perif/src/stm32f4xx_qspi.c	/^void QSPI_AutoPollingMode_Config(uint32_t QSPI_Match, uint32_t QSPI_Mask , uint32_t QSPI_Match_M/;"	f	typeref:typename:void
@@ -11920,6 +12015,8 @@ QUADSPI_SR_TCF	system/stm32f4xx.h	/^#define  QUADSPI_SR_TCF /;"	d
 QUADSPI_SR_TEF	system/stm32f4xx.h	/^#define  QUADSPI_SR_TEF /;"	d
 QUADSPI_SR_TOF	system/stm32f4xx.h	/^#define  QUADSPI_SR_TOF /;"	d
 QUADSPI_TypeDef	system/stm32f4xx.h	/^} QUADSPI_TypeDef;$/;"	t	typeref:struct:__anonbe95b8123208
+Q_f32	m_project_specific/src/extended_kalman_filter.c	/^float32_t Q_f32[7*7] =$/;"	v	typeref:typename:float32_t[]
+R	m_project_specific/src/extended_kalman_filter.c	/^arm_matrix_instance_f32 R = {.numCols=3, .numRows=3, .pData=R_f32};$/;"	v	typeref:typename:arm_matrix_instance_f32
 RASR	cmsis/inc/core_cm0plus.h	/^  __IO uint32_t RASR;                    \/*!< Offset: 0x010 (R\/W)  MPU Region Attribute and Si/;"	m	struct:__anon5f5259be0c08	typeref:typename:__IO uint32_t
 RASR	cmsis/inc/core_cm3.h	/^  __IO uint32_t RASR;                    \/*!< Offset: 0x010 (R\/W)  MPU Region Attribute and Si/;"	m	struct:__anone87a561d1108	typeref:typename:__IO uint32_t
 RASR	cmsis/inc/core_cm4.h	/^  __IO uint32_t RASR;                    \/*!< Offset: 0x010 (R\/W)  MPU Region Attribute and Si/;"	m	struct:__anone87a5a5e1108	typeref:typename:__IO uint32_t
@@ -13058,6 +13155,7 @@ RESP4	system/stm32f4xx.h	/^  __I uint32_t  RESP4;          \/*!< SDIO response 4
 RESPCMD	system/stm32f4xx.h	/^  __I uint32_t  RESPCMD;        \/*!< SDIO command response register, Address offset: 0x10 *\/$/;"	m	struct:__anonbe95b8122f08	typeref:typename:__I uint32_t
 RESULT	m_common/inc/result.h	/^typedef enum RESULT$/;"	g
 RESULT_ASSERT_ERROR	m_common/inc/result.h	/^	RESULT_ASSERT_ERROR$/;"	e	enum:RESULT
+RESULT_H	m_common/inc/result.h	/^#define RESULT_H$/;"	d
 RESULT_NOK	m_common/inc/result.h	/^	RESULT_NOK,$/;"	e	enum:RESULT
 RESULT_OK	m_common/inc/result.h	/^	RESULT_OK = 0,$/;"	e	enum:RESULT
 RESULT_PARAM_ERROR	m_common/inc/result.h	/^	RESULT_PARAM_ERROR,$/;"	e	enum:RESULT
@@ -13649,7 +13747,9 @@ RWSTOP_BitNumber	std_perif/src/stm32f4xx_sdio.c	/^#define RWSTOP_BitNumber /;"	d
 RXCRCR	system/stm32f4xx.h	/^  __IO uint16_t RXCRCR;     \/*!< SPI RX CRC register (not used in I2S mode),         Address of/;"	m	struct:__anonbe95b8123008	typeref:typename:__IO uint16_t
 RXDR	system/stm32f4xx.h	/^  __IO uint32_t RXDR;         \/*!< CEC Rx Data Register,              Address offset:0x0C *\/$/;"	m	struct:__anonbe95b8120a08	typeref:typename:__IO uint32_t
 RXDR	system/stm32f4xx.h	/^  __IO uint32_t RXDR;     \/*!< FMPI2C Receive data register,         Address offset: 0x24 *\/$/;"	m	struct:__anonbe95b8122608	typeref:typename:__IO uint32_t
+R_f32	m_project_specific/src/extended_kalman_filter.c	/^float32_t R_f32[3*3] = $/;"	v	typeref:typename:float32_t[]
 Reset_Handler	startup/startup_stm32f4xx.s	/^Reset_Handler:  $/;"	l
+S	m_project_specific/src/extended_kalman_filter.c	/^arm_matrix_instance_f32 S = {.numCols=3, .numRows=3, .pData=S_f32};$/;"	v	typeref:typename:arm_matrix_instance_f32
 SAI1	system/stm32f4xx.h	/^#define SAI1 /;"	d
 SAI1_BASE	system/stm32f4xx.h	/^#define SAI1_BASE /;"	d
 SAI1_Block_A	system/stm32f4xx.h	/^#define SAI1_Block_A /;"	d
@@ -15389,6 +15489,7 @@ SYSCFG_PMC_MII_RMII	system/stm32f4xx.h	/^#define SYSCFG_PMC_MII_RMII /;"	d
 SYSCFG_PMC_MII_RMII_SEL	system/stm32f4xx.h	/^#define SYSCFG_PMC_MII_RMII_SEL /;"	d
 SYSCFG_TypeDef	system/stm32f4xx.h	/^} SYSCFG_TypeDef;$/;"	t	typeref:struct:__anonbe95b8122408
 SYSCLK_Frequency	std_perif/inc/stm32f4xx_rcc.h	/^  uint32_t SYSCLK_Frequency; \/*!<  SYSCLK clock frequency expressed in Hz *\/$/;"	m	struct:__anon977353ad0108	typeref:typename:uint32_t
+S_f32	m_project_specific/src/extended_kalman_filter.c	/^float32_t S_f32[3*3];$/;"	v	typeref:typename:float32_t[]
 SetSysClock	system/system_stm32f4xx.c	/^static void SetSysClock(void)$/;"	f	typeref:typename:void	file:
 Sint	cmsis/inc/arm_math.h	/^    arm_cfft_instance_f32 Sint;      \/**< Internal CFFT structure. *\/$/;"	m	struct:__anonf33cb1db1e08	typeref:typename:arm_cfft_instance_f32
 StdId	std_perif/inc/stm32f4xx_can.h	/^  uint32_t StdId;  \/*!< Specifies the standard identifier.$/;"	m	struct:__anon9662fa270308	typeref:typename:uint32_t
@@ -16155,6 +16256,12 @@ TIM_UpdateSource_Global	std_perif/inc/stm32f4xx_tim.h	/^#define TIM_UpdateSource
 TIM_UpdateSource_Regular	std_perif/inc/stm32f4xx_tim.h	/^#define TIM_UpdateSource_Regular /;"	d
 TIR	system/stm32f4xx.h	/^  __IO uint32_t TIR;  \/*!< CAN TX mailbox identifier register *\/$/;"	m	struct:__anonbe95b8120608	typeref:typename:__IO uint32_t
 TMIDxR_TXRQ	std_perif/src/stm32f4xx_can.c	/^#define TMIDxR_TXRQ /;"	d	file:
+TMP2_7_7	m_project_specific/src/extended_kalman_filter.c	/^arm_matrix_instance_f32 TMP2_7_7 = {.numCols=7, .numRows=7, .pData=TMP2_7_7_f32};$/;"	v	typeref:typename:arm_matrix_instance_f32
+TMP2_7_7_f32	m_project_specific/src/extended_kalman_filter.c	/^float32_t TMP2_7_7_f32[7*7];$/;"	v	typeref:typename:float32_t[]
+TMP3_7_7	m_project_specific/src/extended_kalman_filter.c	/^arm_matrix_instance_f32 TMP3_7_7 = {.numCols=7, .numRows=7, .pData=TMP3_7_7_f32};$/;"	v	typeref:typename:arm_matrix_instance_f32
+TMP3_7_7_f32	m_project_specific/src/extended_kalman_filter.c	/^float32_t TMP3_7_7_f32[7*7];$/;"	v	typeref:typename:float32_t[]
+TMP_7_7	m_project_specific/src/extended_kalman_filter.c	/^arm_matrix_instance_f32 TMP_7_7 = {.numCols=7, .numRows=7, .pData=TMP_7_7_f32};$/;"	v	typeref:typename:arm_matrix_instance_f32
+TMP_7_7_f32	m_project_specific/src/extended_kalman_filter.c	/^float32_t TMP_7_7_f32[7*7];$/;"	v	typeref:typename:float32_t[]
 TPI	cmsis/inc/core_cm3.h	/^#define TPI /;"	d
 TPI	cmsis/inc/core_cm4.h	/^#define TPI /;"	d
 TPI	cmsis/inc/core_sc300.h	/^#define TPI /;"	d
@@ -16566,8 +16673,22 @@ USART_SR_TC	system/stm32f4xx.h	/^#define  USART_SR_TC /;"	d
 USART_SR_TXE	system/stm32f4xx.h	/^#define  USART_SR_TXE /;"	d
 USART_SendBreak	std_perif/src/stm32f4xx_usart.c	/^void USART_SendBreak(USART_TypeDef* USARTx)$/;"	f	typeref:typename:void
 USART_SendData	std_perif/src/stm32f4xx_usart.c	/^void USART_SendData(USART_TypeDef* USARTx, uint16_t Data)$/;"	f	typeref:typename:void
-USART_SendNumber	main.c	/^void USART_SendNumber(uint32_t x)$/;"	f	typeref:typename:void
-USART_SendText	main.c	/^void USART_SendText(volatile char *s)$/;"	f	typeref:typename:void
+USART_SendFloat	m_project_specific/src/usart.c	/^void USART_SendFloat(float32_t x, uint8_t precision)$/;"	f	typeref:typename:void
+USART_SendMatrix	m_project_specific/src/usart.c	/^void USART_SendMatrix(arm_matrix_instance_f32* matrix, uint8_t precision)$/;"	f	typeref:typename:void
+USART_SendNumber	m_project_specific/src/usart.c	/^void USART_SendNumber(int32_t x)$/;"	f	typeref:typename:void
+USART_SendNumber	old/i2c_was_working.c	/^void USART_SendNumber(uint32_t x)$/;"	f	typeref:typename:void
+USART_SendNumber	old/i2c_working_no_it.c	/^void USART_SendNumber(uint32_t x)$/;"	f	typeref:typename:void
+USART_SendNumber	old/main_RF.c	/^void USART_SendNumber(uint32_t x)$/;"	f	typeref:typename:void
+USART_SendNumber	old/main_it_no.c	/^void USART_SendNumber(uint32_t x)$/;"	f	typeref:typename:void
+USART_SendNumber	old/main_matrix.c	/^void USART_SendNumber(uint32_t x)$/;"	f	typeref:typename:void
+USART_SendNumber	old/main_matrix2.c	/^void USART_SendNumber(uint32_t x)$/;"	f	typeref:typename:void
+USART_SendText	m_project_specific/src/usart.c	/^void USART_SendText(volatile char *s)$/;"	f	typeref:typename:void
+USART_SendText	old/i2c_was_working.c	/^void USART_SendText(volatile char *s)$/;"	f	typeref:typename:void
+USART_SendText	old/i2c_working_no_it.c	/^void USART_SendText(volatile char *s)$/;"	f	typeref:typename:void
+USART_SendText	old/main_RF.c	/^void USART_SendText(volatile char *s)$/;"	f	typeref:typename:void
+USART_SendText	old/main_it_no.c	/^void USART_SendText(volatile char *s)$/;"	f	typeref:typename:void
+USART_SendText	old/main_matrix.c	/^void USART_SendText(volatile char *s)$/;"	f	typeref:typename:void
+USART_SendText	old/main_matrix2.c	/^void USART_SendText(volatile char *s)$/;"	f	typeref:typename:void
 USART_SetAddress	std_perif/src/stm32f4xx_usart.c	/^void USART_SetAddress(USART_TypeDef* USARTx, uint8_t USART_Address)$/;"	f	typeref:typename:void
 USART_SetGuardTime	std_perif/src/stm32f4xx_usart.c	/^void USART_SetGuardTime(USART_TypeDef* USARTx, uint8_t USART_GuardTime)$/;"	f	typeref:typename:void
 USART_SetPrescaler	std_perif/src/stm32f4xx_usart.c	/^void USART_SetPrescaler(USART_TypeDef* USARTx, uint8_t USART_Prescaler)$/;"	f	typeref:typename:void
@@ -16586,6 +16707,7 @@ USART_WakeUp_IdleLine	std_perif/inc/stm32f4xx_usart.h	/^#define USART_WakeUp_Idl
 USART_WordLength	std_perif/inc/stm32f4xx_usart.h	/^  uint16_t USART_WordLength;          \/*!< Specifies the number of data bits transmitted or rec/;"	m	struct:__anon4dd985640108	typeref:typename:uint16_t
 USART_WordLength_8b	std_perif/inc/stm32f4xx_usart.h	/^#define USART_WordLength_8b /;"	d
 USART_WordLength_9b	std_perif/inc/stm32f4xx_usart.h	/^#define USART_WordLength_9b /;"	d
+USART_project_specific_init	m_project_specific/src/usart.c	/^void USART_project_specific_init()$/;"	f	typeref:typename:void
 UsageFault_IRQn	system/stm32f4xx.h	/^  UsageFault_IRQn             = -10,    \/*!< 6 Cortex-M4 Usage Fault Interrupt                 /;"	e	enum:IRQn
 V	cmsis/inc/core_cm0.h	/^    uint32_t V:1;                        \/*!< bit:     28  Overflow condition code flag       */;"	m	struct:__anone87a495a010a::__anone87a495a0208	typeref:typename:uint32_t:1
 V	cmsis/inc/core_cm0.h	/^    uint32_t V:1;                        \/*!< bit:     28  Overflow condition code flag       */;"	m	struct:__anone87a495a050a::__anone87a495a0608	typeref:typename:uint32_t:1
@@ -17346,6 +17468,7 @@ __disable_irq	cmsis/inc/core_cmFunc.h	/^__attribute__( ( always_inline ) ) __STA
 __enable_fault_irq	cmsis/inc/core_cmFunc.h	/^#define __enable_fault_irq /;"	d
 __enable_fault_irq	cmsis/inc/core_cmFunc.h	/^__attribute__( ( always_inline ) ) __STATIC_INLINE void __enable_fault_irq(void)$/;"	f	typeref:typename:__STATIC_INLINE void
 __enable_irq	cmsis/inc/core_cmFunc.h	/^__attribute__( ( always_inline ) ) __STATIC_INLINE void __enable_irq(void)$/;"	f	typeref:typename:__STATIC_INLINE void
+__errno	system/system_stm32f4xx.c	/^int __errno=0;$/;"	v	typeref:typename:int
 __exidx_end	linker/stm32_flash.ld	/^      __exidx_end = .;$/;"	s
 __exidx_start	linker/stm32_flash.ld	/^    __exidx_start = .;$/;"	s
 __fini_array_end	linker/stm32_flash.ld	/^    PROVIDE_HIDDEN (__fini_array_end = .);$/;"	s
@@ -17394,6 +17517,8 @@ _end	linker/stm32_flash.ld	/^    PROVIDE ( _end = . );$/;"	s
 _estack	linker/stm32_flash.ld	/^_estack = 0x20020000;    \/* end of 128K RAM on AHB bus*\/$/;"	s
 _etext	linker/stm32_flash.ld	/^    _etext = .;        \/* define a global symbols at end of code *\/$/;"	s
 _exit	linker/stm32_flash.ld	/^    _exit = .;$/;"	s
+_i2c3_io_struct	main.c	/^I2C_io_t _i2c3_io_struct  = { $/;"	v	typeref:typename:I2C_io_t
+_i2c3_io_struct	old/main_it_no.c	/^I2C_io_t _i2c3_io_struct  = { $/;"	v	typeref:typename:I2C_io_t
 _reserved0	cmsis/inc/core_cm0.h	/^    uint32_t _reserved0:15;              \/*!< bit:  9..23  Reserved                           */;"	m	struct:__anone87a495a050a::__anone87a495a0608	typeref:typename:uint32_t:15
 _reserved0	cmsis/inc/core_cm0.h	/^    uint32_t _reserved0:23;              \/*!< bit:  9..31  Reserved                           */;"	m	struct:__anone87a495a030a::__anone87a495a0408	typeref:typename:uint32_t:23
 _reserved0	cmsis/inc/core_cm0.h	/^    uint32_t _reserved0:27;              \/*!< bit:  0..26  Reserved                           */;"	m	struct:__anone87a495a010a::__anone87a495a0208	typeref:typename:uint32_t:27
@@ -17433,6 +17558,9 @@ _reserved1	cmsis/inc/core_sc300.h	/^    uint32_t _reserved1:4;               \/*
 _sbss	linker/stm32_flash.ld	/^    _sbss = .;         \/* define a global symbol at bss start *\/$/;"	s
 _sdata	linker/stm32_flash.ld	/^    _sdata = .;        \/* create a global symbol at data start *\/$/;"	s
 _sidata	linker/stm32_flash.ld	/^  _sidata = .;$/;"	s
+address	main.c	/^	__IO uint8_t  address;$/;"	m	struct:I2C_IO_STRUCT	typeref:typename:__IO uint8_t	file:
+address	old/main_it_no.c	/^    __IO uint8_t  address;$/;"	m	struct:I2C_IO_STRUCT	typeref:typename:__IO uint8_t	file:
+algorithm	.vscode/settings.json	/^        "algorithm": "c"$/;"	s	object:files.associations
 all	Makefile	/^all: $(PROJECT)$/;"	t
 arm_bilinear_interp_f32	cmsis/inc/arm_math.h	/^  static __INLINE float32_t arm_bilinear_interp_f32($/;"	f	typeref:typename:__INLINE float32_t
 arm_bilinear_interp_instance_f32	cmsis/inc/arm_math.h	/^  } arm_bilinear_interp_instance_f32;$/;"	t	typeref:struct:__anonf33cb1db1008
@@ -17509,6 +17637,7 @@ arm_lms_instance_q31	cmsis/inc/arm_math.h	/^  } arm_lms_instance_q31;$/;"	t	type
 arm_lms_norm_instance_f32	cmsis/inc/arm_math.h	/^  } arm_lms_norm_instance_f32;$/;"	t	typeref:struct:__anonf33cb1db3308
 arm_lms_norm_instance_q15	cmsis/inc/arm_math.h	/^  } arm_lms_norm_instance_q15;$/;"	t	typeref:struct:__anonf33cb1db3508
 arm_lms_norm_instance_q31	cmsis/inc/arm_math.h	/^  } arm_lms_norm_instance_q31;$/;"	t	typeref:struct:__anonf33cb1db3408
+arm_math.h	.vscode/settings.json	/^        "arm_math.h": "c",$/;"	s	object:files.associations
 arm_matrix_instance_f32	cmsis/inc/arm_math.h	/^  } arm_matrix_instance_f32;$/;"	t	typeref:struct:__anonf33cb1db0908
 arm_matrix_instance_q15	cmsis/inc/arm_math.h	/^  } arm_matrix_instance_q15;$/;"	t	typeref:struct:__anonf33cb1db0a08
 arm_matrix_instance_q31	cmsis/inc/arm_math.h	/^  } arm_matrix_instance_q31;$/;"	t	typeref:struct:__anonf33cb1db0b08
@@ -17528,6 +17657,7 @@ arm_rfft_instance_q15	cmsis/inc/arm_math.h	/^  } arm_rfft_instance_q15;$/;"	t	ty
 arm_rfft_instance_q31	cmsis/inc/arm_math.h	/^  } arm_rfft_instance_q31;$/;"	t	typeref:struct:__anonf33cb1db1c08
 arm_sqrt_f32	cmsis/inc/arm_math.h	/^  static __INLINE arm_status arm_sqrt_f32($/;"	f	typeref:typename:__INLINE arm_status
 arm_status	cmsis/inc/arm_math.h	/^  } arm_status;$/;"	t	typeref:enum:__anonf33cb1db0103
+assert.h	.vscode/settings.json	/^        "assert.h": "c",$/;"	s	object:files.associations
 assert_param	system/stm32f4xx_conf.h	/^#define assert_param(/;"	d
 b	cmsis/inc/core_cm0.h	/^  } b;                                   \/*!< Structure used for bit  access                  */;"	m	union:__anone87a495a010a	typeref:struct:__anone87a495a010a::__anone87a495a0208
 b	cmsis/inc/core_cm0.h	/^  } b;                                   \/*!< Structure used for bit  access                  */;"	m	union:__anone87a495a030a	typeref:struct:__anone87a495a030a::__anone87a495a0408
@@ -17569,11 +17699,24 @@ bitReverseFlag	cmsis/inc/arm_math.h	/^    uint8_t bitReverseFlag;          \/**<
 bitReverseFlagR	cmsis/inc/arm_math.h	/^    uint8_t bitReverseFlagR;                        \/**< flag that enables (bitReverseFlagR=1) /;"	m	struct:__anonf33cb1db1c08	typeref:typename:uint8_t
 bitReverseFlagR	cmsis/inc/arm_math.h	/^    uint8_t bitReverseFlagR;                      \/**< flag that enables (bitReverseFlagR=1) or/;"	m	struct:__anonf33cb1db1b08	typeref:typename:uint8_t
 bitReverseFlagR	cmsis/inc/arm_math.h	/^    uint8_t bitReverseFlagR;                    \/**< flag that enables (bitReverseFlagR=1) or d/;"	m	struct:__anonf33cb1db1d08	typeref:typename:uint8_t
+buffer	main.c	/^	__IO uint8_t *buffer;$/;"	m	struct:I2C_IO_STRUCT	typeref:typename:__IO uint8_t *	file:
+buffer	main.c	/^uint8_t buffer[15];$/;"	v	typeref:typename:uint8_t[15]
+buffer	old/main_it_no.c	/^    __IO uint8_t *buffer;$/;"	m	struct:I2C_IO_STRUCT	typeref:typename:__IO uint8_t *	file:
+buffer	old/main_it_no.c	/^uint8_t buffer[15];$/;"	v	typeref:typename:uint8_t[15]
+bytes_count	main.c	/^	__IO uint8_t  bytes_count;$/;"	m	struct:I2C_IO_STRUCT	typeref:typename:__IO uint8_t	file:
+bytes_count	old/main_it_no.c	/^    __IO uint8_t  bytes_count;$/;"	m	struct:I2C_IO_STRUCT	typeref:typename:__IO uint8_t	file:
+cStandard	.vscode/c_cpp_properties.json	/^            "cStandard": "gnu17",$/;"	s	object:configurations.0
 clip_q31_to_q15	cmsis/inc/arm_math.h	/^  static __INLINE q15_t clip_q31_to_q15($/;"	f	typeref:typename:__INLINE q15_t
 clip_q31_to_q7	cmsis/inc/arm_math.h	/^  static __INLINE q7_t clip_q31_to_q7($/;"	f	typeref:typename:__INLINE q7_t
 clip_q63_to_q15	cmsis/inc/arm_math.h	/^  static __INLINE q15_t clip_q63_to_q15($/;"	f	typeref:typename:__INLINE q15_t
 clip_q63_to_q31	cmsis/inc/arm_math.h	/^  static __INLINE q31_t clip_q63_to_q31($/;"	f	typeref:typename:__INLINE q31_t
+compilerArgs	.vscode/c_cpp_properties.json	/^            "compilerArgs": [$/;"	a	object:configurations.0
+compilerPath	.vscode/c_cpp_properties.json	/^            "compilerPath": "\/usr\/bin\/gcc",$/;"	s	object:configurations.0
+configurations	.vscode/c_cpp_properties.json	/^    "configurations": [$/;"	a
+cppStandard	.vscode/c_cpp_properties.json	/^            "cppStandard": "gnu++14",$/;"	s	object:configurations.0
 data	m_math/inc/matrix.h	/^		matrix_element_t*	data;$/;"	m	struct:MATRIX2D	typeref:typename:matrix_element_t *
+defines	.vscode/c_cpp_properties.json	/^            "defines": [$/;"	a	object:configurations.0
+ekf_init	m_project_specific/src/extended_kalman_filter.c	/^void ekf_init()$/;"	f	typeref:typename:void
 end	linker/stm32_flash.ld	/^    PROVIDE ( end = . );$/;"	s
 energy	cmsis/inc/arm_math.h	/^    float32_t energy;    \/**< saves previous frame energy. *\/$/;"	m	struct:__anonf33cb1db3308	typeref:typename:float32_t
 energy	cmsis/inc/arm_math.h	/^    q15_t energy;        \/**< saves previous frame energy. *\/$/;"	m	struct:__anonf33cb1db3508	typeref:typename:q15_t
@@ -17592,10 +17735,26 @@ fftLenRFFT	cmsis/inc/arm_math.h	/^    uint16_t fftLenRFFT;                      
 fftLenReal	cmsis/inc/arm_math.h	/^    uint32_t fftLenReal;                        \/**< length of the real FFT. *\/$/;"	m	struct:__anonf33cb1db1c08	typeref:typename:uint32_t
 fftLenReal	cmsis/inc/arm_math.h	/^    uint32_t fftLenReal;                        \/**< length of the real FFT. *\/$/;"	m	struct:__anonf33cb1db1d08	typeref:typename:uint32_t
 fftLenReal	cmsis/inc/arm_math.h	/^    uint32_t fftLenReal;                      \/**< length of the real FFT. *\/$/;"	m	struct:__anonf33cb1db1b08	typeref:typename:uint32_t
+files.associations	.vscode/settings.json	/^    "files.associations": {$/;"	o
 flash	make/rules.mk	/^flash: $(PROJECT)$/;"	t
+float.h	.vscode/settings.json	/^        "float.h": "c",$/;"	s	object:files.associations
 float32_t	cmsis/inc/arm_math.h	/^  typedef float float32_t;$/;"	t	typeref:typename:float
 float64_t	cmsis/inc/arm_math.h	/^  typedef double float64_t;$/;"	t	typeref:typename:double
+float_to_str	m_math/src/convert.c	/^int float_to_str(float32_t number, char* out_str, uint8_t after_point, uint8_t before_point)$/;"	f	typeref:typename:int
 g_pfnVectors	startup/startup_stm32f4xx.s	/^g_pfnVectors:$/;"	l
+h	m_project_specific/src/extended_kalman_filter.c	/^arm_matrix_instance_f32 h = {.numCols=1, .numRows=3, .pData=h_f32};$/;"	v	typeref:typename:arm_matrix_instance_f32
+h_f32	m_project_specific/src/extended_kalman_filter.c	/^float32_t h_f32[3];$/;"	v	typeref:typename:float32_t[3]
+i2c_io_state_enum	main.c	/^} i2c_io_state_enum;$/;"	t	typeref:enum:I2C_IO_STATE_ENUM	file:
+i2c_io_state_enum	old/main_it_no.c	/^} i2c_io_state_enum;$/;"	t	typeref:enum:I2C_IO_STATE_ENUM	file:
+i2c_recieve_data	old/i2c_was_working.c	/^int i2c_recieve_data()$/;"	f	typeref:typename:int
+i2c_recieve_data	old/i2c_working_no_it.c	/^int i2c_recieve_data()$/;"	f	typeref:typename:int
+i2c_recieve_data	old/main_it_no.c	/^int i2c_recieve_data()$/;"	f	typeref:typename:int
+i2c_recieve_last_data	old/i2c_was_working.c	/^int i2c_recieve_last_data()$/;"	f	typeref:typename:int
+i2c_recieve_last_data	old/i2c_working_no_it.c	/^int i2c_recieve_last_data()$/;"	f	typeref:typename:int
+i2c_recieve_last_data	old/main_it_no.c	/^int i2c_recieve_last_data()$/;"	f	typeref:typename:int
+i2c_send_data	old/i2c_was_working.c	/^void i2c_send_data(char data)$/;"	f	typeref:typename:void
+i2c_send_data	old/i2c_working_no_it.c	/^void i2c_send_data(char data)$/;"	f	typeref:typename:void
+i2c_send_data	old/main_it_no.c	/^void i2c_send_data(char data)$/;"	f	typeref:typename:void
 ifftFlag	cmsis/inc/arm_math.h	/^    uint8_t ifftFlag;                  \/**< flag that selects forward (ifftFlag=0) or inverse (/;"	m	struct:__anonf33cb1db1808	typeref:typename:uint8_t
 ifftFlag	cmsis/inc/arm_math.h	/^    uint8_t ifftFlag;                  \/**< flag that selects forward (ifftFlag=0) or inverse (/;"	m	struct:__anonf33cb1db1908	typeref:typename:uint8_t
 ifftFlag	cmsis/inc/arm_math.h	/^    uint8_t ifftFlag;                \/**< flag that selects forward (ifftFlag=0) or inverse (if/;"	m	struct:__anonf33cb1db1408	typeref:typename:uint8_t
@@ -17605,7 +17764,19 @@ ifftFlag	cmsis/inc/arm_math.h	/^    uint8_t ifftFlag;                \/**< flag 
 ifftFlagR	cmsis/inc/arm_math.h	/^    uint8_t ifftFlagR;                          \/**< flag that selects forward (ifftFlagR=0) or/;"	m	struct:__anonf33cb1db1c08	typeref:typename:uint8_t
 ifftFlagR	cmsis/inc/arm_math.h	/^    uint8_t ifftFlagR;                          \/**< flag that selects forward (ifftFlagR=0) or/;"	m	struct:__anonf33cb1db1d08	typeref:typename:uint8_t
 ifftFlagR	cmsis/inc/arm_math.h	/^    uint8_t ifftFlagR;                        \/**< flag that selects forward (ifftFlagR=0) or i/;"	m	struct:__anonf33cb1db1b08	typeref:typename:uint8_t
+includePath	.vscode/c_cpp_properties.json	/^            "includePath": [$/;"	a	object:configurations.0
+int_to_str	m_math/src/convert.c	/^int int_to_str(int number, char *out_str, uint8_t digits)$/;"	f	typeref:typename:int
+intelliSenseMode	.vscode/c_cpp_properties.json	/^            "intelliSenseMode": "linux-gcc-x64",$/;"	s	object:configurations.0
+inv_int16_max	main.c	/^float32_t inv_int16_max = (float32_t) 1 \/ (float32_t) INT16_MAX;$/;"	v	typeref:typename:float32_t
+log_msg	main.c	/^void log_msg(volatile char *s)$/;"	f	typeref:typename:void
+log_msg	old/main_it_no.c	/^void log_msg(volatile char *s)$/;"	f	typeref:typename:void
 main	main.c	/^int main(void)$/;"	f	typeref:typename:int
+main	old/i2c_was_working.c	/^int main(void)$/;"	f	typeref:typename:int
+main	old/i2c_working_no_it.c	/^int main(void)$/;"	f	typeref:typename:int
+main	old/main_RF.c	/^int main(void)$/;"	f	typeref:typename:int
+main	old/main_it_no.c	/^int main(void)$/;"	f	typeref:typename:int
+main	old/main_matrix.c	/^int main(void)$/;"	f	typeref:typename:int
+main	old/main_matrix2.c	/^int main(void)$/;"	f	typeref:typename:int
 matrix_element_t	m_math/inc/matrix.h	/^typedef	float	matrix_element_t;$/;"	t	typeref:typename:float
 matrix_index_t	m_math/inc/matrix.h	/^typedef	char	matrix_index_t;$/;"	t	typeref:typename:char
 maxDelay	cmsis/inc/arm_math.h	/^    uint16_t maxDelay;            \/**< maximum offset specified by the pTapDelay array. *\/$/;"	m	struct:__anonf33cb1db3608	typeref:typename:uint16_t
@@ -17629,6 +17800,7 @@ nPRIV	cmsis/inc/core_cm4.h	/^    uint32_t nPRIV:1;                    \/*!< bit:
 nPRIV	cmsis/inc/core_sc000.h	/^    uint32_t nPRIV:1;                    \/*!< bit:      0  Execution privilege in Thread mode */;"	m	struct:__anona8826e80070a::__anona8826e800808	typeref:typename:uint32_t:1
 nPRIV	cmsis/inc/core_sc300.h	/^    uint32_t nPRIV:1;                    \/*!< bit:      0  Execution privilege in Thread mode */;"	m	struct:__anona8b8b803070a::__anona8b8b8030808	typeref:typename:uint32_t:1
 nValues	cmsis/inc/arm_math.h	/^    uint32_t nValues;           \/**< nValues *\/$/;"	m	struct:__anonf33cb1db0f08	typeref:typename:uint32_t
+name	.vscode/c_cpp_properties.json	/^            "name": "Linux",$/;"	s	object:configurations.0
 normalize	cmsis/inc/arm_math.h	/^    float32_t normalize;                \/**< normalizing factor. *\/$/;"	m	struct:__anonf33cb1db1f08	typeref:typename:float32_t
 normalize	cmsis/inc/arm_math.h	/^    q15_t normalize;                    \/**< normalizing factor. *\/$/;"	m	struct:__anonf33cb1db2108	typeref:typename:q15_t
 normalize	cmsis/inc/arm_math.h	/^    q31_t normalize;                    \/**< normalizing factor. *\/$/;"	m	struct:__anonf33cb1db2008	typeref:typename:q31_t
@@ -17796,6 +17968,7 @@ postShift	cmsis/inc/arm_math.h	/^    uint8_t postShift;       \/**< Additional s
 postShift	cmsis/inc/arm_math.h	/^    uint8_t postShift;       \/**< additional shift, in bits, applied to each output sample. *\/$/;"	m	struct:__anonf33cb1db2808	typeref:typename:uint8_t
 postShift	cmsis/inc/arm_math.h	/^    uint8_t postShift;    \/**< bit shift applied to coefficients. *\/$/;"	m	struct:__anonf33cb1db3408	typeref:typename:uint8_t
 postShift	cmsis/inc/arm_math.h	/^    uint8_t postShift;   \/**< bit shift applied to coefficients. *\/$/;"	m	struct:__anonf33cb1db3508	typeref:typename:uint8_t
+predict	m_project_specific/src/extended_kalman_filter.c	/^void predict()$/;"	f	typeref:typename:void
 pvCoeffs	cmsis/inc/arm_math.h	/^    float32_t *pvCoeffs;                        \/**< points to the ladder coefficient array. Th/;"	m	struct:__anonf33cb1db2f08	typeref:typename:float32_t *
 pvCoeffs	cmsis/inc/arm_math.h	/^    q15_t *pvCoeffs;                            \/**< points to the ladder coefficient array. Th/;"	m	struct:__anonf33cb1db2d08	typeref:typename:q15_t *
 pvCoeffs	cmsis/inc/arm_math.h	/^    q31_t *pvCoeffs;                            \/**< points to the ladder coefficient array. Th/;"	m	struct:__anonf33cb1db2e08	typeref:typename:q31_t *
@@ -17805,8 +17978,11 @@ q63_t	cmsis/inc/arm_math.h	/^  typedef int64_t q63_t;$/;"	t	typeref:typename:int
 q7_t	cmsis/inc/arm_math.h	/^  typedef int8_t q7_t;$/;"	t	typeref:typename:int8_t
 recipTable	cmsis/inc/arm_math.h	/^    q15_t *recipTable;   \/**< Points to the reciprocal initial value table. *\/$/;"	m	struct:__anonf33cb1db3508	typeref:typename:q15_t *
 recipTable	cmsis/inc/arm_math.h	/^    q31_t *recipTable;    \/**< points to the reciprocal initial value table. *\/$/;"	m	struct:__anonf33cb1db3408	typeref:typename:q31_t *
+register_address	main.c	/^	__IO uint8_t  register_address;$/;"	m	struct:I2C_IO_STRUCT	typeref:typename:__IO uint8_t	file:
+register_address	old/main_it_no.c	/^    __IO uint8_t  register_address;$/;"	m	struct:I2C_IO_STRUCT	typeref:typename:__IO uint8_t	file:
 res	m_math/inc/matrix.h	/^	result_t matrix2d_add( matrix2d_t* a, matrix2d_t* b, matrix2d_t* res);$/;"	t	typeref:struct:MATRIX2D matrix2d_t result_t matrix2d_add (matrix2d_t * a,matrix2d_t * b,matrix2d_t *)
 result_t	m_common/inc/result.h	/^} result_t;$/;"	t	typeref:enum:RESULT
+reverse_str	m_math/src/convert.c	/^static void reverse_str(char * in_out_str, int string_length)$/;"	f	typeref:typename:void	file:
 s16	system/stm32f4xx.h	/^typedef int16_t s16;$/;"	t	typeref:typename:int16_t
 s32	system/stm32f4xx.h	/^typedef int32_t  s32;$/;"	t	typeref:typename:int32_t
 s8	system/stm32f4xx.h	/^typedef int8_t  s8;$/;"	t	typeref:typename:int8_t
@@ -17820,12 +17996,17 @@ size	m_math/inc/matrix.h	/^		matrix_index_t		size[2];$/;"	m	struct:MATRIX2D	type
 state	cmsis/inc/arm_math.h	/^    float32_t state[3];    \/**< The state array of length 3. *\/$/;"	m	struct:__anonf33cb1db0e08	typeref:typename:float32_t[3]
 state	cmsis/inc/arm_math.h	/^    q15_t state[3];       \/**< The state array of length 3. *\/$/;"	m	struct:__anonf33cb1db0c08	typeref:typename:q15_t[3]
 state	cmsis/inc/arm_math.h	/^    q31_t state[3];      \/**< The state array of length 3. *\/$/;"	m	struct:__anonf33cb1db0d08	typeref:typename:q31_t[3]
+state	main.c	/^	__IO i2c_io_state_enum state;$/;"	m	struct:I2C_IO_STRUCT	typeref:typename:__IO i2c_io_state_enum	file:
+state	old/main_it_no.c	/^	__IO i2c_io_state_enum state;$/;"	m	struct:I2C_IO_STRUCT	typeref:typename:__IO i2c_io_state_enum	file:
 stateIndex	cmsis/inc/arm_math.h	/^    uint16_t stateIndex;          \/**< state buffer index.  Points to the oldest sample in the /;"	m	struct:__anonf33cb1db3608	typeref:typename:uint16_t
 stateIndex	cmsis/inc/arm_math.h	/^    uint16_t stateIndex;          \/**< state buffer index.  Points to the oldest sample in the /;"	m	struct:__anonf33cb1db3708	typeref:typename:uint16_t
 stateIndex	cmsis/inc/arm_math.h	/^    uint16_t stateIndex;          \/**< state buffer index.  Points to the oldest sample in the /;"	m	struct:__anonf33cb1db3808	typeref:typename:uint16_t
 stateIndex	cmsis/inc/arm_math.h	/^    uint16_t stateIndex;          \/**< state buffer index.  Points to the oldest sample in the /;"	m	struct:__anonf33cb1db3908	typeref:typename:uint16_t
+stm32f4xx.h	.vscode/settings.json	/^        "stm32f4xx.h": "c",$/;"	s	object:files.associations
+stm32f4xx_conf.h	.vscode/settings.json	/^        "stm32f4xx_conf.h": "c",$/;"	s	object:files.associations
+system_stm32f4xx.h	.vscode/settings.json	/^        "system_stm32f4xx.h": "c",$/;"	s	object:files.associations
 tags	make/rules.mk	/^tags:$/;"	t
-test.elf	Makefile	/^test.elf: system\/system_stm32f4xx.o std_perif\/src\/stm32f4xx_rcc.o std_perif\/src\/stm32f4xx_g/;"	t
+test.elf	Makefile	/^test.elf:   main.o $(PROJECT_DEPS)$/;"	t
 twidCoefModifier	cmsis/inc/arm_math.h	/^    uint16_t twidCoefModifier;         \/**< twiddle coefficient modifier that supports differen/;"	m	struct:__anonf33cb1db1808	typeref:typename:uint16_t
 twidCoefModifier	cmsis/inc/arm_math.h	/^    uint16_t twidCoefModifier;         \/**< twiddle coefficient modifier that supports differen/;"	m	struct:__anonf33cb1db1908	typeref:typename:uint16_t
 twidCoefModifier	cmsis/inc/arm_math.h	/^    uint16_t twidCoefModifier;       \/**< twiddle coefficient modifier that supports different /;"	m	struct:__anonf33cb1db1408	typeref:typename:uint16_t
@@ -17851,6 +18032,7 @@ u8	system/stm32f4xx.h	/^typedef uint8_t  u8;$/;"	t	typeref:typename:uint8_t
 uc16	system/stm32f4xx.h	/^typedef const uint16_t uc16;  \/*!< Read Only *\/$/;"	t	typeref:typename:const uint16_t
 uc32	system/stm32f4xx.h	/^typedef const uint32_t uc32;  \/*!< Read Only *\/$/;"	t	typeref:typename:const uint32_t
 uc8	system/stm32f4xx.h	/^typedef const uint8_t uc8;   \/*!< Read Only *\/$/;"	t	typeref:typename:const uint8_t
+version	.vscode/c_cpp_properties.json	/^    "version": 4$/;"	n
 vs16	system/stm32f4xx.h	/^typedef __IO int16_t  vs16;$/;"	t	typeref:typename:__IO int16_t
 vs32	system/stm32f4xx.h	/^typedef __IO int32_t  vs32;$/;"	t	typeref:typename:__IO int32_t
 vs8	system/stm32f4xx.h	/^typedef __IO int8_t   vs8;$/;"	t	typeref:typename:__IO int8_t
@@ -17887,6 +18069,7 @@ w	cmsis/inc/core_sc300.h	/^  uint32_t w;                            \/*!< Type  
 w	cmsis/inc/core_sc300.h	/^  uint32_t w;                            \/*!< Type      used for word access                  */;"	m	union:__anona8b8b803030a	typeref:typename:uint32_t
 w	cmsis/inc/core_sc300.h	/^  uint32_t w;                            \/*!< Type      used for word access                  */;"	m	union:__anona8b8b803050a	typeref:typename:uint32_t
 w	cmsis/inc/core_sc300.h	/^  uint32_t w;                            \/*!< Type      used for word access                  */;"	m	union:__anona8b8b803070a	typeref:typename:uint32_t
+x	m_project_specific/src/extended_kalman_filter.c	/^arm_matrix_instance_f32 x = {.numCols=1, .numRows=7, .pData=x_f32};$/;"	v	typeref:typename:arm_matrix_instance_f32
 x0	cmsis/inc/arm_math.h	/^    float32_t x0;        \/**< saves previous input sample. *\/$/;"	m	struct:__anonf33cb1db3308	typeref:typename:float32_t
 x0	cmsis/inc/arm_math.h	/^    q15_t x0;            \/**< saves previous input sample. *\/$/;"	m	struct:__anonf33cb1db3508	typeref:typename:q15_t
 x0	cmsis/inc/arm_math.h	/^    q31_t x0;             \/**< saves previous input sample. *\/$/;"	m	struct:__anonf33cb1db3408	typeref:typename:q31_t
@@ -17898,3 +18081,8 @@ xPSR_Type	cmsis/inc/core_cm4.h	/^} xPSR_Type;$/;"	t	typeref:union:__anone87a5a5e
 xPSR_Type	cmsis/inc/core_sc000.h	/^} xPSR_Type;$/;"	t	typeref:union:__anona8826e80050a
 xPSR_Type	cmsis/inc/core_sc300.h	/^} xPSR_Type;$/;"	t	typeref:union:__anona8b8b803050a
 xSpacing	cmsis/inc/arm_math.h	/^    float32_t xSpacing;         \/**< xSpacing *\/$/;"	m	struct:__anonf33cb1db0f08	typeref:typename:float32_t
+x_f32	m_project_specific/src/extended_kalman_filter.c	/^float32_t x_f32[7];$/;"	v	typeref:typename:float32_t[7]
+y	m_project_specific/src/extended_kalman_filter.c	/^arm_matrix_instance_f32 y = {.numCols=1, .numRows=3, .pData=y_f32};$/;"	v	typeref:typename:arm_matrix_instance_f32
+y_f32	m_project_specific/src/extended_kalman_filter.c	/^float32_t y_f32[3];$/;"	v	typeref:typename:float32_t[3]
+z	m_project_specific/src/extended_kalman_filter.c	/^arm_matrix_instance_f32 z = {.numCols=1, .numRows=3, .pData=z_f32};$/;"	v	typeref:typename:arm_matrix_instance_f32
+z_f32	m_project_specific/src/extended_kalman_filter.c	/^float32_t z_f32[3];$/;"	v	typeref:typename:float32_t[3]
