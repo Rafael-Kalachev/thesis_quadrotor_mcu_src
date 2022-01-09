@@ -5,8 +5,8 @@
 #include "m_project_specific/inc/usart.h"
 #include "m_project_specific/inc/extended_kalman_filter.h"
 
-#define PINS   ( GPIO_Pin_8 |  GPIO_Pin_9 |  GPIO_Pin_10 | GPIO_Pin_11)
-#define GPIO_PORT  (GPIOA)
+#define PINS   ( GPIO_Pin_0 |  GPIO_Pin_1 |  GPIO_Pin_4 | GPIO_Pin_5)
+#define GPIO_PORT  (GPIOB)
 
 void log_msg(volatile char *s)
 {
@@ -180,6 +180,7 @@ int main(void)
 	_i2c3_io_struct.state = I2C_IO_STATE_REGISTER_WRITE_START;
 	I2C_GenerateSTART(I2C3, ENABLE);
 
+
 	while(_i2c3_io_struct.state != I2C_IO_STATE_REGISTER_WRITE_STOP);
 
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
@@ -218,6 +219,7 @@ int main(void)
 	{
 		
 		// DATA GATHER 
+		
 		_i2c3_io_struct.address =  0xD6;
 		_i2c3_io_struct.register_address =0x20;
 		_i2c3_io_struct.buffer = buffer;
@@ -258,7 +260,7 @@ int main(void)
 
 		USART_SendText("\n");
 
-
+		
 
 		GPIO_SetBits(GPIO_PORT, PINS );
 		for(a=0; a < 5000000; ++a)
@@ -267,7 +269,7 @@ int main(void)
 		}
 		GPIO_ResetBits(GPIO_PORT, PINS );
 
-		for(a=0; a < 5000000; ++a)
+		for(a=0; a < 1000000; ++a)
 		{
 			__NOP;
 		}
