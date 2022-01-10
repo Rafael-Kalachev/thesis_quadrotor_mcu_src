@@ -201,7 +201,7 @@ int main(void)
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
  
 	TIM_TimeBaseInitTypeDef timerInitStructure; 
-	timerInitStructure.TIM_Prescaler = 41;
+	timerInitStructure.TIM_Prescaler = 83;
 	timerInitStructure.TIM_CounterMode = TIM_CounterMode_Up;
 	timerInitStructure.TIM_Period = 20000;
 	timerInitStructure.TIM_ClockDivision = TIM_CKD_DIV1;
@@ -217,7 +217,17 @@ int main(void)
 	nvicStructure.NVIC_IRQChannelCmd = ENABLE;
 	NVIC_Init(&nvicStructure);
 
-	TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE);
+	TIM_OCInitTypeDef oc_init;
+	oc_init.TIM_OCMode = TIM_OCMode_Timing;
+	oc_init.TIM_OCPolarity = TIM_OCPolarity_High;
+	oc_init.TIM_OutputState = TIM_OutputState_Enable;
+	oc_init.TIM_Pulse = 2000;
+	
+
+	TIM_OC1Init(TIM2, &oc_init );
+	
+
+	TIM_ITConfig(TIM2, TIM_IT_Update | TIM_IT_CC1 , ENABLE);
 
 	//	ENABLE TIMER 
 	TIM_Cmd(TIM2, ENABLE);
@@ -544,9 +554,17 @@ void I2C3_ER_IRQHandler()
 
 void TIM2_IRQHandler()
 {
+	__disable_irq();
 	if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)
 	{
 		TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
 		GPIO_ToggleBits(GPIO_PORT, PINS);
 	}
+
+	if(TIM_GetITStatus(TIM2, TIM_IT_CC1) != RESET)
+	{
+		TIM_ClearITPendingBit(TIM2, TIM_IT_CC1);
+		GPIO_ToggleBits(GPIO_PORT, PINS);
+	}
+	__enable_irq();
 }
