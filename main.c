@@ -5,10 +5,19 @@
 #include "m_project_specific/inc/usart.h"
 #include "m_project_specific/inc/extended_kalman_filter.h"
 
-#define PINS   ( GPIO_Pin_0 |  GPIO_Pin_1 |  GPIO_Pin_4 | GPIO_Pin_5)
-#define GPIO_PORT  (GPIOB)
+#define PINS   ( GPIO_Pin_12 |  GPIO_Pin_13 |  GPIO_Pin_14 | GPIO_Pin_15)
+#define GPIO_PORT  (GPIOD)
 
-void log_msg(volatile char *s)
+
+#define DISABLE_LOGGING
+
+#ifndef DISABLE_LOGGING
+	#define log_msg(ARG) __int_log_msg(ARG)
+#else
+	#define log_msg(ARG) do{}while(0)
+#endif
+
+void __int_log_msg(volatile char *s)
 {
 	USART_SendText(s);
 }
@@ -29,7 +38,7 @@ float32_t A_inv_f32[3*3] =
 };
 
 
-uint8_t buffer[15];
+uint8_t buffer[16];
 
 float32_t inv_int16_max = (float32_t) 1 / (float32_t) INT16_MAX;
 
@@ -183,6 +192,15 @@ int main(void)
 
 	while(_i2c3_io_struct.state != I2C_IO_STATE_REGISTER_WRITE_STOP);
 
+
+
+
+
+
+
+
+
+
 	// CONFIGURE GPIO
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);
@@ -191,12 +209,12 @@ int main(void)
 	GPIO_InitStruct.GPIO_Pin  = PINS;
 	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
 	GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;
-	GPIO_InitStruct.GPIO_OType = GPIO_OType_OD;
+	GPIO_InitStruct.GPIO_OType = GPIO_OType_PP; //TODO change to OD later for 5V 
 	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;
 
 	GPIO_Init(GPIO_PORT, &GPIO_InitStruct);	
 
-	// CONFIGURE TIMER
+	// CONFIGURE TIMER OC
 
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
  
@@ -223,14 +241,44 @@ int main(void)
 	oc_init.TIM_OutputState = TIM_OutputState_Enable;
 	oc_init.TIM_Pulse = 2000;
 	
+	TIM_OC1PreloadConfig(TIM2, TIM_OCPreload_Enable);
+	TIM_OC2PreloadConfig(TIM2, TIM_OCPreload_Enable);
+	TIM_OC3PreloadConfig(TIM2, TIM_OCPreload_Enable);
+	TIM_OC4PreloadConfig(TIM2, TIM_OCPreload_Enable);
 
 	TIM_OC1Init(TIM2, &oc_init );
+	TIM_OC2Init(TIM2, &oc_init );
+	TIM_OC3Init(TIM2, &oc_init );
+	TIM_OC4Init(TIM2, &oc_init );
+
+
+	TIM2->CCR1 = 1000;
+	TIM2->CCR2 = 1500;
+	TIM2->CCR3 = 1750;
 	
 
-	TIM_ITConfig(TIM2, TIM_IT_Update | TIM_IT_CC1 , ENABLE);
+	TIM_ITConfig(TIM2, TIM_IT_Update | TIM_IT_CC1 | TIM_IT_CC2 | TIM_IT_CC3 | TIM_IT_CC4 , ENABLE);
 
 	//	ENABLE TIMER 
 	TIM_Cmd(TIM2, ENABLE);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
 
 
 	// MAIN LOOP
@@ -564,7 +612,25 @@ void TIM2_IRQHandler()
 	if(TIM_GetITStatus(TIM2, TIM_IT_CC1) != RESET)
 	{
 		TIM_ClearITPendingBit(TIM2, TIM_IT_CC1);
-		GPIO_ToggleBits(GPIO_PORT, PINS);
+		GPIO_ToggleBits(GPIO_PORT, GPIO_Pin_12);
+	}
+
+	if(TIM_GetITStatus(TIM2, TIM_IT_CC2) != RESET)
+	{
+		TIM_ClearITPendingBit(TIM2, TIM_IT_CC2);
+		GPIO_ToggleBits(GPIO_PORT, GPIO_Pin_13);
+	}
+
+	if(TIM_GetITStatus(TIM2, TIM_IT_CC3) != RESET)
+	{
+		TIM_ClearITPendingBit(TIM2, TIM_IT_CC3);
+		GPIO_ToggleBits(GPIO_PORT, GPIO_Pin_14);
+	}
+
+	if(TIM_GetITStatus(TIM2, TIM_IT_CC4) != RESET)
+	{
+		TIM_ClearITPendingBit(TIM2, TIM_IT_CC4);
+		GPIO_ToggleBits(GPIO_PORT, GPIO_Pin_15);
 	}
 	__enable_irq();
 }
