@@ -18,6 +18,9 @@ PROJECT_DEPS += m_math/src/convert.o
 # Project specific modules
 PROJECT_DEPS += m_project_specific/src/usart.o
 PROJECT_DEPS += m_project_specific/src/extended_kalman_filter.o
+PROJECT_DEPS += m_project_specific/src/read_joystick.o
+
+
 
 PROJECT_DEPS += cmsis/lib/libarm_cortexM4lf_math.a
 

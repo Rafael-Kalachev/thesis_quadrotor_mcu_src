@@ -4,6 +4,7 @@
 #include "m_math/inc/convert.h"
 #include "m_project_specific/inc/usart.h"
 #include "m_project_specific/inc/extended_kalman_filter.h"
+#include "m_project_specific/inc/read_joystick.h"
 
 #define PINS   ( GPIO_Pin_12 |  GPIO_Pin_13 |  GPIO_Pin_14 | GPIO_Pin_15)
 #define GPIO_PORT  (GPIOD)
@@ -16,6 +17,17 @@
 #else
 	#define log_msg(ARG) do{}while(0)
 #endif
+
+
+void TI4_Config(TIM_TypeDef* TIMx, uint16_t TIM_ICPolarity, uint16_t TIM_ICSelection,
+                       uint16_t TIM_ICFilter);
+void TI3_Config(TIM_TypeDef* TIMx, uint16_t TIM_ICPolarity, uint16_t TIM_ICSelection,
+                       uint16_t TIM_ICFilter);
+void TI2_Config(TIM_TypeDef* TIMx, uint16_t TIM_ICPolarity, uint16_t TIM_ICSelection,
+                       uint16_t TIM_ICFilter);
+void TI1_Config(TIM_TypeDef* TIMx, uint16_t TIM_ICPolarity, uint16_t TIM_ICSelection,
+                       uint16_t TIM_ICFilter);
+
 
 void __int_log_msg(volatile char *s)
 {
@@ -41,6 +53,14 @@ float32_t A_inv_f32[3*3] =
 uint8_t buffer[16];
 
 float32_t inv_int16_max = (float32_t) 1 / (float32_t) INT16_MAX;
+
+
+
+
+
+
+
+
 
 
 typedef enum I2C_IO_STATE_ENUM
@@ -218,22 +238,22 @@ int main(void)
 
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
  
-	TIM_TimeBaseInitTypeDef timerInitStructure; 
-	timerInitStructure.TIM_Prescaler = 83;
-	timerInitStructure.TIM_CounterMode = TIM_CounterMode_Up;
-	timerInitStructure.TIM_Period = 20000;
-	timerInitStructure.TIM_ClockDivision = TIM_CKD_DIV1;
-	timerInitStructure.TIM_RepetitionCounter = 0;
-	TIM_TimeBaseInit(TIM2, &timerInitStructure);
+	TIM_TimeBaseInitTypeDef timerInitStructure2; 
+	timerInitStructure2.TIM_Prescaler = 83;
+	timerInitStructure2.TIM_CounterMode = TIM_CounterMode_Up;
+	timerInitStructure2.TIM_Period = 20000;
+	timerInitStructure2.TIM_ClockDivision = TIM_CKD_DIV1;
+	timerInitStructure2.TIM_RepetitionCounter = 0;
+	TIM_TimeBaseInit(TIM2, &timerInitStructure2);
 
 	//	ENABLE IRQ TIM
 
-	NVIC_InitTypeDef nvicStructure;
-	nvicStructure.NVIC_IRQChannel = TIM2_IRQn;
-	nvicStructure.NVIC_IRQChannelPreemptionPriority = 0;
-	nvicStructure.NVIC_IRQChannelSubPriority = 1;
-	nvicStructure.NVIC_IRQChannelCmd = ENABLE;
-	NVIC_Init(&nvicStructure);
+	NVIC_InitTypeDef nvicStructure2;
+	nvicStructure2.NVIC_IRQChannel = TIM2_IRQn;
+	nvicStructure2.NVIC_IRQChannelPreemptionPriority = 0;
+	nvicStructure2.NVIC_IRQChannelSubPriority = 1;
+	nvicStructure2.NVIC_IRQChannelCmd = ENABLE;
+	NVIC_Init(&nvicStructure2);
 
 	TIM_OCInitTypeDef oc_init;
 	oc_init.TIM_OCMode = TIM_OCMode_Timing;
@@ -259,7 +279,8 @@ int main(void)
 
 	TIM_ITConfig(TIM2, TIM_IT_Update | TIM_IT_CC1 | TIM_IT_CC2 | TIM_IT_CC3 | TIM_IT_CC4 , ENABLE);
 
-	//	ENABLE TIMER 
+	//	ENABLE TIMER 	GPIO_PinAFConfig(GPIOA, GPIO_PinSource0, GPIO_AF_TIM5);
+
 	TIM_Cmd(TIM2, ENABLE);
 
 
@@ -273,12 +294,74 @@ int main(void)
 
 
 
+	// CONFIGURE TIMER INPUT CAPTURE
+
+
+	// CONFIGURE GPIO
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM5, ENABLE);
 
 
 
 
+	// CONFIGURE TIMER IC
 
+ 
+	TIM_TimeBaseInitTypeDef timerInitStructure; 
+	timerInitStructure.TIM_Prescaler = 83;
+	timerInitStructure.TIM_CounterMode = TIM_CounterMode_Up;
+	timerInitStructure.TIM_Period = 0xFFFF;
+	timerInitStructure.TIM_ClockDivision = TIM_CKD_DIV1;
+	timerInitStructure.TIM_RepetitionCounter = 0;
+	TIM_TimeBaseInit(TIM5, &timerInitStructure);
+
+	//	ENABLE IRQ TIM
+
+	NVIC_InitTypeDef nvicStructure;
+	nvicStructure.NVIC_IRQChannel = TIM5_IRQn;
+	nvicStructure.NVIC_IRQChannelPreemptionPriority = 2;
+	nvicStructure.NVIC_IRQChannelSubPriority = 0;
+	nvicStructure.NVIC_IRQChannelCmd = ENABLE;
+	NVIC_Init(&nvicStructure);
 	
+	TIM_ICInitTypeDef tim_ic;
+	tim_ic.TIM_Channel = TIM_Channel_1;
+	tim_ic.TIM_ICPolarity = TIM_ICPolarity_Rising;
+	tim_ic.TIM_ICSelection = TIM_ICSelection_DirectTI;
+	tim_ic.TIM_ICFilter = 0x0;
+	tim_ic.TIM_ICPrescaler = TIM_ICPSC_DIV1;
+
+	tim_ic.TIM_Channel = TIM_Channel_1;
+	TIM_ICInit(TIM5, &tim_ic);
+
+	tim_ic.TIM_Channel = TIM_Channel_4;
+	TIM_ICInit(TIM5, &tim_ic);
+
+	TIM_ITConfig(TIM5,  TIM_IT_CC1 | TIM_IT_CC4 , ENABLE);
+	
+	TIM_Cmd(TIM5, ENABLE);
+
+
+	GPIO_InitStruct.GPIO_Pin  = GPIO_Pin_0 | GPIO_Pin_3;
+	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_AF;
+	GPIO_InitStruct.GPIO_Speed = GPIO_Speed_100MHz;
+	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;
+
+	GPIO_PinAFConfig(GPIOA, GPIO_PinSource0, GPIO_AF_TIM5);
+	GPIO_PinAFConfig(GPIOA, GPIO_PinSource3, GPIO_AF_TIM5);
+
+
+	GPIO_Init(GPIOA, &GPIO_InitStruct);	
+
+
+
+
+
+
+
+
+
+
 
 
 	// MAIN LOOP
@@ -323,7 +406,7 @@ int main(void)
 		float32_t acc_x	      = ((int16_t)((int32_t) buffer[8]  + ((int32_t) buffer[9]  << 8 ))) * inv_int16_max;
 		float32_t acc_y	      = ((int16_t)((int32_t) buffer[10] + ((int32_t) buffer[11] << 8 ))) * inv_int16_max;
 		float32_t acc_z	      = ((int16_t)((int32_t) buffer[12] + ((int32_t) buffer[13] << 8 ))) * inv_int16_max;
-
+	/*
 		USART_SendText("temp=");
 		USART_SendFloat(temperature, 5);
 
@@ -346,7 +429,30 @@ int main(void)
 		USART_SendFloat(acc_z, 5);
 
 		USART_SendText("\n");
+*/
 
+
+			USART_SendText("PERIOD1: ");
+			USART_SendNumber(tim5_ch1.period);
+			USART_SendText("\n");
+
+			USART_SendText("PERIOD4: ");
+			USART_SendNumber(tim5_ch4.period);
+			USART_SendText("\n");
+			/*
+			USART_SendText("rise4: ");
+			USART_SendNumber(tim5_ch4.rising);
+			USART_SendText("\n");
+			USART_SendText("fall4: ");
+			USART_SendNumber(tim5_ch4.falling);
+			USART_SendText("\n");
+	*/
+
+
+		for(a=0; a < 5000000; ++a)
+		{
+			__NOP;
+		}
 		
 		/*
 		GPIO_SetBits(GPIO_PORT, PINS );
@@ -634,3 +740,5 @@ void TIM2_IRQHandler()
 	}
 	__enable_irq();
 }
+
+

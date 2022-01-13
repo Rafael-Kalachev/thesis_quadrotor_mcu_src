@@ -18,7 +18,7 @@ void USART_SendText(volatile char *s)
 void USART_SendNumber(int32_t x)
 {
 	char value[20]; //a temp array to hold results of conversion
-	int count = int_to_str(x, value, 0);
+	int count = int_to_str(x, value, 1);
 	int i = 0;
 
 	for(i = 0; i < count; ++i)
