@@ -308,7 +308,7 @@ int main(void)
 
  
 	TIM_TimeBaseInitTypeDef timerInitStructure; 
-	timerInitStructure.TIM_Prescaler = 83;
+	timerInitStructure.TIM_Prescaler = 20; /*TEST*/
 	timerInitStructure.TIM_CounterMode = TIM_CounterMode_Up;
 	timerInitStructure.TIM_Period = 0xFFFF;
 	timerInitStructure.TIM_ClockDivision = TIM_CKD_DIV1;
@@ -430,14 +430,17 @@ int main(void)
 
 		USART_SendText("\n");
 */
-
+			__disable_irq();
+			float32_t p1 = tim5_ch1.period;
+			float32_t p2 = tim5_ch4.period;
+			__enable_irq();
 
 			USART_SendText("PERIOD1: ");
-			USART_SendNumber(tim5_ch1.period);
+			USART_SendFloat(p1/4,1);
 			USART_SendText("\n");
 
 			USART_SendText("PERIOD4: ");
-			USART_SendNumber(tim5_ch4.period);
+			USART_SendFloat(p2/4,1);
 			USART_SendText("\n");
 			/*
 			USART_SendText("rise4: ");
@@ -448,11 +451,6 @@ int main(void)
 			USART_SendText("\n");
 	*/
 
-
-		for(a=0; a < 5000000; ++a)
-		{
-			__NOP;
-		}
 		
 		/*
 		GPIO_SetBits(GPIO_PORT, PINS );
