@@ -1,6 +1,8 @@
 #define READ_JOYSTICK_INTERNAL
 
 #include "m_project_specific/inc/read_joystick.h"
+#include "m_project_specific/inc/usart.h"
+
 
 
 tim_ic_ch_state_struct  tim5_ch1 = 
@@ -14,6 +16,41 @@ tim_ic_ch_state_struct  tim5_ch1 =
 tim_ic_ch_state_struct  tim5_ch4 = 
 {
 	.current_state=TIM_IC_CH_STATE_FIRST, 
+  .falling = 0,
+	.rising = 0,
+	.period = 0
+};
+
+tim_ic_ch_state_struct  tim3_ch1 = 
+{
+	.current_state=TIM_IC_CH_STATE_FIRST,
+	.falling = 0,
+	.rising = 0,
+	.period = 0
+};
+
+tim_ic_ch_state_struct  tim3_ch2 = 
+{
+	.current_state=TIM_IC_CH_STATE_FIRST, 
+  .falling = 0,
+	.rising = 0,
+	.period = 0
+};
+
+tim_ic_ch_state_struct  tim3_ch3 = 
+{
+	.current_state=TIM_IC_CH_STATE_FIRST,
+	.falling = 0,
+	.rising = 0,
+	.period = 0
+};
+
+tim_ic_ch_state_struct  tim3_ch4 = 
+{
+	.current_state=TIM_IC_CH_STATE_FIRST, 
+  .falling = 0,
+	.rising = 0,
+	.period = 0
 };
 
 
@@ -227,6 +264,7 @@ void TIM5_IRQHandler()
 			case TIM_IC_CH_STATE_RISING:
 				tim5_ch1.rising = TIM_GetCapture1(TIM5);
 				tim5_ch1.current_state = TIM_IC_CH_STATE_FALLING;
+        break;
 
 		}
 		TIM_ClearITPendingBit(TIM5,TIM_IT_CC1);
@@ -255,6 +293,7 @@ void TIM5_IRQHandler()
 			case TIM_IC_CH_STATE_RISING:
 				tim5_ch4.rising = TIM_GetCapture4(TIM5);
 				tim5_ch4.current_state = TIM_IC_CH_STATE_FALLING;
+        break;
 		}
 
 		TIM_ClearITPendingBit(TIM5,TIM_IT_CC4);
@@ -263,3 +302,129 @@ void TIM5_IRQHandler()
 
 	__enable_irq();
 }
+
+
+
+void TIM3_IRQHandler()
+{
+  //USART_SendText('A');
+	__disable_irq();
+	if(TIM_GetITStatus(TIM3, TIM_IT_CC1) != RESET)
+	{
+		switch (tim3_ch1.current_state)
+		{
+			case TIM_IC_CH_STATE_FIRST:
+				tim3_ch1.rising = TIM_GetCapture1(TIM3);
+				TI1_Config(TIM3, TIM_ICPolarity_BothEdge, TIM_ICSelection_DirectTI, 0x0);
+				tim3_ch1.current_state = TIM_IC_CH_STATE_FALLING;
+				break;
+			
+			case TIM_IC_CH_STATE_FALLING:
+				tim3_ch1.falling = TIM_GetCapture1(TIM3);
+				tim3_ch1.period = tim3_ch1.falling - tim3_ch1.rising;
+				if(tim3_ch1.period < 0)
+				{
+					tim3_ch1.period = tim3_ch1.period + 0xFFFF;
+				}
+				tim3_ch1.current_state = TIM_IC_CH_STATE_RISING;
+				break;
+			
+			case TIM_IC_CH_STATE_RISING:
+				tim3_ch1.rising = TIM_GetCapture1(TIM3);
+				tim3_ch1.current_state = TIM_IC_CH_STATE_FALLING;
+        break;
+
+		}
+		TIM_ClearITPendingBit(TIM3,TIM_IT_CC1);
+	}
+
+  	if(TIM_GetITStatus(TIM3, TIM_IT_CC2) != RESET)
+	{
+		switch (tim3_ch2.current_state)
+		{
+			case TIM_IC_CH_STATE_FIRST:
+				tim3_ch2.rising = TIM_GetCapture2(TIM3);
+				TI2_Config(TIM3, TIM_ICPolarity_BothEdge, TIM_ICSelection_DirectTI, 0x0);
+				tim3_ch2.current_state = TIM_IC_CH_STATE_FALLING;
+				break;
+			
+			case TIM_IC_CH_STATE_FALLING:
+				tim3_ch2.falling = TIM_GetCapture2(TIM3);
+				tim3_ch2.period = tim3_ch2.falling - tim3_ch2.rising;
+				if(tim3_ch2.period < 0)
+				{
+					tim3_ch2.period = tim3_ch2.period + 0xFFFF;
+				}
+				tim3_ch2.current_state = TIM_IC_CH_STATE_RISING;
+				break;
+			
+			case TIM_IC_CH_STATE_RISING:
+				tim3_ch2.rising = TIM_GetCapture2(TIM3);
+				tim3_ch2.current_state = TIM_IC_CH_STATE_FALLING;
+        break;
+
+		}
+		TIM_ClearITPendingBit(TIM3,TIM_IT_CC2);
+	}
+
+  	if(TIM_GetITStatus(TIM3, TIM_IT_CC3) != RESET)
+	{
+		switch (tim3_ch3.current_state)
+		{
+			case TIM_IC_CH_STATE_FIRST:
+				tim3_ch3.rising = TIM_GetCapture3(TIM3);
+				TI3_Config(TIM3, TIM_ICPolarity_BothEdge, TIM_ICSelection_DirectTI, 0x0);
+				tim3_ch3.current_state = TIM_IC_CH_STATE_FALLING;
+				break;
+			
+			case TIM_IC_CH_STATE_FALLING:
+				tim3_ch3.falling = TIM_GetCapture3(TIM3);
+				tim3_ch3.period = tim3_ch3.falling - tim3_ch3.rising;
+				if(tim3_ch3.period < 0)
+				{
+					tim3_ch3.period = tim3_ch3.period + 0xFFFF;
+				}
+				tim3_ch3.current_state = TIM_IC_CH_STATE_RISING;
+				break;
+			
+			case TIM_IC_CH_STATE_RISING:
+				tim3_ch3.rising = TIM_GetCapture3(TIM3);
+				tim3_ch3.current_state = TIM_IC_CH_STATE_FALLING;
+        break;
+
+		}
+		TIM_ClearITPendingBit(TIM3,TIM_IT_CC3);
+	}
+
+  	if(TIM_GetITStatus(TIM3, TIM_IT_CC4) != RESET)
+	{
+		switch (tim3_ch4.current_state)
+		{
+			case TIM_IC_CH_STATE_FIRST:
+				tim3_ch4.rising = TIM_GetCapture4(TIM3);
+				TI4_Config(TIM3, TIM_ICPolarity_BothEdge, TIM_ICSelection_DirectTI, 0x0);
+				tim3_ch4.current_state = TIM_IC_CH_STATE_FALLING;
+				break;
+			
+			case TIM_IC_CH_STATE_FALLING:
+				tim3_ch4.falling = TIM_GetCapture4(TIM3);
+				tim3_ch4.period = tim3_ch4.falling - tim3_ch4.rising;
+				if(tim3_ch4.period < 0)
+				{
+					tim3_ch4.period = tim3_ch4.period + 0xFFFF;
+				}
+				tim3_ch4.current_state = TIM_IC_CH_STATE_RISING;
+				break;
+			
+			case TIM_IC_CH_STATE_RISING:
+				tim3_ch4.rising = TIM_GetCapture4(TIM3);
+				tim3_ch4.current_state = TIM_IC_CH_STATE_FALLING;
+        break;
+
+		}
+		TIM_ClearITPendingBit(TIM3,TIM_IT_CC4);
+	}
+
+	__enable_irq();
+}
+

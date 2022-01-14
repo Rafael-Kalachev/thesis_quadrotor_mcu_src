@@ -49,6 +49,11 @@ typedef struct TIM_IC_CH_STRUCT
 extern tim_ic_ch_state_struct  tim5_ch1;
 extern tim_ic_ch_state_struct  tim5_ch4;
 
+extern tim_ic_ch_state_struct  tim3_ch1;
+extern tim_ic_ch_state_struct  tim3_ch2;
+extern tim_ic_ch_state_struct  tim3_ch3;
+extern tim_ic_ch_state_struct  tim3_ch4;
+
 
 
 /**
