@@ -220,7 +220,7 @@ int main(void)
 	GPIO_InitStruct.GPIO_Pin  = PINS;
 	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
 	GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;
-	GPIO_InitStruct.GPIO_OType = GPIO_OType_PP; //TODO change to OD later for 5V 
+	GPIO_InitStruct.GPIO_OType = GPIO_OType_OD; //TODO change to OD later for 5V 
 	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;
 
 	GPIO_Init(GPIO_PORT, &GPIO_InitStruct);	
@@ -263,7 +263,7 @@ int main(void)
 	TIM_OC4Init(TIM2, &oc_init );
 
 
-	TIM2->CCR1 = 1000;
+	TIM2->CCR1 = 900;
 	TIM2->CCR2 = 1500;
 	TIM2->CCR3 = 1750;
 	
@@ -513,10 +513,31 @@ int main(void)
 
 
 
-			for(a=0; a < 5000000; ++a)
+			for(a=0; a < 50000000; ++a)
 			{
 				__NOP;
-			}	
+			}
+			TIM2->CCR1 = 1100;
+			for(a=0; a < 50000000; ++a)
+			{
+				__NOP;
+			}
+			TIM2->CCR1 = 1200;
+			for(a=0; a < 50000000; ++a)
+			{
+				__NOP;
+			}
+			TIM2->CCR1 = 1300;
+			for(a=0; a < 50000000; ++a)
+			{
+				__NOP;
+			}
+			TIM2->CCR1 = 1400;
+			for(a=0; a < 50000000; ++a)
+			{
+				__NOP;
+			}
+			TIM2->CCR1 = 1500;
 		/*
 		GPIO_SetBits(GPIO_PORT, PINS );
 		for(a=0; a < 5000000; ++a)
@@ -775,31 +796,31 @@ void TIM2_IRQHandler()
 	if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)
 	{
 		TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
-		GPIO_ToggleBits(GPIO_PORT, PINS);
+		GPIO_SetBits(GPIO_PORT, PINS);
 	}
 
 	if(TIM_GetITStatus(TIM2, TIM_IT_CC1) != RESET)
 	{
 		TIM_ClearITPendingBit(TIM2, TIM_IT_CC1);
-		GPIO_ToggleBits(GPIO_PORT, GPIO_Pin_12);
+		GPIO_ResetBits(GPIO_PORT, GPIO_Pin_12);
 	}
 
 	if(TIM_GetITStatus(TIM2, TIM_IT_CC2) != RESET)
 	{
 		TIM_ClearITPendingBit(TIM2, TIM_IT_CC2);
-		GPIO_ToggleBits(GPIO_PORT, GPIO_Pin_13);
+		GPIO_ResetBits(GPIO_PORT, GPIO_Pin_13);
 	}
 
 	if(TIM_GetITStatus(TIM2, TIM_IT_CC3) != RESET)
 	{
 		TIM_ClearITPendingBit(TIM2, TIM_IT_CC3);
-		GPIO_ToggleBits(GPIO_PORT, GPIO_Pin_14);
+		GPIO_ResetBits(GPIO_PORT, GPIO_Pin_14);
 	}
 
 	if(TIM_GetITStatus(TIM2, TIM_IT_CC4) != RESET)
 	{
 		TIM_ClearITPendingBit(TIM2, TIM_IT_CC4);
-		GPIO_ToggleBits(GPIO_PORT, GPIO_Pin_15);
+		GPIO_ResetBits(GPIO_PORT, GPIO_Pin_15);
 	}
 	__enable_irq();
 }
