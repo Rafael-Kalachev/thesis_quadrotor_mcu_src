@@ -382,7 +382,7 @@ int main(void)
 	tim_ic.TIM_Channel = TIM_Channel_4;
 	TIM_ICInit(TIM3, &tim_ic);
 
-	TIM_ITConfig(TIM3,  TIM_IT_CC1 | TIM_IT_CC2 | TIM_IT_CC2 | TIM_IT_CC4 , ENABLE);
+	TIM_ITConfig(TIM3,  TIM_IT_CC1 | TIM_IT_CC2 | TIM_IT_CC3 | TIM_IT_CC4 , ENABLE);
 
 	TIM_Cmd(TIM3, ENABLE);
 
