@@ -55,5 +55,14 @@ int float_to_str(float32_t number, char* out_str, uint8_t after_point, uint8_t b
 int int_to_str(int number, char* out_str, uint8_t digits);
 
 
+/**
+ * @description: Convert String to int
+ * @param number_out: a int* where the result will be written.
+ * @param str: pointer to an allocated and filled '\0' terminated string that will be converted.
+ * @return number of chars converted, if number is 0 then conversion failed.
+*/
+int str_to_int(char *str, int* number_out);
+
+
 
 #endif /*M_MATH_CONVERT_H*/

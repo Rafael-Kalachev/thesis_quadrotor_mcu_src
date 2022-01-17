@@ -55,6 +55,24 @@ int int_to_str(int number, char *out_str, uint8_t digits)
     return count;
 }
 
+int str_to_int(char *str, int* number_out)
+{
+    int result = 0;
+    int output = 0;
+    char cur_char = *str;
+
+    while(cur_char>= '0' && cur_char <= '9')
+    {
+        ++result;
+        ++str;
+        output = output *10 + cur_char - '0';
+        cur_char = *str;
+    }
+
+    *number_out = output;
+    return result;
+}
+
 
 int float_to_str(float32_t number, char* out_str, uint8_t after_point, uint8_t before_point)
 {

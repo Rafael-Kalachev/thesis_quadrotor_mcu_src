@@ -6,7 +6,7 @@
 #include "m_project_specific/inc/extended_kalman_filter.h"
 #include "m_project_specific/inc/read_joystick.h"
 
-#define PINS   ( GPIO_Pin_12 |  GPIO_Pin_13 |  GPIO_Pin_14 | GPIO_Pin_15)
+#define PINS   ( GPIO_Pin_1 |  GPIO_Pin_3 |  GPIO_Pin_5 | GPIO_Pin_7)
 #define GPIO_PORT  (GPIOD)
 
 
@@ -430,7 +430,7 @@ int main(void)
 
 	while(1) // this function can be called slower as you add data to be sent
 	{
-		
+		/*
 		// DATA GATHER 
 		
 		_i2c3_io_struct.address =  0xD6;
@@ -509,9 +509,9 @@ int main(void)
 			USART_SendText("PERIOD34: ");
 			USART_SendFloat(p34/4,1);
 			USART_SendText("\n");
+*/
 
-
-
+/*
 
 			for(a=0; a < 50000000; ++a)
 			{
@@ -538,6 +538,7 @@ int main(void)
 				__NOP;
 			}
 			TIM2->CCR1 = 1500;
+			*/
 		/*
 		GPIO_SetBits(GPIO_PORT, PINS );
 		for(a=0; a < 5000000; ++a)
@@ -802,27 +803,30 @@ void TIM2_IRQHandler()
 	if(TIM_GetITStatus(TIM2, TIM_IT_CC1) != RESET)
 	{
 		TIM_ClearITPendingBit(TIM2, TIM_IT_CC1);
-		GPIO_ResetBits(GPIO_PORT, GPIO_Pin_12);
+		GPIO_ResetBits(GPIO_PORT, GPIO_Pin_1);
 	}
 
 	if(TIM_GetITStatus(TIM2, TIM_IT_CC2) != RESET)
 	{
 		TIM_ClearITPendingBit(TIM2, TIM_IT_CC2);
-		GPIO_ResetBits(GPIO_PORT, GPIO_Pin_13);
+		GPIO_ResetBits(GPIO_PORT, GPIO_Pin_3);
 	}
 
 	if(TIM_GetITStatus(TIM2, TIM_IT_CC3) != RESET)
 	{
 		TIM_ClearITPendingBit(TIM2, TIM_IT_CC3);
-		GPIO_ResetBits(GPIO_PORT, GPIO_Pin_14);
+		GPIO_ResetBits(GPIO_PORT, GPIO_Pin_5);
 	}
 
 	if(TIM_GetITStatus(TIM2, TIM_IT_CC4) != RESET)
 	{
 		TIM_ClearITPendingBit(TIM2, TIM_IT_CC4);
-		GPIO_ResetBits(GPIO_PORT, GPIO_Pin_15);
+		GPIO_ResetBits(GPIO_PORT, GPIO_Pin_7);
 	}
 	__enable_irq();
 }
+
+
+
 
 
