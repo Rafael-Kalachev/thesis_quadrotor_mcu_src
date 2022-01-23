@@ -338,7 +338,7 @@ int main(void)
 
  
 	TIM_TimeBaseInitTypeDef timerInitStructure; 
-	timerInitStructure.TIM_Prescaler = 20; /*TEST*/
+	timerInitStructure.TIM_Prescaler = 419; /*TEST*/
 	timerInitStructure.TIM_CounterMode = TIM_CounterMode_Up;
 	timerInitStructure.TIM_Period = 0xFFFF;
 	timerInitStructure.TIM_ClockDivision = TIM_CKD_DIV1;
@@ -391,7 +391,7 @@ int main(void)
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
 
-	timerInitStructure.TIM_Prescaler = 20; /*TEST*/
+	timerInitStructure.TIM_Prescaler = 20; 
 	timerInitStructure.TIM_CounterMode = TIM_CounterMode_Up;
 	timerInitStructure.TIM_Period = 0xFFFF;
 	timerInitStructure.TIM_ClockDivision = TIM_CKD_DIV1;
@@ -626,12 +626,12 @@ int main(void)
 			__NOP;
 		}
 		GPIO_ResetBits(GPIO_PORT, PINS );
-
-		for(a=0; a < 1000000; ++a)
+		*/
+		for(a=0; a < 50000000; ++a)
 		{
 			__NOP;
 		}
-		*/
+		
 
 	}
 }

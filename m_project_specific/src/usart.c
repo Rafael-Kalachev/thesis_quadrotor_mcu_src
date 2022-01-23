@@ -63,7 +63,7 @@ void USART_SendNumber(int32_t x)
 void USART_SendFloat(float32_t x, uint8_t precision)
 {
 	char value[20]; //a temp array to hold results of conversion
-	int count = float_to_str(x, value, precision, 0);
+	int count = float_to_str(x, value, precision, 1);
 	int i = 0;
 
 	for(i = 0; i < count; ++i)
