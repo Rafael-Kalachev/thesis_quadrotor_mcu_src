@@ -554,7 +554,7 @@ int main(void)
 
 		USART_SendText("\n");
 
-
+		/*
 			float32_t p51 = tim5_ch1.period;
 			float32_t p54 = tim5_ch4.period;
 			float32_t p31 = tim3_ch1.period;
@@ -591,7 +591,7 @@ int main(void)
 			USART_SendFloat(p34/4,1);
 			USART_SendText("\n");
 
-/*
+
 
 			for(a=0; a < 50000000; ++a)
 			{
@@ -618,8 +618,7 @@ int main(void)
 				__NOP;
 			}
 			TIM2->CCR1 = 1500;
-			*/
-		/*
+
 		GPIO_SetBits(GPIO_PORT, PINS );
 		for(a=0; a < 5000000; ++a)
 		{
@@ -627,7 +626,7 @@ int main(void)
 		}
 		GPIO_ResetBits(GPIO_PORT, PINS );
 		*/
-		for(a=0; a < 50000000; ++a)
+		for(a=0; a < 1000000; ++a)
 		{
 			__NOP;
 		}

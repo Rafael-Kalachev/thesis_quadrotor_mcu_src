@@ -6,6 +6,7 @@
         "stm32f4xx_conf.h": "c",
         "assert.h": "c",
         "float.h": "c",
-        "algorithm": "c"
+        "algorithm": "c",
+        "random": "c"
     }
 }
