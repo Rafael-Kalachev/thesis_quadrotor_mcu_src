@@ -20,6 +20,46 @@
 
 
 
+/* This function sends data over SPI1 peripheral to a certain register address */
+void SPI_Tx(uint8_t address, uint8_t data)
+{
+  GPIO_ResetBits(GPIOE, GPIO_Pin_3);
+
+  while(!SPI_I2S_GetFlagStatus(SPI4, SPI_I2S_FLAG_TXE));
+  SPI_I2S_SendData(SPI4, address);
+  while(!SPI_I2S_GetFlagStatus(SPI4, SPI_I2S_FLAG_RXNE));
+  SPI_I2S_ReceiveData(SPI4);
+  while(!SPI_I2S_GetFlagStatus(SPI4, SPI_I2S_FLAG_TXE));
+  SPI_I2S_SendData(SPI4, data);
+  while(!SPI_I2S_GetFlagStatus(SPI4, SPI_I2S_FLAG_RXNE));
+  SPI_I2S_ReceiveData(SPI4);
+
+  GPIO_SetBits(GPIOE, GPIO_Pin_3);
+}
+
+/* This function returns data from a certain address over SPI1 peripheral */
+uint8_t SPI_Rx(uint8_t address)
+{
+  GPIO_ResetBits(GPIOE, GPIO_Pin_3);
+  address = 0x00 | address; // this part can be different for your SPI device (this works only on nrf..)
+  while(!SPI_I2S_GetFlagStatus(SPI4, SPI_I2S_FLAG_TXE));
+  SPI_I2S_SendData(SPI4, address);
+  while(!SPI_I2S_GetFlagStatus(SPI4, SPI_I2S_FLAG_RXNE));
+  SPI_I2S_ReceiveData(SPI4);
+  while(!SPI_I2S_GetFlagStatus(SPI4, SPI_I2S_FLAG_TXE));
+  SPI_I2S_SendData(SPI4, 0x00);
+  while(!SPI_I2S_GetFlagStatus(SPI4, SPI_I2S_FLAG_RXNE));
+
+  GPIO_SetBits(GPIOE, GPIO_Pin_3);
+
+  return SPI_I2S_ReceiveData(SPI4);
+}
+
+
+
+
+
+
 void __int_log_msg(volatile char *s)
 {
 	USART_SendText(s);
@@ -263,9 +303,10 @@ int main(void)
 	TIM_OC4Init(TIM2, &oc_init );
 
 
-	TIM2->CCR1 = 900;
-	TIM2->CCR2 = 1500;
-	TIM2->CCR3 = 1750;
+	TIM2->CCR1 = 950;
+	TIM2->CCR2 = 950;
+	TIM2->CCR3 = 950;
+	TIM2->CCR4 = 950;
 	
 
 	TIM_ITConfig(TIM2, TIM_IT_Update | TIM_IT_CC1 | TIM_IT_CC2 | TIM_IT_CC3 | TIM_IT_CC4 , ENABLE);
@@ -403,6 +444,47 @@ int main(void)
 
 
 
+	// SPI
+
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOE, ENABLE);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI4, ENABLE);
+
+
+	GPIO_InitStruct.GPIO_Pin  = GPIO_Pin_2 | GPIO_Pin_5 | GPIO_Pin_6;
+	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_AF;
+	GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;
+	GPIO_Init(GPIOE, &GPIO_InitStruct);
+
+	// Connect pins to AF pins of SPI1
+	GPIO_PinAFConfig(GPIOE, GPIO_PinSource2, GPIO_AF_SPI4);
+	GPIO_PinAFConfig(GPIOE, GPIO_PinSource5, GPIO_AF_SPI4);
+	GPIO_PinAFConfig(GPIOE, GPIO_PinSource6, GPIO_AF_SPI4);
+
+	// Setup GPIOE pin for chip select for onboard SPI device
+	GPIO_InitStruct.GPIO_Pin  = GPIO_Pin_3;
+	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
+	GPIO_Init(GPIOE, &GPIO_InitStruct);
+	GPIO_SetBits(GPIOE, GPIO_Pin_3);
+
+	SPI_InitTypeDef SPI_InitStruct;
+
+	SPI_InitStruct.SPI_Direction = SPI_Direction_2Lines_FullDuplex;
+	SPI_InitStruct.SPI_Mode = SPI_Mode_Master;
+	SPI_InitStruct.SPI_DataSize = SPI_DataSize_8b;
+	SPI_InitStruct.SPI_CPOL = SPI_CPOL_High;
+	SPI_InitStruct.SPI_CPHA = SPI_CPHA_2Edge;
+	SPI_InitStruct.SPI_NSS = SPI_NSS_Soft | SPI_NSSInternalSoft_Set;
+	SPI_InitStruct.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_256;
+	SPI_InitStruct.SPI_FirstBit = SPI_FirstBit_MSB;
+	SPI_InitStruct.SPI_CRCPolynomial = 7;
+	SPI_Init(SPI4, &SPI_InitStruct);
+	SPI_Cmd(SPI4, ENABLE);
+
+
+
+
 
 
 
@@ -430,7 +512,6 @@ int main(void)
 
 	while(1) // this function can be called slower as you add data to be sent
 	{
-		/*
 		// DATA GATHER 
 		
 		_i2c3_io_struct.address =  0xD6;
@@ -509,7 +590,6 @@ int main(void)
 			USART_SendText("PERIOD34: ");
 			USART_SendFloat(p34/4,1);
 			USART_SendText("\n");
-*/
 
 /*
 

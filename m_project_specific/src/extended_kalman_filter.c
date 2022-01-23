@@ -96,14 +96,14 @@ void ekf_init()
     float32_t wy = CAL_D * (pi / 180);
     float32_t wz = CAL_D * (pi / 180);
 
-	float32_t dt = 50.0;
+	float32_t dt = 50.0; //Hz (later inverted to period)
 	float32_t *Fp = F_f32;
 	float32_t *Hp = H_f32;
 
 	float32_t norm = 0;
 
 
-	dt = 1/dt;
+	dt = 1/dt; //dt
 	dt = dt/2.0;
 
 	x_f32[0] = q0 + dt * (-q1*(wx-wxb) - q2*(wy-wyb) - q3*(wz-wzb));
