@@ -10,7 +10,7 @@
 #define GPIO_PORT  (GPIOD)
 
 
-#define DISABLE_LOGGING
+//#define DISABLE_LOGGING
 
 #ifndef DISABLE_LOGGING
 	#define log_msg(ARG) __int_log_msg(ARG)
@@ -84,7 +84,6 @@ float32_t A_inv_f32[3*3] =
 uint8_t buffer[16];
 
 float32_t inv_int16_max = (float32_t) 1 / (float32_t) INT16_MAX;
-
 
 
 
@@ -303,10 +302,10 @@ int main(void)
 	TIM_OC4Init(TIM2, &oc_init );
 
 
-	TIM2->CCR1 = 950;
-	TIM2->CCR2 = 950;
-	TIM2->CCR3 = 950;
-	TIM2->CCR4 = 950;
+	TIM2->CCR1 = 900;
+	TIM2->CCR2 = 900;
+	TIM2->CCR3 = 900;
+	TIM2->CCR4 = 900;
 	
 
 	TIM_ITConfig(TIM2, TIM_IT_Update | TIM_IT_CC1 | TIM_IT_CC2 | TIM_IT_CC3 | TIM_IT_CC4 , ENABLE);
@@ -484,7 +483,12 @@ int main(void)
 
 
 
-
+	for(a=0; a < 50000000; ++a)
+	{
+		__NOP;
+	}
+	TIM2->CCR1 = 960;
+	
 
 
 
@@ -521,7 +525,7 @@ int main(void)
 		_i2c3_io_struct.state = I2C_IO_STATE_REGISTER_READ_START;
 		I2C_GenerateSTART(I2C3, ENABLE);
 
-		while(_i2c3_io_struct.state != I2C_IO_STATE_REGISTER_READ_STOP);
+		while(!(_i2c3_io_struct.state == I2C_IO_STATE_REGISTER_READ_STOP || _i2c3_io_struct.state == I2C_IO_STATE_ERROR));
 
 		float32_t temperature = ((int16_t)((int32_t) buffer[0]  + ((int32_t) buffer[1]  << 8 ))) * inv_int16_max;
 		float32_t gyro_x      = ((int16_t)((int32_t) buffer[2]  + ((int32_t) buffer[3]  << 8 ))) * inv_int16_max;
@@ -554,7 +558,7 @@ int main(void)
 
 		USART_SendText("\n");
 
-		/*
+
 			float32_t p51 = tim5_ch1.period;
 			float32_t p54 = tim5_ch4.period;
 			float32_t p31 = tim3_ch1.period;
@@ -593,44 +597,48 @@ int main(void)
 
 
 
+			/*for(a=0; a < 50000000; ++a)
+			{
+				__NOP;
+			}
+			*/
+			TIM2->CCR1 = p34/4.01;
+			TIM2->CCR2 = p34/4.01;
+			TIM2->CCR3 = p34/4.01;
+			TIM2->CCR4 = p34/4.01;
+			/*
 			for(a=0; a < 50000000; ++a)
 			{
 				__NOP;
 			}
 			TIM2->CCR1 = 1100;
+			TIM2->CCR3 = 1100;
+			TIM2->CCR2 = 1100;
+			TIM2->CCR4 = 1100;
+
 			for(a=0; a < 50000000; ++a)
 			{
 				__NOP;
 			}
 			TIM2->CCR1 = 1200;
-			for(a=0; a < 50000000; ++a)
-			{
-				__NOP;
-			}
-			TIM2->CCR1 = 1300;
-			for(a=0; a < 50000000; ++a)
-			{
-				__NOP;
-			}
-			TIM2->CCR1 = 1400;
-			for(a=0; a < 50000000; ++a)
-			{
-				__NOP;
-			}
-			TIM2->CCR1 = 1500;
+			TIM2->CCR2 = 1200;
+			TIM2->CCR3 = 1200;
+			TIM2->CCR4 = 1200;
+			*/
 
+	/*
 		GPIO_SetBits(GPIO_PORT, PINS );
 		for(a=0; a < 5000000; ++a)
 		{
 			__NOP;
 		}
 		GPIO_ResetBits(GPIO_PORT, PINS );
-		*/
-		for(a=0; a < 1000000; ++a)
+		
+		for(a=0; a < 100000; ++a)
 		{
 			__NOP;
 		}
-		
+		*/	
 
 	}
 }
@@ -842,7 +850,7 @@ void I2C3_EV_IRQHandler()
 
 					if (_i2c3_io_struct.bytes_count == 0)
 					{
-						I2C3->CR1 |= 0b1<<9;
+						I2C3->CR1 |= I2C_CR1_STOP;/*0b1<<9;*/
 						_i2c3_io_struct.state = I2C_IO_STATE_REGISTER_READ_STOP;
 					}
 
@@ -858,6 +866,7 @@ void I2C3_EV_IRQHandler()
 
 
 		case I2C_IO_STATE_ERROR:
+			log_msg("I2C3: ERROR_STATE");
 			break;
 	}
 	__enable_irq();
@@ -866,7 +875,76 @@ void I2C3_EV_IRQHandler()
 
 void I2C3_ER_IRQHandler()
 {
-	log_msg("i2c2_ER_handler\n");
+	log_msg("I2C3_ER_Handler:");
+
+	if(I2C_GetFlagStatus(I2C3, I2C_FLAG_BERR))
+	{
+		log_msg("BERR");
+		I2C_ClearFlag(I2C3, I2C_FLAG_BERR);
+		I2C3->CR1 |= I2C_CR1_STOP;
+		_i2c3_io_struct.state = I2C_IO_STATE_ERROR;
+
+	}
+
+	if(I2C_GetFlagStatus(I2C3, I2C_FLAG_ARLO))
+	{
+		log_msg("ARLO");
+		I2C_ClearFlag(I2C3, I2C_FLAG_ARLO);
+		I2C3->CR1 |= I2C_CR1_STOP;
+		_i2c3_io_struct.state = I2C_IO_STATE_ERROR;
+
+		// enable i2c 
+		I2C_InitTypeDef I2C_init_struct;
+		I2C_StructInit(&I2C_init_struct);
+		I2C_init_struct.I2C_Ack = I2C_Ack_Enable;
+		I2C_init_struct.I2C_Mode = I2C_Mode_I2C;
+		I2C_init_struct.I2C_ClockSpeed = 100000;
+		I2C_Init(I2C3, &I2C_init_struct);
+
+
+		volatile I2C_TypeDef* i2c3 = I2C3;
+		i2c3->CR2 |= (0b111 << 8); /*enable interrupts*/
+		//USART_SendNumber(1);
+
+		I2C_Cmd(I2C3, ENABLE);
+
+
+	}
+	
+	if(I2C_GetFlagStatus(I2C3, I2C_FLAG_AF))
+	{
+		log_msg("AF");
+		I2C_ClearFlag(I2C3, I2C_FLAG_AF);
+		I2C3->CR1 |= I2C_CR1_STOP;
+		_i2c3_io_struct.state = I2C_IO_STATE_ERROR;
+		
+	}
+	
+	if(I2C_GetFlagStatus(I2C3, I2C_FLAG_OVR))
+	{
+		log_msg("OVR");
+		I2C_ClearFlag(I2C3, I2C_FLAG_OVR);
+		I2C3->CR1 |= I2C_CR1_STOP;
+		_i2c3_io_struct.state = I2C_IO_STATE_ERROR;		
+	}
+	
+	if(I2C_GetFlagStatus(I2C3, I2C_FLAG_PECERR))
+	{
+		log_msg("PCEERR");
+		I2C_ClearFlag(I2C3, I2C_FLAG_PECERR);
+		I2C3->CR1 |= I2C_CR1_STOP;
+		_i2c3_io_struct.state = I2C_IO_STATE_ERROR;	
+	}
+	
+	if(I2C_GetFlagStatus(I2C3, I2C_FLAG_TIMEOUT))
+	{
+		log_msg("TIMEOUT");
+		I2C_ClearFlag(I2C3, I2C_FLAG_TIMEOUT);
+		I2C3->CR1 |= I2C_CR1_STOP;
+		_i2c3_io_struct.state = I2C_IO_STATE_ERROR;	
+	}
+
+	log_msg("END");
 
 }
 
