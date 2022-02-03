@@ -5,18 +5,20 @@
 #include "m_project_specific/inc/usart.h"
 #include "m_project_specific/inc/extended_kalman_filter.h"
 #include "m_project_specific/inc/read_joystick.h"
+#include <math.h>
 
 #define PINS   ( GPIO_Pin_1 |  GPIO_Pin_3 |  GPIO_Pin_5 | GPIO_Pin_7)
 #define GPIO_PORT  (GPIOD)
 
 
-//#define DISABLE_LOGGING
+#define DISABLE_LOGGING
 
 #ifndef DISABLE_LOGGING
 	#define log_msg(ARG) __int_log_msg(ARG)
 #else
 	#define log_msg(ARG) do{}while(0)
 #endif
+
 
 
 
@@ -120,12 +122,33 @@ typedef struct I2C_IO_STRUCT
 	__IO uint8_t  register_address;
 	__IO uint8_t  bytes_count;
 	__IO i2c_io_state_enum state;
+	__IO uint8_t  is_in_irq;
 } I2C_io_t;
 
 
 I2C_io_t _i2c3_io_struct  = { 
 	.buffer = NULL,
+	.state  = I2C_IO_STATE_NOT_INITIALIZED,
+	.is_in_irq = 0};
+
+I2C_io_t _i2c3_io_struct_stage  = { 
+	.buffer = NULL,
 	.state  = I2C_IO_STATE_NOT_INITIALIZED };
+
+void I2C_load(I2C_io_t* i2c_stage_struct)
+{
+	while ( _i2c3_io_struct.is_in_irq ||
+	 !(	_i2c3_io_struct.state == I2C_IO_STATE_REGISTER_READ_STOP ||
+	 	_i2c3_io_struct.state == I2C_IO_STATE_REGISTER_WRITE_STOP ||
+	 	_i2c3_io_struct.state == I2C_IO_STATE_ERROR || 
+		_i2c3_io_struct.state == I2C_IO_STATE_NOT_INITIALIZED ) );
+	
+	_i2c3_io_struct.buffer = i2c_stage_struct->buffer;
+	_i2c3_io_struct.address = i2c_stage_struct->address;
+	_i2c3_io_struct.register_address = i2c_stage_struct->register_address;
+	_i2c3_io_struct.bytes_count = i2c_stage_struct->bytes_count;
+	_i2c3_io_struct.state = i2c_stage_struct->state;
+}
 
 
 int main(void)
@@ -190,14 +213,14 @@ int main(void)
 	NVIC_InitTypeDef nvic_i2c_init;
 	nvic_i2c_init.NVIC_IRQChannel = I2C3_EV_IRQn;
 	nvic_i2c_init.NVIC_IRQChannelCmd = ENABLE;
-	nvic_i2c_init.NVIC_IRQChannelPreemptionPriority = 1;
+	nvic_i2c_init.NVIC_IRQChannelPreemptionPriority = 3;
 	nvic_i2c_init.NVIC_IRQChannelSubPriority = 0;
 	NVIC_Init(&nvic_i2c_init);
 	//USART_SendNumber(1);
 
 	nvic_i2c_init.NVIC_IRQChannel = I2C3_ER_IRQn;
 	nvic_i2c_init.NVIC_IRQChannelCmd = ENABLE;
-	nvic_i2c_init.NVIC_IRQChannelPreemptionPriority = 1;
+	nvic_i2c_init.NVIC_IRQChannelPreemptionPriority = 3;
 	nvic_i2c_init.NVIC_IRQChannelSubPriority = 0;
 	NVIC_Init(&nvic_i2c_init);
 
@@ -206,24 +229,25 @@ int main(void)
 	uint8_t bytes = 16;
 
 	// CONFIGURE ACC GYRO   FIFO
-	_i2c3_io_struct.address =  0xD6;
-	_i2c3_io_struct.register_address =0x06;
+	_i2c3_io_struct_stage.address =  0xD6;
+	_i2c3_io_struct_stage.register_address =0x06;
 	buffer[0] = 0x00; //addr: 0x06
 	buffer[1] = 0x00; //addr: 0x07
 	buffer[2] = 0x00; //addr: 0x08
 	buffer[3] = 0x00; //addr: 0x09
 	buffer[4] = 0x00; //addr: 0x0A
 	buffer[5] = 0x00; //addr: 0x0B
-	_i2c3_io_struct.buffer = buffer;
-	_i2c3_io_struct.bytes_count = 6;
-	_i2c3_io_struct.state = I2C_IO_STATE_REGISTER_WRITE_START;
+	_i2c3_io_struct_stage.buffer = buffer;
+	_i2c3_io_struct_stage.bytes_count = 6;
+	_i2c3_io_struct_stage.state = I2C_IO_STATE_REGISTER_WRITE_START;
+	I2C_load(&_i2c3_io_struct_stage);
 	I2C_GenerateSTART(I2C3, ENABLE);
 
 	while(_i2c3_io_struct.state != I2C_IO_STATE_REGISTER_WRITE_STOP);
 
 	// CONFIGURE ACC GYRO  PARAMETERS
-	_i2c3_io_struct.address =  0xD6;
-	_i2c3_io_struct.register_address =0x10;
+	_i2c3_io_struct_stage.address =  0xD6;
+	_i2c3_io_struct_stage.register_address =0x10;
 	buffer[0] = 0x3B; //addr: 0x10 (ACCELEROMETER samp_rate=52Hz, full_scale=+-4g, filter=50Hz)
 	buffer[1] = 0x34; //addr: 0x11 (GYRO samp_rate=52Hz, deg_per_second=500)
 	buffer[2] = 0x04; //addr: 0x12 (DEFAULT)
@@ -234,9 +258,28 @@ int main(void)
 	buffer[7] = 0x00; //addr: 0x17 (DEFAULT)
 	buffer[8] = 0x38; //addr: 0x18 (DEFAULT)
 	buffer[9] = 0x38; //addr: 0x19 (DEFAULT)
-	_i2c3_io_struct.buffer = buffer;
-	_i2c3_io_struct.bytes_count = 10;
-	_i2c3_io_struct.state = I2C_IO_STATE_REGISTER_WRITE_START;
+	_i2c3_io_struct_stage.buffer = buffer;
+	_i2c3_io_struct_stage.bytes_count = 10;
+	_i2c3_io_struct_stage.state = I2C_IO_STATE_REGISTER_WRITE_START;
+	I2C_load(&_i2c3_io_struct_stage);
+	I2C_GenerateSTART(I2C3, ENABLE);
+
+
+	while(_i2c3_io_struct.state != I2C_IO_STATE_REGISTER_WRITE_STOP);
+
+
+		// CONFIGURE MAGNETOMETER  PARAMETERS
+	_i2c3_io_struct_stage.address =  0x3C;
+	_i2c3_io_struct_stage.register_address =0x20;
+	buffer[0] = 0b00011100; //addr: 0x20 (NO_TEMP_SENS, OM=ULP, ODR=80Hz)
+	buffer[1] = 0b00100000; //addr: 0x21 ( FS=+-8gauss, )
+	buffer[2] = 0b00000000; //addr: 0x22 (LP=NO, SIM=4wire, OM=continious)
+	buffer[3] = 0b00000000; //addr: 0x23 (OMZ=LP, BLE=LSbLower)
+	buffer[4] = 0b00000000; //addr: 0x24 (DEFAULT)
+	_i2c3_io_struct_stage.buffer = buffer;
+	_i2c3_io_struct_stage.bytes_count = 5;
+	_i2c3_io_struct_stage.state = I2C_IO_STATE_REGISTER_WRITE_START;
+	I2C_load(&_i2c3_io_struct_stage);
 	I2C_GenerateSTART(I2C3, ENABLE);
 
 
@@ -280,8 +323,8 @@ int main(void)
 
 	NVIC_InitTypeDef nvicStructure2;
 	nvicStructure2.NVIC_IRQChannel = TIM2_IRQn;
-	nvicStructure2.NVIC_IRQChannelPreemptionPriority = 0;
-	nvicStructure2.NVIC_IRQChannelSubPriority = 1;
+	nvicStructure2.NVIC_IRQChannelPreemptionPriority = 1;
+	nvicStructure2.NVIC_IRQChannelSubPriority = 0;
 	nvicStructure2.NVIC_IRQChannelCmd = ENABLE;
 	NVIC_Init(&nvicStructure2);
 
@@ -513,28 +556,49 @@ int main(void)
 	ekf_init();
 	USART_SendText("<\n");
 
+	
+
 
 	while(1) // this function can be called slower as you add data to be sent
 	{
 		// DATA GATHER 
 		
-		_i2c3_io_struct.address =  0xD6;
-		_i2c3_io_struct.register_address =0x20;
-		_i2c3_io_struct.buffer = buffer;
-		_i2c3_io_struct.bytes_count = 14;
-		_i2c3_io_struct.state = I2C_IO_STATE_REGISTER_READ_START;
+		_i2c3_io_struct_stage.address =  0xD6;
+		_i2c3_io_struct_stage.register_address =0x20;
+		_i2c3_io_struct_stage.buffer = buffer;
+		_i2c3_io_struct_stage.bytes_count = 14;
+		_i2c3_io_struct_stage.state = I2C_IO_STATE_REGISTER_READ_START;
+		I2C_load(&_i2c3_io_struct_stage);
 		I2C_GenerateSTART(I2C3, ENABLE);
 
 		while(!(_i2c3_io_struct.state == I2C_IO_STATE_REGISTER_READ_STOP || _i2c3_io_struct.state == I2C_IO_STATE_ERROR));
 
-		float32_t temperature = ((int16_t)((int32_t) buffer[0]  + ((int32_t) buffer[1]  << 8 ))) * inv_int16_max;
+		float32_t temperature = ((int16_t)((int32_t) buffer[0]  + ((int32_t) buffer[1]  << 8 ))) /** inv_int16_max*/;
 		float32_t gyro_x      = ((int16_t)((int32_t) buffer[2]  + ((int32_t) buffer[3]  << 8 ))) * inv_int16_max;
 		float32_t gyro_y      = ((int16_t)((int32_t) buffer[4]  + ((int32_t) buffer[5]  << 8 ))) * inv_int16_max;
 		float32_t gyro_z      = ((int16_t)((int32_t) buffer[6]  + ((int32_t) buffer[7]  << 8 ))) * inv_int16_max;
 		float32_t acc_x	      = ((int16_t)((int32_t) buffer[8]  + ((int32_t) buffer[9]  << 8 ))) * inv_int16_max;
 		float32_t acc_y	      = ((int16_t)((int32_t) buffer[10] + ((int32_t) buffer[11] << 8 ))) * inv_int16_max;
 		float32_t acc_z	      = ((int16_t)((int32_t) buffer[12] + ((int32_t) buffer[13] << 8 ))) * inv_int16_max;
-	
+
+		_i2c3_io_struct_stage.address =  0x3C;
+		_i2c3_io_struct_stage.register_address =0x28;
+		_i2c3_io_struct_stage.buffer = buffer;
+		_i2c3_io_struct_stage.bytes_count = 6;
+		_i2c3_io_struct_stage.state = I2C_IO_STATE_REGISTER_READ_START;
+		I2C_load(&_i2c3_io_struct_stage);
+		I2C_GenerateSTART(I2C3, ENABLE);
+
+		while(!(_i2c3_io_struct.state == I2C_IO_STATE_REGISTER_READ_STOP || _i2c3_io_struct.state == I2C_IO_STATE_ERROR));
+
+		float32_t mag_x	      = ((int16_t)((int32_t) buffer[0]  + ((int32_t) buffer[1]  << 8 ))) * inv_int16_max;
+		float32_t mag_y	      = ((int16_t)((int32_t) buffer[2]  + ((int32_t) buffer[3]  << 8 ))) * inv_int16_max;
+		float32_t mag_z	      = ((int16_t)((int32_t) buffer[4]  + ((int32_t) buffer[5]  << 8 ))) * inv_int16_max;
+
+
+
+
+
 		USART_SendText("temp=");
 		USART_SendFloat(temperature, 5);
 
@@ -555,6 +619,15 @@ int main(void)
 
 		USART_SendText(" , acc_z=");
 		USART_SendFloat(acc_z, 5);
+		
+		USART_SendText(" ,  mag_x=");
+		USART_SendFloat(mag_x, 5);
+
+		USART_SendText(" , mag_y=");
+		USART_SendFloat(mag_y, 5);
+
+		USART_SendText(" , mag_z=");
+		USART_SendFloat(mag_z, 5);
 
 		USART_SendText("\n");
 
@@ -566,7 +639,7 @@ int main(void)
 			float32_t p33 = tim3_ch3.period;
 			float32_t p34 = tim3_ch4.period;
 
-
+/*
 			USART_SendText("PERIOD51: ");
 			USART_SendFloat(p51/4,1);
 			USART_SendText("\n");
@@ -594,18 +667,27 @@ int main(void)
 			USART_SendText("PERIOD34: ");
 			USART_SendFloat(p34/4,1);
 			USART_SendText("\n");
-
-
+*/
+			for(a=0; a < 7000; ++a)
+			{
+				__NOP;
+			}
 
 			/*for(a=0; a < 50000000; ++a)
 			{
 				__NOP;
 			}
 			*/
+
 			TIM2->CCR1 = p34/4.01;
 			TIM2->CCR2 = p34/4.01;
 			TIM2->CCR3 = p34/4.01;
 			TIM2->CCR4 = p34/4.01;
+
+			USART_SendText("PERIOD34: ");
+			USART_SendFloat(p34/4,1);
+			USART_SendText("\n");
+
 			/*
 			for(a=0; a < 50000000; ++a)
 			{
@@ -867,8 +949,13 @@ void I2C3_EV_IRQHandler()
 
 		case I2C_IO_STATE_ERROR:
 			log_msg("I2C3: ERROR_STATE");
+			I2C_SoftwareResetCmd(I2C3, ENABLE);
+
+			USART_SendText("A");
 			break;
 	}
+	USART_SendText("V");
+
 	__enable_irq();
 }
 
@@ -879,6 +966,7 @@ void I2C3_ER_IRQHandler()
 
 	if(I2C_GetFlagStatus(I2C3, I2C_FLAG_BERR))
 	{
+		USART_SendText("1");
 		log_msg("BERR");
 		I2C_ClearFlag(I2C3, I2C_FLAG_BERR);
 		I2C3->CR1 |= I2C_CR1_STOP;
@@ -888,31 +976,16 @@ void I2C3_ER_IRQHandler()
 
 	if(I2C_GetFlagStatus(I2C3, I2C_FLAG_ARLO))
 	{
+		USART_SendText("2");
 		log_msg("ARLO");
 		I2C_ClearFlag(I2C3, I2C_FLAG_ARLO);
 		I2C3->CR1 |= I2C_CR1_STOP;
 		_i2c3_io_struct.state = I2C_IO_STATE_ERROR;
-
-		// enable i2c 
-		I2C_InitTypeDef I2C_init_struct;
-		I2C_StructInit(&I2C_init_struct);
-		I2C_init_struct.I2C_Ack = I2C_Ack_Enable;
-		I2C_init_struct.I2C_Mode = I2C_Mode_I2C;
-		I2C_init_struct.I2C_ClockSpeed = 100000;
-		I2C_Init(I2C3, &I2C_init_struct);
-
-
-		volatile I2C_TypeDef* i2c3 = I2C3;
-		i2c3->CR2 |= (0b111 << 8); /*enable interrupts*/
-		//USART_SendNumber(1);
-
-		I2C_Cmd(I2C3, ENABLE);
-
-
 	}
 	
 	if(I2C_GetFlagStatus(I2C3, I2C_FLAG_AF))
 	{
+		USART_SendText("3");
 		log_msg("AF");
 		I2C_ClearFlag(I2C3, I2C_FLAG_AF);
 		I2C3->CR1 |= I2C_CR1_STOP;
@@ -922,6 +995,7 @@ void I2C3_ER_IRQHandler()
 	
 	if(I2C_GetFlagStatus(I2C3, I2C_FLAG_OVR))
 	{
+		USART_SendText("4");
 		log_msg("OVR");
 		I2C_ClearFlag(I2C3, I2C_FLAG_OVR);
 		I2C3->CR1 |= I2C_CR1_STOP;
@@ -930,6 +1004,7 @@ void I2C3_ER_IRQHandler()
 	
 	if(I2C_GetFlagStatus(I2C3, I2C_FLAG_PECERR))
 	{
+		USART_SendText("5");
 		log_msg("PCEERR");
 		I2C_ClearFlag(I2C3, I2C_FLAG_PECERR);
 		I2C3->CR1 |= I2C_CR1_STOP;
@@ -938,14 +1013,32 @@ void I2C3_ER_IRQHandler()
 	
 	if(I2C_GetFlagStatus(I2C3, I2C_FLAG_TIMEOUT))
 	{
+		USART_SendText("6");
 		log_msg("TIMEOUT");
 		I2C_ClearFlag(I2C3, I2C_FLAG_TIMEOUT);
 		I2C3->CR1 |= I2C_CR1_STOP;
 		_i2c3_io_struct.state = I2C_IO_STATE_ERROR;	
 	}
 
-	log_msg("END");
+	I2C_DeInit(I2C3);
+	
+	// enable i2c 
+	I2C_InitTypeDef I2C_init_struct;
+	I2C_StructInit(&I2C_init_struct);
+	I2C_init_struct.I2C_Ack = I2C_Ack_Enable;
+	I2C_init_struct.I2C_Mode = I2C_Mode_I2C;
+	I2C_init_struct.I2C_ClockSpeed = 100000;
+	I2C_Init(I2C3, &I2C_init_struct);
 
+
+	volatile I2C_TypeDef* i2c3 = I2C3;
+	i2c3->CR2 |= (0b111 << 8); /*enable interrupts*/
+	//USART_SendNumber(1);
+	
+	I2C_Cmd(I2C3, ENABLE);
+
+	log_msg("END");
+	USART_SendText("E");
 }
 
 void TIM2_IRQHandler()
@@ -983,7 +1076,31 @@ void TIM2_IRQHandler()
 	__enable_irq();
 }
 
+/*
+void NMI_Handler()
+{
+		USART_SendText("nmi\n");
+}
 
+void HardFault_Handler()
+{
+		USART_SendText("hf\n");
+}
 
+void MemManage_Handler()
+{
+		USART_SendText("mem-man\n");
+}
 
+void BusFault_Handler()
+{
+		USART_SendText("bf\n");
+}
 
+void UsageFault_Handler()
+{
+			USART_SendText("uf\n");
+
+}
+
+*/
