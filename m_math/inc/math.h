@@ -16,7 +16,8 @@ This module contains matrix definitions and calculations
 
 	#define PI	( 3.14159265359 )
 	#define RAD2DEG_CONV	( 180.0 / PI )
-	#define DEG2RAD_CONV	( PI / 180.0 )  
+	#define DEG2RAD_CONV	( PI / 180.0 ) 
+	#define INV_INT16_MAX   (float32_t)( (float32_t) 1 / (float32_t) INT16_MAX )
 
 
 /**

@@ -14,11 +14,14 @@ PROJECT_DEPS += std_perif/src/stm32f4xx_tim.o
 PROJECT_DEPS += std_perif/src/misc.o
 
 PROJECT_DEPS += m_math/src/convert.o
+PROJECT_DEPS += m_math/src/polinomial.o
+
 
 # Project specific modules
 PROJECT_DEPS += m_project_specific/src/usart.o
 PROJECT_DEPS += m_project_specific/src/extended_kalman_filter.o
 PROJECT_DEPS += m_project_specific/src/read_joystick.o
+PROJECT_DEPS += m_project_specific/src/calibrate_sensors.o
 
 
 

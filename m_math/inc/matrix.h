@@ -39,7 +39,7 @@ typedef	float	matrix_element_t;
 		matrix_element_t*	data;
 		matrix_index_t		size[2];
 	
-	} matrix2d_t
+	} matrix2d_t;
 
 /**
  * GLOBAL VARIABLES

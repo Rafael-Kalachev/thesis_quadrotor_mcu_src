@@ -2,9 +2,11 @@
 #include "stm32f4xx.h"
 #include "cmsis/inc/arm_math.h"
 #include "m_math/inc/convert.h"
+#include "m_math/inc/polynomial.h"
 #include "m_project_specific/inc/usart.h"
 #include "m_project_specific/inc/extended_kalman_filter.h"
 #include "m_project_specific/inc/read_joystick.h"
+#include "m_project_specific/inc/calibrate_sensors.h"
 #include <math.h>
 
 #define PINS   ( GPIO_Pin_1 |  GPIO_Pin_3 |  GPIO_Pin_5 | GPIO_Pin_7)
@@ -88,13 +90,13 @@ uint8_t buffer[16];
 float32_t inv_int16_max = (float32_t) 1 / (float32_t) INT16_MAX;
 
 
+float32_t p_x_coeaf_buffer[] = {1 /*x^0*/, 1 /*x_1*/, 1 /*x^2*/};
 
 
 
 
 
-
-
+ 
 typedef enum I2C_IO_STATE_ENUM
 {
 	I2C_IO_STATE_NOT_INITIALIZED,
@@ -553,10 +555,21 @@ int main(void)
 	USART_SendMatrix(&A_inv, 3);
 
 	USART_SendText(">");
-	ekf_init();
+	polynomial_struct_t p = {.degree=7, .polynomial_coeficients_p=p_x_coeaf_buffer};
+	for(a=0; a<10;++a)
+	{
+		float32_t val = polinomial_evaluate(&p, a);
+
+		USART_SendNumber(a);
+		USART_SendText(" -> ");
+		USART_SendFloat(val, 2);
+		USART_SendText("\n");
+	}
+	//	ekf_init();
 	USART_SendText("<\n");
 
-	
+
+	raw_sensors_struct raw_sensors_data;
 
 
 	while(1) // this function can be called slower as you add data to be sent
@@ -581,6 +594,15 @@ int main(void)
 		float32_t acc_y	      = ((int16_t)((int32_t) buffer[10] + ((int32_t) buffer[11] << 8 ))) * inv_int16_max;
 		float32_t acc_z	      = ((int16_t)((int32_t) buffer[12] + ((int32_t) buffer[13] << 8 ))) * inv_int16_max;
 
+		raw_sensors_data.temperature = ((int16_t)((int32_t) buffer[0]  + ((int32_t) buffer[1]  << 8 )));
+		raw_sensors_data.gyro_x      = ((int16_t)((int32_t) buffer[2]  + ((int32_t) buffer[3]  << 8 )));
+		raw_sensors_data.gyro_y      = ((int16_t)((int32_t) buffer[4]  + ((int32_t) buffer[5]  << 8 )));
+		raw_sensors_data.gyro_z      = ((int16_t)((int32_t) buffer[6]  + ((int32_t) buffer[7]  << 8 )));
+		raw_sensors_data.acc_x       = ((int16_t)((int32_t) buffer[8]  + ((int32_t) buffer[9]  << 8 )));
+		raw_sensors_data.acc_y       = ((int16_t)((int32_t) buffer[10] + ((int32_t) buffer[11] << 8 )));
+		raw_sensors_data.acc_z       = ((int16_t)((int32_t) buffer[12] + ((int32_t) buffer[13] << 8 )));
+
+
 		_i2c3_io_struct_stage.address =  0x3C;
 		_i2c3_io_struct_stage.register_address =0x28;
 		_i2c3_io_struct_stage.buffer = buffer;
@@ -595,22 +617,25 @@ int main(void)
 		float32_t mag_y	      = ((int16_t)((int32_t) buffer[2]  + ((int32_t) buffer[3]  << 8 ))) * inv_int16_max;
 		float32_t mag_z	      = ((int16_t)((int32_t) buffer[4]  + ((int32_t) buffer[5]  << 8 ))) * inv_int16_max;
 
+		
+		calibrated_sensors_struct* calibrated_sensors_p = calibrate_sensors(&raw_sensors_data);
 
-
-
+		
 
 		USART_SendText("temp=");
 		USART_SendFloat(temperature, 5);
 
 		USART_SendText(" , gyro_x=");
-		USART_SendFloat(gyro_x, 5);
+		USART_SendFloat(calibrated_sensors_p->gyro_x, 5);
 
 		USART_SendText(" , gyro_y=");
-		USART_SendFloat(gyro_y, 5);
+		USART_SendFloat(calibrated_sensors_p->gyro_y, 5);
 
 		USART_SendText(" , gyro_z=");
-		USART_SendFloat(gyro_z, 5);
+		USART_SendFloat(calibrated_sensors_p->gyro_z, 5);
+		USART_SendText("\n");
 
+		/*
 		USART_SendText(" , acc_x=");
 		USART_SendFloat(acc_x, 5);
 
@@ -638,6 +663,7 @@ int main(void)
 			float32_t p32 = tim3_ch2.period;
 			float32_t p33 = tim3_ch3.period;
 			float32_t p34 = tim3_ch4.period;
+			*/
 
 /*
 			USART_SendText("PERIOD51: ");
@@ -668,6 +694,7 @@ int main(void)
 			USART_SendFloat(p34/4,1);
 			USART_SendText("\n");
 */
+
 			for(a=0; a < 7000; ++a)
 			{
 				__NOP;
@@ -678,7 +705,7 @@ int main(void)
 				__NOP;
 			}
 			*/
-
+/*
 			TIM2->CCR1 = p34/4.01;
 			TIM2->CCR2 = p34/4.01;
 			TIM2->CCR3 = p34/4.01;
@@ -687,7 +714,7 @@ int main(void)
 			USART_SendText("PERIOD34: ");
 			USART_SendFloat(p34/4,1);
 			USART_SendText("\n");
-
+*/
 			/*
 			for(a=0; a < 50000000; ++a)
 			{
