@@ -7,6 +7,8 @@
         "assert.h": "c",
         "float.h": "c",
         "algorithm": "c",
-        "random": "c"
+        "random": "c",
+        "result.h": "c",
+        "polynomial.h": "c"
     }
 }

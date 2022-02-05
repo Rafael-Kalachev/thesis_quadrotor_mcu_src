@@ -555,17 +555,7 @@ int main(void)
 	USART_SendMatrix(&A_inv, 3);
 
 	USART_SendText(">");
-	polynomial_struct_t p = {.degree=7, .polynomial_coeficients_p=p_x_coeaf_buffer};
-	for(a=0; a<10;++a)
-	{
-		float32_t val = polinomial_evaluate(&p, a);
-
-		USART_SendNumber(a);
-		USART_SendText(" -> ");
-		USART_SendFloat(val, 2);
-		USART_SendText("\n");
-	}
-	//	ekf_init();
+	ekf_init();
 	USART_SendText("<\n");
 
 

@@ -1,20 +1,26 @@
 #include "stm32f4xx.h"
 #include "m_project_specific/inc/extended_kalman_filter.h"
+#include "m_project_specific/inc/calibrate_sensors.h"
 #include "m_project_specific/inc/usart.h"
 #include "m_math/inc/convert.h"
+#include "m_math/inc/math.h"
+#include "m_math/inc/quaternion.h"
+
+
+
+
 
 
 #define CAL_D 0.1567 /*calibration dat dont forget to change*/
 float32_t Q_f32[7*7] =
 {
-	 0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  
-	 0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  
-	 0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  
-	 0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  
-	 0 ,  0 ,  0 ,  0 ,  0.2 ,  0 ,  0 ,  
-	 0 ,  0 ,  0 ,  0 ,  0 ,  0.2 ,  0 ,  
-	 0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0.2   
-
+	 0 ,  0 ,  0 ,  0 ,  0   ,  0   ,  0   ,  
+	 0 ,  0 ,  0 ,  0 ,  0   ,  0   ,  0   ,  
+	 0 ,  0 ,  0 ,  0 ,  0   ,  0   ,  0   ,  
+	 0 ,  0 ,  0 ,  0 ,  0   ,  0   ,  0   ,  
+	 0 ,  0 ,  0 ,  0 ,  0.2 ,  0   ,  0   ,  
+	 0 ,  0 ,  0 ,  0 ,  0   ,  0.2 ,  0   ,  
+	 0 ,  0 ,  0 ,  0 ,  0   ,  0   ,  0.2 
 };
 
 float32_t x_f32[7];
@@ -26,7 +32,16 @@ float32_t TMP2_7_7_f32[7*7];
 float32_t TMP3_7_7_f32[7*7];
 
 
-float32_t P_f32[7*7];
+float32_t P_f32[7*7] =
+{
+	 1 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  
+	 0 ,  1 ,  0 ,  0 ,  0 ,  0 ,  0 ,  
+	 0 ,  0 ,  1 ,  0 ,  0 ,  0 ,  0 ,  
+	 0 ,  0 ,  0 ,  1 ,  0 ,  0 ,  0 ,  
+	 0 ,  0 ,  0 ,  0 ,  1 ,  0 ,  0 ,  
+	 0 ,  0 ,  0 ,  0 ,  0 ,  1 ,  0 ,  
+	 0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  1 
+};
 
 float32_t z_f32[3];
 
@@ -64,37 +79,25 @@ arm_matrix_instance_f32 K = {.numCols=3, .numRows=3, .pData=K_f32};
 
 void ekf_init()
 {
-	arm_mat_scale_f32(&R,10000, &R);
+    arm_mat_scale_f32(&R,1000000, &R);
+    arm_mat_scale_f32(&P,10000, &P);
+}
 
-	arm_mat_scale_f32(&Q,10000, &Q);
+void ekf_next(calibrated_sensors_struct* calibrated_sensors, quaternion_struct_t * out_quaternion)
+{
 
-	arm_mat_scale_f32(&x,10000, &x);
-	
-	arm_mat_scale_f32(&F,10000, &F);
-	
-	arm_mat_scale_f32(&P,10000, &P);
-	
-	arm_mat_scale_f32(&z,10000, &z);
-
-	arm_mat_scale_f32(&h,10000, &h);
-	
-	arm_mat_scale_f32(&y,10000, &y);
-	
-	arm_mat_scale_f32(&H,10000, &H);
-	
-	arm_mat_scale_f32(&K,10000, &K);
-
-	float32_t pi = 3.1415;
 	float32_t q0 = x_f32[0];
     float32_t q1 = x_f32[1];
     float32_t q2 = x_f32[2];
     float32_t q3 = x_f32[3];
+
     float32_t wxb = x_f32[4];
     float32_t wyb = x_f32[5];
     float32_t wzb = x_f32[6];
-    float32_t wx = -CAL_D * (pi / 180);
-    float32_t wy = CAL_D * (pi / 180);
-    float32_t wz = CAL_D * (pi / 180);
+
+    float32_t wx = - calibrated_sensors->gyro_x * (PI / 180);
+    float32_t wy = calibrated_sensors->gyro_y * (PI / 180);
+    float32_t wz = calibrated_sensors->gyro_z * (PI / 180);
 
 	float32_t dt = 50.0; //Hz (later inverted to period)
 	float32_t *Fp = F_f32;
@@ -104,7 +107,7 @@ void ekf_init()
 
 
 	dt = 1/dt; //dt
-	dt = dt/2.0;
+	dt = dt/2.0; // in all cases we use dt/2, so divided in advance to save processing time;
 
 	x_f32[0] = q0 + dt * (-q1*(wx-wxb) - q2*(wy-wyb) - q3*(wz-wzb));
 	x_f32[1] = q1 + dt * ( q0*(wx-wxb) - q3*(wy-wyb) + q2*(wz-wzb));
@@ -185,12 +188,12 @@ void ekf_init()
     q2 = x_f32[2];
     q3 = x_f32[3];
 
-	arm_sqrt_f32(CAL_D*CAL_D + CAL_D*CAL_D + CAL_D*CAL_D, &norm);
+	arm_sqrt_f32(calibrated_sensors->acc_x*calibrated_sensors->acc_x + calibrated_sensors->acc_y*calibrated_sensors->acc_y +  calibrated_sensors->acc_z*calibrated_sensors->acc_z, &norm);
 	norm = 1/ norm;
 
-    z_f32[0] = CAL_D * norm;
-    z_f32[1] = CAL_D * norm;
-    z_f32[2] = CAL_D * norm;
+    z_f32[0] = calibrated_sensors->acc_x * norm;
+    z_f32[1] = calibrated_sensors->acc_y * norm;
+    z_f32[2] = -calibrated_sensors->acc_z * norm;
 
 	h_f32[0] = 2*q0*q2 - 2*q1*q3;
     h_f32[1] = -2*q0*q1 - 2*q2*q3;
@@ -220,8 +223,6 @@ void ekf_init()
     *Hp++ = 0;
     *Hp++ = 0;
 
-	TMP2_7_7.numRows = 7;
-	TMP2_7_7.numCols = 3;
 
 	arm_mat_trans_f32(&H, &TMP2_7_7);
 	arm_mat_mult_f32(&H,&P,&TMP_7_7);
@@ -235,6 +236,7 @@ void ekf_init()
 
 	arm_mat_mult_f32(&K, &y, &TMP2_7_7);
 	arm_mat_add_f32(&x,&TMP2_7_7, &TMP_7_7);
+    arm_mat_scale_f32(&TMP_7_7, 1.0, &x);
 
 	arm_sqrt_f32(x_f32[0]*x_f32[0] +x_f32[1]*x_f32[1] + x_f32[2]*x_f32[2] + x_f32[3]*x_f32[3], &norm);
 
@@ -244,11 +246,26 @@ void ekf_init()
     x_f32[2] = x_f32[2] * norm;
     x_f32[3] = x_f32[3] * norm;
 
+    TMP_7_7_f32[0] = 1;
+    TMP_7_7_f32[1] = 0;
+    TMP_7_7_f32[2] = 0;
+    TMP_7_7_f32[3] = 0;
+    TMP_7_7_f32[4] = 1;
+    TMP_7_7_f32[5] = 0;
+    TMP_7_7_f32[6] = 0;
+    TMP_7_7_f32[7] = 0;
+    TMP_7_7_f32[8] = 1;
+    TMP_7_7.numCols=3;
+    TMP_7_7.numRows=3;
 
+    arm_mat_trans_f32(&H, &TMP2_7_7);
+    arm_mat_sub_f32(&TMP_7_7, &TMP2_7_7, &TMP3_7_7);
+    arm_mat_mult_f32(&TMP3_7_7, &P, &TMP2_7_7);
+    arm_mat_scale_f32(&TMP2_7_7, 1, &P);
 
-}
-
-void predict()
-{
+    out_quaternion->w = x_f32[0];
+    out_quaternion->x = x_f32[1];
+    out_quaternion->y = x_f32[2];
+    out_quaternion->z = x_f32[3];
 
 }

@@ -2,8 +2,8 @@
 This module contains matrix definitions and calculations
 */
 
-#ifndef M_MATRIX_H
-#define M_MATRIX_H
+#ifndef M_MATH_POINOMIAL_H
+#define M_MATH_POINOMIAL_H
 /**
  * INCLUDES
  **/
@@ -49,4 +49,4 @@ This module contains matrix definitions and calculations
 	*/
 	float32_t polinomial_evaluate(polynomial_struct_t *polinomial, float32_t x);
 
-#endif /*M_MATRIX_H*/
+#endif /*M_MATH_POINOMIAL_H*/

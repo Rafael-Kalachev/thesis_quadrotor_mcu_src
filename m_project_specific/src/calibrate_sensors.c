@@ -66,6 +66,36 @@ static const polynomial_struct_t poly_gyro_z_temp =
 };
 
 
+float32_t magnetometer_elipsoid_f32[3*3] = 
+{
+    21.4229 ,  0.8379  ,  3.086,
+    0       ,  21.6201 ,  2.0207,
+    0       ,  0       ,  27.2441
+};
+
+arm_matrix_instance_f32 magnetometer_elipsoid =
+{
+	.numCols = 3,
+	.numRows = 3,
+	.pData = magnetometer_elipsoid_f32
+};
+
+float32_t magnetometer_center_f32[3*1] = 
+{
+	-0.0016,
+    0.0199,
+    0.0457 
+};
+
+arm_matrix_instance_f32 magnetometer_center =
+{
+	.numCols = 1,
+	.numRows = 3,
+	.pData = magnetometer_center_f32
+};
+
+
+
 /**
  * STATIC FUNCTIONS
  **/
@@ -93,6 +123,16 @@ static float32_t polinomial_compensation(polynomial_struct_t* polinomial, float3
 	float32_t compensation = polinomial_evaluate(polinomial, point_of_compensation);
 	return value_to_be_compensated - compensation;
 }
+
+
+static void elipsoid_sphere_calibration(arm_matrix_instance_f32 *elipsoid, arm_matrix_instance_f32 *center, arm_matrix_instance_f32 *in_vector, arm_matrix_instance_f32 *out_vector)
+{
+	float32_t tmp_buf[1*3];
+	arm_matrix_instance_f32 tmp = {.numCols=1, .numRows=3, .pData=&tmp_buf};
+	arm_mat_sub_f32(in_vector, center, &tmp);
+	arm_mat_mult_f32(elipsoid, &tmp, out_vector);
+}
+
 
 
 calibrated_sensors_struct* calibrate_sensors( raw_sensors_struct* raw_sensors_data )
@@ -127,20 +167,22 @@ calibrated_sensors_struct* calibrate_sensors( raw_sensors_struct* raw_sensors_da
 	tempval = (float32_t)raw_sensors_data->acc_z * INV_INT16_MAX;
 	out_calibrated_sensors_p->acc_z = tempval;
 
-	/*calibrate mag x*/
+	/*calibrate MAGNETOMETER*/
 	tempval = (float32_t)raw_sensors_data->mag_x * INV_INT16_MAX;
 	out_calibrated_sensors_p->mag_x = tempval;
 
-	/*calibrate mag y*/
 	tempval = (float32_t)raw_sensors_data->mag_y * INV_INT16_MAX;
 	out_calibrated_sensors_p->mag_y = tempval;
 
-	/*calibrate mag z*/
 	tempval = (float32_t)raw_sensors_data->mag_z * INV_INT16_MAX;
 	out_calibrated_sensors_p->mag_z = tempval;
 
-
-
+	float32_t tmp_buff[3*1] = {out_calibrated_sensors_p->mag_x, out_calibrated_sensors_p->mag_y, out_calibrated_sensors_p->mag_z};
+	arm_matrix_instance_f32 tmp = {.numCols=1, .numRows=3, .pData=&tmp_buff};
+	elipsoid_sphere_calibration(&magnetometer_elipsoid, &magnetometer_center, &tmp_buff, &tmp_buff);
+	out_calibrated_sensors_p->mag_x = tmp_buff[0];
+	out_calibrated_sensors_p->mag_y = tmp_buff[1];
+	out_calibrated_sensors_p->mag_z = tmp_buff[2];
 
 	return out_calibrated_sensors_p;
 }

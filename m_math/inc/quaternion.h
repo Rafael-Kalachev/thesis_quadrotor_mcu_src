@@ -2,8 +2,8 @@
 This module contains matrix definitions and calculations
 */
 
-#ifndef M_PROJECT_SPECIFIC_EXTENDED_KALMAN_FILTER_H
-#define M_PROJECT_SPECIFIC_EXTENDED_KALMAN_FILTER_H
+#ifndef M_MATH_QUATERNION_H
+#define M_MATH_QUATERNION_H
 /**
  * INCLUDES
  **/
@@ -26,17 +26,23 @@ This module contains matrix definitions and calculations
  **/
 
 
+	typedef struct QUATERNION_STRUCT_TAG
+	{
+		float32_t w;
+		float32_t x;
+		float32_t y;
+		float32_t z;
+	} quaternion_struct_t;
+
 /**
  * GLOBAL VARIABLES
  **/
+
 
 
 /**
  * FUNCTION DEFINITIONS
  **/
 
-void ekf_init();
-void ekf_next(calibrated_sensors_struct* calibrated_sensors, quaternion_struct_t * out_quaternion);
 
-
-#endif /*M_PROJECT_SPECIFIC_EXTENDED_KALMAN_FILTER_H*/
+#endif /*M_MATH_QUATERNION_H*/
