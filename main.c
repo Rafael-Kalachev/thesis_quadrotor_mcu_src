@@ -325,7 +325,7 @@ int main(void)
 
 	NVIC_InitTypeDef nvicStructure2;
 	nvicStructure2.NVIC_IRQChannel = TIM2_IRQn;
-	nvicStructure2.NVIC_IRQChannelPreemptionPriority = 1;
+	nvicStructure2.NVIC_IRQChannelPreemptionPriority = 0;
 	nvicStructure2.NVIC_IRQChannelSubPriority = 0;
 	nvicStructure2.NVIC_IRQChannelCmd = ENABLE;
 	NVIC_Init(&nvicStructure2);
@@ -617,6 +617,9 @@ int main(void)
 		float32_t mag_y	      = ((int16_t)((int32_t) buffer[2]  + ((int32_t) buffer[3]  << 8 ))) * inv_int16_max;
 		float32_t mag_z	      = ((int16_t)((int32_t) buffer[4]  + ((int32_t) buffer[5]  << 8 ))) * inv_int16_max;
 
+		raw_sensors_data.mag_x = ((int16_t)((int32_t) buffer[0]  + ((int32_t) buffer[1]  << 8 )));
+		raw_sensors_data.mag_y = ((int16_t)((int32_t) buffer[2]  + ((int32_t) buffer[3]  << 8 )));
+		raw_sensors_data.mag_z = ((int16_t)((int32_t) buffer[4]  + ((int32_t) buffer[5]  << 8 )));
 		
 		calibrated_sensors_struct* calibrated_sensors_p = calibrate_sensors(&raw_sensors_data);
 
@@ -633,26 +636,24 @@ int main(void)
 
 		USART_SendText(" , gyro_z=");
 		USART_SendFloat(calibrated_sensors_p->gyro_z, 5);
-		USART_SendText("\n");
 
-		/*
 		USART_SendText(" , acc_x=");
-		USART_SendFloat(acc_x, 5);
+		USART_SendFloat(calibrated_sensors_p->acc_x, 5);
 
 		USART_SendText(" , acc_y=");
-		USART_SendFloat(acc_y, 5);
+		USART_SendFloat(calibrated_sensors_p->acc_y, 5);
 
 		USART_SendText(" , acc_z=");
-		USART_SendFloat(acc_z, 5);
+		USART_SendFloat(calibrated_sensors_p->acc_z, 5);
 		
 		USART_SendText(" ,  mag_x=");
-		USART_SendFloat(mag_x, 5);
+		USART_SendFloat(calibrated_sensors_p->mag_x, 5);
 
 		USART_SendText(" , mag_y=");
-		USART_SendFloat(mag_y, 5);
+		USART_SendFloat(calibrated_sensors_p->mag_y, 5);
 
 		USART_SendText(" , mag_z=");
-		USART_SendFloat(mag_z, 5);
+		USART_SendFloat(calibrated_sensors_p->mag_z, 5);
 
 		USART_SendText("\n");
 
@@ -663,7 +664,6 @@ int main(void)
 			float32_t p32 = tim3_ch2.period;
 			float32_t p33 = tim3_ch3.period;
 			float32_t p34 = tim3_ch4.period;
-			*/
 
 /*
 			USART_SendText("PERIOD51: ");
@@ -705,16 +705,17 @@ int main(void)
 				__NOP;
 			}
 			*/
-/*
+
 			TIM2->CCR1 = p34/4.01;
 			TIM2->CCR2 = p34/4.01;
 			TIM2->CCR3 = p34/4.01;
 			TIM2->CCR4 = p34/4.01;
-
+			/*
 			USART_SendText("PERIOD34: ");
 			USART_SendFloat(p34/4,1);
 			USART_SendText("\n");
-*/
+			*/	
+
 			/*
 			for(a=0; a < 50000000; ++a)
 			{
@@ -978,10 +979,8 @@ void I2C3_EV_IRQHandler()
 			log_msg("I2C3: ERROR_STATE");
 			I2C_SoftwareResetCmd(I2C3, ENABLE);
 
-			USART_SendText("A");
 			break;
 	}
-	USART_SendText("V");
 
 	__enable_irq();
 }
@@ -993,7 +992,6 @@ void I2C3_ER_IRQHandler()
 
 	if(I2C_GetFlagStatus(I2C3, I2C_FLAG_BERR))
 	{
-		USART_SendText("1");
 		log_msg("BERR");
 		I2C_ClearFlag(I2C3, I2C_FLAG_BERR);
 		I2C3->CR1 |= I2C_CR1_STOP;
@@ -1003,7 +1001,6 @@ void I2C3_ER_IRQHandler()
 
 	if(I2C_GetFlagStatus(I2C3, I2C_FLAG_ARLO))
 	{
-		USART_SendText("2");
 		log_msg("ARLO");
 		I2C_ClearFlag(I2C3, I2C_FLAG_ARLO);
 		I2C3->CR1 |= I2C_CR1_STOP;
@@ -1012,7 +1009,6 @@ void I2C3_ER_IRQHandler()
 	
 	if(I2C_GetFlagStatus(I2C3, I2C_FLAG_AF))
 	{
-		USART_SendText("3");
 		log_msg("AF");
 		I2C_ClearFlag(I2C3, I2C_FLAG_AF);
 		I2C3->CR1 |= I2C_CR1_STOP;
@@ -1022,7 +1018,6 @@ void I2C3_ER_IRQHandler()
 	
 	if(I2C_GetFlagStatus(I2C3, I2C_FLAG_OVR))
 	{
-		USART_SendText("4");
 		log_msg("OVR");
 		I2C_ClearFlag(I2C3, I2C_FLAG_OVR);
 		I2C3->CR1 |= I2C_CR1_STOP;
@@ -1031,7 +1026,6 @@ void I2C3_ER_IRQHandler()
 	
 	if(I2C_GetFlagStatus(I2C3, I2C_FLAG_PECERR))
 	{
-		USART_SendText("5");
 		log_msg("PCEERR");
 		I2C_ClearFlag(I2C3, I2C_FLAG_PECERR);
 		I2C3->CR1 |= I2C_CR1_STOP;
@@ -1040,7 +1034,6 @@ void I2C3_ER_IRQHandler()
 	
 	if(I2C_GetFlagStatus(I2C3, I2C_FLAG_TIMEOUT))
 	{
-		USART_SendText("6");
 		log_msg("TIMEOUT");
 		I2C_ClearFlag(I2C3, I2C_FLAG_TIMEOUT);
 		I2C3->CR1 |= I2C_CR1_STOP;
@@ -1065,7 +1058,6 @@ void I2C3_ER_IRQHandler()
 	I2C_Cmd(I2C3, ENABLE);
 
 	log_msg("END");
-	USART_SendText("E");
 }
 
 void TIM2_IRQHandler()

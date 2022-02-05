@@ -91,10 +91,6 @@ static calibrated_sensors_struct* s_select_buffer()
 static float32_t polinomial_compensation(polynomial_struct_t* polinomial, float32_t point_of_compensation ,float32_t value_to_be_compensated)
 {
 	float32_t compensation = polinomial_evaluate(polinomial, point_of_compensation);
-	USART_SendText("compensation = ");
-	USART_SendFloat(compensation, 6);
-	USART_SendText("value_to_be_compensated = ");
-	USART_SendFloat(value_to_be_compensated, 6);
 	return value_to_be_compensated - compensation;
 }
 
@@ -107,7 +103,7 @@ calibrated_sensors_struct* calibrate_sensors( raw_sensors_struct* raw_sensors_da
 	/*calibrate gyro x*/
 	tempval = (float32_t)raw_sensors_data->gyro_x * INV_INT16_MAX;
 	tempval = polinomial_compensation(&poly_gyro_x_temp, raw_sensors_data->temperature, tempval);
-	out_calibrated_sensors_p->gyro_x = tempval /* * 500*/ /*dps*/;
+	out_calibrated_sensors_p->gyro_x = tempval /* * 500*/ /*dps*/; /*others use 64 for 500 and 32 for 1000 ? check*/
 
 	/*calibrate gyro y*/
 	tempval = (float32_t)raw_sensors_data->gyro_y * INV_INT16_MAX;
@@ -118,6 +114,33 @@ calibrated_sensors_struct* calibrate_sensors( raw_sensors_struct* raw_sensors_da
 	tempval = (float32_t)raw_sensors_data->gyro_z * INV_INT16_MAX;
 	tempval = polinomial_compensation(&poly_gyro_z_temp, raw_sensors_data->temperature, tempval);
 	out_calibrated_sensors_p->gyro_z = tempval /* * 500*/ /*dps*/;
+
+	/*calibrate acc x*/
+	tempval = (float32_t)raw_sensors_data->acc_x * INV_INT16_MAX;
+	out_calibrated_sensors_p->acc_x = tempval;
+
+	/*calibrate acc y*/
+	tempval = (float32_t)raw_sensors_data->acc_y * INV_INT16_MAX;
+	out_calibrated_sensors_p->acc_y = tempval;
+
+	/*calibrate acc z*/
+	tempval = (float32_t)raw_sensors_data->acc_z * INV_INT16_MAX;
+	out_calibrated_sensors_p->acc_z = tempval;
+
+	/*calibrate mag x*/
+	tempval = (float32_t)raw_sensors_data->mag_x * INV_INT16_MAX;
+	out_calibrated_sensors_p->mag_x = tempval;
+
+	/*calibrate mag y*/
+	tempval = (float32_t)raw_sensors_data->mag_y * INV_INT16_MAX;
+	out_calibrated_sensors_p->mag_y = tempval;
+
+	/*calibrate mag z*/
+	tempval = (float32_t)raw_sensors_data->mag_z * INV_INT16_MAX;
+	out_calibrated_sensors_p->mag_z = tempval;
+
+
+
 
 	return out_calibrated_sensors_p;
 }
