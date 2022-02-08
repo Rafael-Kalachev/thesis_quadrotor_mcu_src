@@ -734,6 +734,7 @@ CALIB	cmsis/inc/core_cm4.h	/^  __I  uint32_t CALIB;                   \/*!< Offs
 CALIB	cmsis/inc/core_sc000.h	/^  __I  uint32_t CALIB;                   \/*!< Offset: 0x00C (R\/ )  SysTick Calibration Registe/;"	m	struct:__anona8826e800c08	typeref:typename:__I uint32_t
 CALIB	cmsis/inc/core_sc300.h	/^  __I  uint32_t CALIB;                   \/*!< Offset: 0x00C (R\/ )  SysTick Calibration Registe/;"	m	struct:__anona8b8b8030c08	typeref:typename:__I uint32_t
 CALIBR	system/stm32f4xx.h	/^  __IO uint32_t CALIBR;  \/*!< RTC calibration register,                                 Address/;"	m	struct:__anonbe95b8122c08	typeref:typename:__IO uint32_t
+CALIBRATED_SENSORS_STRUCT_TAG	m_project_specific/inc/calibrate_sensors.h	/^typedef struct CALIBRATED_SENSORS_STRUCT_TAG$/;"	s
 CALR	system/stm32f4xx.h	/^  __IO uint32_t CALR;    \/*!< RTC calibration register,                                 Address/;"	m	struct:__anonbe95b8122c08	typeref:typename:__IO uint32_t
 CAL_D	m_project_specific/src/extended_kalman_filter.c	/^#define CAL_D /;"	d	file:
 CAN1	system/stm32f4xx.h	/^#define CAN1 /;"	d
@@ -3151,6 +3152,7 @@ DCTRL_RWSTOP_BB	std_perif/src/stm32f4xx_sdio.c	/^#define DCTRL_RWSTOP_BB /;"	d	f
 DCTRL_SDIOEN_BB	std_perif/src/stm32f4xx_sdio.c	/^#define DCTRL_SDIOEN_BB /;"	d	file:
 DEADTIME	std_perif/inc/stm32f4xx_dma2d.h	/^#define DEADTIME /;"	d
 DEAD_MASK	std_perif/src/stm32f4xx_dma2d.c	/^#define DEAD_MASK /;"	d	file:
+DEG2RAD_CONV	m_math/inc/math.h	/^	#define DEG2RAD_CONV	/;"	d
 DELTA_Q15	cmsis/inc/arm_math.h	/^#define DELTA_Q15 /;"	d
 DELTA_Q31	cmsis/inc/arm_math.h	/^#define DELTA_Q31 /;"	d
 DEMCR	cmsis/inc/core_cm3.h	/^  __IO uint32_t DEMCR;                   \/*!< Offset: 0x00C (R\/W)  Debug Exception and Monitor/;"	m	struct:__anone87a561d1208	typeref:typename:__IO uint32_t
@@ -3603,6 +3605,7 @@ DIN	system/stm32f4xx.h	/^  __IO uint32_t DIN;              \/*!< HASH data input
 DIR	system/stm32f4xx.h	/^   __IO uint32_t  DIR;          \/*!< Debug Information register,         Address offset: 0x18 */;"	m	struct:__anonbe95b8123108	typeref:typename:__IO uint32_t
 DIR	system/stm32f4xx.h	/^   __IO uint32_t  DIR;          \/*!< Debug Information register,         Address offset: 0x18 */;"	m	struct:__anonbe95b8123308	typeref:typename:__IO uint32_t
 DISABLE	system/stm32f4xx.h	/^typedef enum {DISABLE = 0, ENABLE = !DISABLE} FunctionalState;$/;"	e	enum:__anonbe95b8120203
+DISABLE_LOGGING	main.c	/^#define DISABLE_LOGGING$/;"	d	file:
 DIV	m_math/inc/math.h	/^	#define DIV(/;"	d
 DLC	std_perif/inc/stm32f4xx_can.h	/^  uint8_t DLC;     \/*!< Specifies the length of the frame that will be $/;"	m	struct:__anon9662fa270308	typeref:typename:uint8_t
 DLC	std_perif/inc/stm32f4xx_can.h	/^  uint8_t DLC;     \/*!< Specifies the length of the frame that will be received.$/;"	m	struct:__anon9662fa270408	typeref:typename:uint8_t
@@ -9004,7 +9007,7 @@ GPIO_WriteBit	std_perif/src/stm32f4xx_gpio.c	/^void GPIO_WriteBit(GPIO_TypeDef* 
 GPSR	system/stm32f4xx.h	/^  __IO uint32_t GPSR;           \/*!< DSI Host Generic Packet Status Register,                  /;"	m	struct:__anonbe95b8121408	typeref:typename:__IO uint32_t
 GTPR	system/stm32f4xx.h	/^  __IO uint16_t GTPR;       \/*!< USART Guard time and prescaler register, Address offset: 0x18 /;"	m	struct:__anonbe95b8123508	typeref:typename:__IO uint16_t
 GVCIDR	system/stm32f4xx.h	/^  __IO uint32_t GVCIDR;         \/*!< DSI Host Generic VCID Register,                           /;"	m	struct:__anonbe95b8121408	typeref:typename:__IO uint32_t
-H	m_project_specific/src/extended_kalman_filter.c	/^arm_matrix_instance_f32 H = {.numCols=7, .numRows=3, .pData=H_f32};$/;"	v	typeref:typename:arm_matrix_instance_f32
+H	m_project_specific/src/extended_kalman_filter.c	/^arm_matrix_instance_f32 H = {.numCols=7, .numRows=3, .pData=H_f32}; $/;"	v	typeref:typename:arm_matrix_instance_f32
 HASH	system/stm32f4xx.h	/^#define HASH /;"	d
 HASH_AlgoMode	std_perif/inc/stm32f4xx_hash.h	/^  uint32_t HASH_AlgoMode;      \/*!< HASH or HMAC. This parameter can be a value $/;"	m	struct:__anon6e6fb7b90108	typeref:typename:uint32_t
 HASH_AlgoMode_HASH	std_perif/inc/stm32f4xx_hash.h	/^#define HASH_AlgoMode_HASH /;"	d
@@ -9111,7 +9114,7 @@ HSI_VALUE	system/stm32f4xx.h	/^  #define HSI_VALUE /;"	d
 HSPolarity	std_perif/inc/stm32f4xx_dsi.h	/^  uint32_t HSPolarity;                   \/*!< HSYNC pin polarity$/;"	m	struct:__anon967edc350308	typeref:typename:uint32_t
 HSPolarity	std_perif/inc/stm32f4xx_dsi.h	/^  uint32_t HSPolarity;            \/*!< HSYNC pin polarity$/;"	m	struct:__anon967edc350408	typeref:typename:uint32_t
 HTR	system/stm32f4xx.h	/^  __IO uint32_t HTR;    \/*!< ADC watchdog higher threshold register,      Address offset: 0x24 /;"	m	struct:__anonbe95b8120408	typeref:typename:__IO uint32_t
-H_f32	m_project_specific/src/extended_kalman_filter.c	/^float32_t H_f32[3*7];$/;"	v	typeref:typename:float32_t[]
+H_f32	m_project_specific/src/extended_kalman_filter.c	/^float32_t H_f32[7*7];$/;"	v	typeref:typename:float32_t[]
 HighSpeedReadTimeout	std_perif/inc/stm32f4xx_dsi.h	/^  uint32_t HighSpeedReadTimeout;         \/*!< High-speed read time-out                         /;"	m	struct:__anon967edc350708	typeref:typename:uint32_t
 HighSpeedTransmissionTimeout	std_perif/inc/stm32f4xx_dsi.h	/^  uint32_t HighSpeedTransmissionTimeout; \/*!< High-speed transmission time-out                 /;"	m	struct:__anon967edc350708	typeref:typename:uint32_t
 HighSpeedWritePrespMode	std_perif/inc/stm32f4xx_dsi.h	/^  uint32_t HighSpeedWritePrespMode;      \/*!< High-speed write presp mode$/;"	m	struct:__anon967edc350708	typeref:typename:uint32_t
@@ -9371,6 +9374,7 @@ I2C_TransmitPEC	std_perif/src/stm32f4xx_i2c.c	/^void I2C_TransmitPEC(I2C_TypeDef
 I2C_TypeDef	system/stm32f4xx.h	/^} I2C_TypeDef;$/;"	t	typeref:struct:__anonbe95b8122508
 I2C_io_t	main.c	/^} I2C_io_t;$/;"	t	typeref:struct:I2C_IO_STRUCT	file:
 I2C_io_t	old/main_it_no.c	/^} I2C_io_t;$/;"	t	typeref:struct:I2C_IO_STRUCT	file:
+I2C_load	main.c	/^void I2C_load(I2C_io_t* i2c_stage_struct)$/;"	f	typeref:typename:void
 I2S2ext	system/stm32f4xx.h	/^#define I2S2ext /;"	d
 I2S2ext_BASE	system/stm32f4xx.h	/^#define I2S2ext_BASE /;"	d
 I2S3ext	system/stm32f4xx.h	/^#define I2S3ext /;"	d
@@ -9481,6 +9485,7 @@ INAK_TIMEOUT	std_perif/src/stm32f4xx_can.c	/^#define INAK_TIMEOUT /;"	d	file:
 INDEX_MASK	cmsis/inc/arm_math.h	/^#define INDEX_MASK /;"	d
 INITMODE_TIMEOUT	std_perif/src/stm32f4xx_rtc.c	/^#define INITMODE_TIMEOUT /;"	d	file:
 INPUT_SPACING	cmsis/inc/arm_math.h	/^#define INPUT_SPACING	/;"	d
+INV_INT16_MAX	m_math/inc/math.h	/^	#define INV_INT16_MAX /;"	d
 IP	cmsis/inc/core_cm0.h	/^  __IO uint32_t IP[8];                   \/*!< Offset: 0x300 (R\/W)  Interrupt Priority Register/;"	m	struct:__anone87a495a0908	typeref:typename:__IO uint32_t[8]
 IP	cmsis/inc/core_cm0plus.h	/^  __IO uint32_t IP[8];                   \/*!< Offset: 0x300 (R\/W)  Interrupt Priority Register/;"	m	struct:__anon5f5259be0908	typeref:typename:__IO uint32_t[8]
 IP	cmsis/inc/core_cm3.h	/^  __IO uint8_t  IP[240];                 \/*!< Offset: 0x300 (R\/W)  Interrupt Priority Register/;"	m	struct:__anone87a561d0908	typeref:typename:__IO uint8_t[240]
@@ -10534,7 +10539,7 @@ JSQR	system/stm32f4xx.h	/^  __IO uint32_t JSQR;   \/*!< ADC injected sequence re
 JSQR_JL_RESET	std_perif/src/stm32f4xx_adc.c	/^#define JSQR_JL_RESET /;"	d	file:
 JSQR_JL_SET	std_perif/src/stm32f4xx_adc.c	/^#define JSQR_JL_SET /;"	d	file:
 JSQR_JSQ_SET	std_perif/src/stm32f4xx_adc.c	/^#define JSQR_JSQ_SET /;"	d	file:
-K	m_project_specific/src/extended_kalman_filter.c	/^arm_matrix_instance_f32 K = {.numCols=3, .numRows=3, .pData=K_f32};$/;"	v	typeref:typename:arm_matrix_instance_f32
+K	m_project_specific/src/extended_kalman_filter.c	/^arm_matrix_instance_f32 K = {.numCols=3, .numRows=7, .pData=K_f32};$/;"	v	typeref:typename:arm_matrix_instance_f32
 K0LR	system/stm32f4xx.h	/^  __IO uint32_t K0LR;       \/*!< CRYP key left  register 0,                                Addr/;"	m	struct:__anonbe95b8123708	typeref:typename:__IO uint32_t
 K0RR	system/stm32f4xx.h	/^  __IO uint32_t K0RR;       \/*!< CRYP key right register 0,                                Addr/;"	m	struct:__anonbe95b8123708	typeref:typename:__IO uint32_t
 K1LR	system/stm32f4xx.h	/^  __IO uint32_t K1LR;       \/*!< CRYP key left  register 1,                                Addr/;"	m	struct:__anonbe95b8123708	typeref:typename:__IO uint32_t
@@ -10547,7 +10552,7 @@ KEYR	system/stm32f4xx.h	/^  __IO uint32_t KEYR;     \/*!< FLASH key register,   
 KR	system/stm32f4xx.h	/^  __IO uint32_t KR;   \/*!< IWDG Key register,       Address offset: 0x00 *\/$/;"	m	struct:__anonbe95b8122708	typeref:typename:__IO uint32_t
 KR_KEY_ENABLE	std_perif/src/stm32f4xx_iwdg.c	/^#define KR_KEY_ENABLE /;"	d	file:
 KR_KEY_RELOAD	std_perif/src/stm32f4xx_iwdg.c	/^#define KR_KEY_RELOAD /;"	d	file:
-K_f32	m_project_specific/src/extended_kalman_filter.c	/^float32_t K_f32[3*3];$/;"	v	typeref:typename:float32_t[]
+K_f32	m_project_specific/src/extended_kalman_filter.c	/^float32_t K_f32[3*7];$/;"	v	typeref:typename:float32_t[]
 Kd	cmsis/inc/arm_math.h	/^    float32_t Kd;               \/**< The derivative gain. *\/$/;"	m	struct:__anonf33cb1db0e08	typeref:typename:float32_t
 Kd	cmsis/inc/arm_math.h	/^    q15_t Kd;           \/**< The derivative gain. *\/$/;"	m	struct:__anonf33cb1db0c08	typeref:typename:q15_t
 Kd	cmsis/inc/arm_math.h	/^    q31_t Kd;            \/**< The derivative gain. *\/$/;"	m	struct:__anonf33cb1db0d08	typeref:typename:q31_t
@@ -11043,7 +11048,7 @@ MCHDLY_CLOCK_DFSDM2	std_perif/inc/stm32f4xx_syscfg.h	/^#define MCHDLY_CLOCK_DFSD
 MCR	system/stm32f4xx.h	/^  __IO uint32_t              MCR;                 \/*!< CAN master control register,         Add/;"	m	struct:__anonbe95b8120908	typeref:typename:__IO uint32_t
 MCR	system/stm32f4xx.h	/^  __IO uint32_t MCR;            \/*!< DSI Host Mode Configuration Register,                     /;"	m	struct:__anonbe95b8121408	typeref:typename:__IO uint32_t
 MCR_DBF	std_perif/src/stm32f4xx_can.c	/^#define MCR_DBF /;"	d	file:
-MCU_FLASH_MEMORY_START_ADDRESS	make/config.mk	/^MCU_FLASH_MEMORY_START_ADDRESS	:= 0x8000000 $/;"	m
+MCU_FLASH_MEMORY_START_ADDRESS	make/config.mk	/^MCU_FLASH_MEMORY_START_ADDRESS	:= 0x08000000$/;"	m
 MCU_MODEL	make/config.mk	/^MCU_MODEL	:= STM32F429_439xx$/;"	m
 MD5BUSY_TIMEOUT	std_perif/src/stm32f4xx_hash_md5.c	/^#define MD5BUSY_TIMEOUT /;"	d	file:
 MEMRMP	system/stm32f4xx.h	/^  __IO uint32_t MEMRMP;       \/*!< SYSCFG memory remap register,                      Address o/;"	m	struct:__anonbe95b8122408	typeref:typename:__IO uint32_t
@@ -11296,9 +11301,13 @@ MVFR0	cmsis/inc/core_cm4.h	/^  __I  uint32_t MVFR0;                   \/*!< Offs
 MVFR1	cmsis/inc/core_cm4.h	/^  __I  uint32_t MVFR1;                   \/*!< Offset: 0x014 (R\/ )  Media and FP Feature Regist/;"	m	struct:__anone87a5a5e1208	typeref:typename:__I uint32_t
 M_MATH_CONVERT_H	m_math/inc/convert.h	/^#define M_MATH_CONVERT_H$/;"	d
 M_MATH_H	m_math/inc/math.h	/^#define M_MATH_H$/;"	d
+M_MATH_POINOMIAL_H	m_math/inc/polynomial.h	/^#define M_MATH_POINOMIAL_H$/;"	d
+M_MATH_QUATERNION_H	m_math/inc/quaternion.h	/^#define M_MATH_QUATERNION_H$/;"	d
 M_MATRIX_H	m_math/inc/matrix.h	/^#define M_MATRIX_H$/;"	d
 M_MAT_H	m_common/inc/assert.h	/^#define M_MAT_H$/;"	d
+M_PROJECT_SPECIFIC_CALIBRATE_SENSORS_H	m_project_specific/inc/calibrate_sensors.h	/^#define M_PROJECT_SPECIFIC_CALIBRATE_SENSORS_H$/;"	d
 M_PROJECT_SPECIFIC_EXTENDED_KALMAN_FILTER_H	m_project_specific/inc/extended_kalman_filter.h	/^#define M_PROJECT_SPECIFIC_EXTENDED_KALMAN_FILTER_H$/;"	d
+M_PROJECT_SPECIFIC_READ_JOYSTICK_H	m_project_specific/inc/read_joystick.h	/^#define M_PROJECT_SPECIFIC_READ_JOYSTICK_H$/;"	d
 M_PROJECT_SPECIFIC_USART_H	m_project_specific/inc/usart.h	/^#define M_PROJECT_SPECIFIC_USART_H$/;"	d
 MemoryManagement_IRQn	system/stm32f4xx.h	/^  MemoryManagement_IRQn       = -12,    \/*!< 4 Cortex-M4 Memory Management Interrupt           /;"	e	enum:IRQn
 Mode	std_perif/inc/stm32f4xx_dsi.h	/^  uint32_t Mode;                         \/*!< Video mode type$/;"	m	struct:__anon967edc350308	typeref:typename:uint32_t
@@ -11524,6 +11533,7 @@ OPTCR_BYTE3_ADDRESS	std_perif/inc/stm32f4xx_flash.h	/^#define OPTCR_BYTE3_ADDRES
 OPTKEYR	system/stm32f4xx.h	/^  __IO uint32_t OPTKEYR;  \/*!< FLASH option key register,       Address offset: 0x08 *\/$/;"	m	struct:__anonbe95b8121708	typeref:typename:__IO uint32_t
 OR	system/stm32f4xx.h	/^  __IO uint16_t OR;          \/*!< TIM option register,                 Address offset: 0x50 *\/$/;"	m	struct:__anonbe95b8123408	typeref:typename:__IO uint16_t
 OR	system/stm32f4xx.h	/^  __IO uint32_t OR;          \/*!< LPTIM Option register,                              Address o/;"	m	struct:__anonbe95b8123b08	typeref:typename:__IO uint32_t
+ORIENTATION_STRUCT_TAG	m_project_specific/inc/extended_kalman_filter.h	/^typedef struct ORIENTATION_STRUCT_TAG$/;"	s
 ORIGIN	linker/stm32_flash.ld	/^  FLASH (rx)      : ORIGIN = 0x08000000, LENGTH = 1024K$/;"	s
 OSPEEDR	system/stm32f4xx.h	/^  __IO uint32_t OSPEEDR;  \/*!< GPIO port output speed register,       Address offset: 0x08     /;"	m	struct:__anonbe95b8122308	typeref:typename:__IO uint32_t
 OTG_FS_IRQn	system/stm32f4xx.h	/^  OTG_FS_IRQn                 = 67,     \/*!< USB OTG FS global Interrupt                       /;"	e	enum:IRQn
@@ -11574,6 +11584,7 @@ PFR	cmsis/inc/core_cm3.h	/^  __I  uint32_t PFR[2];                  \/*!< Offset
 PFR	cmsis/inc/core_cm4.h	/^  __I  uint32_t PFR[2];                  \/*!< Offset: 0x040 (R\/ )  Processor Feature Register /;"	m	struct:__anone87a5a5e0a08	typeref:typename:__I uint32_t[2]
 PFR	cmsis/inc/core_sc300.h	/^  __I  uint32_t PFR[2];                  \/*!< Offset: 0x040 (R\/ )  Processor Feature Register /;"	m	struct:__anona8b8b8030a08	typeref:typename:__I uint32_t[2]
 PI	cmsis/inc/arm_math.h	/^#define PI	/;"	d
+PI	m_math/inc/math.h	/^	#define PI	/;"	d
 PID0	cmsis/inc/core_cm3.h	/^  __I  uint32_t PID0;                    \/*!< Offset: 0xFE0 (R\/ )  ITM Peripheral Identificati/;"	m	struct:__anone87a561d0d08	typeref:typename:__I uint32_t
 PID0	cmsis/inc/core_cm4.h	/^  __I  uint32_t PID0;                    \/*!< Offset: 0xFE0 (R\/ )  ITM Peripheral Identificati/;"	m	struct:__anone87a5a5e0d08	typeref:typename:__I uint32_t
 PID0	cmsis/inc/core_sc300.h	/^  __I  uint32_t PID0;                    \/*!< Offset: 0xFE0 (R\/ )  ITM Peripheral Identificati/;"	m	struct:__anona8b8b8030d08	typeref:typename:__I uint32_t
@@ -11627,6 +11638,7 @@ PMEM3	system/stm32f4xx.h	/^  __IO uint32_t PMEM3;      \/*!< NAND Flash Common m
 PMEM4	system/stm32f4xx.h	/^  __IO uint32_t PMEM4;      \/*!< PC Card  Common memory space timing register 4,    Address off/;"	m	struct:__anonbe95b8121c08	typeref:typename:__IO uint32_t
 PMEM4	system/stm32f4xx.h	/^  __IO uint32_t PMEM4;      \/*!< PC Card  Common memory space timing register 4,    Address off/;"	m	struct:__anonbe95b8122108	typeref:typename:__IO uint32_t
 PMODE_BitNumber	std_perif/src/stm32f4xx_pwr.c	/^#define PMODE_BitNumber /;"	d	file:
+POLYNOMIAL_STRUCT_TAG	m_math/inc/polynomial.h	/^	typedef struct POLYNOMIAL_STRUCT_TAG$/;"	s
 PORT	cmsis/inc/core_cm3.h	/^  }  PORT [32];                          \/*!< Offset: 0x000 ( \/W)  ITM Stimulus Port Registers/;"	m	struct:__anone87a561d0d08	typeref:union:__anone87a561d0d08::__anone87a561d0e0a[32]
 PORT	cmsis/inc/core_cm4.h	/^  }  PORT [32];                          \/*!< Offset: 0x000 ( \/W)  ITM Stimulus Port Registers/;"	m	struct:__anone87a5a5e0d08	typeref:union:__anone87a5a5e0d08::__anone87a5a5e0e0a[32]
 PORT	cmsis/inc/core_sc300.h	/^  }  PORT [32];                          \/*!< Offset: 0x000 ( \/W)  ITM Stimulus Port Registers/;"	m	struct:__anona8b8b8030d08	typeref:union:__anona8b8b8030d08::__anona8b8b8030e0a[32]
@@ -11763,7 +11775,7 @@ PWR_WakeUpPinCmd	std_perif/src/stm32f4xx_pwr.c	/^void PWR_WakeUpPinCmd(uint32_t 
 PWR_WakeUp_Pin1	std_perif/inc/stm32f4xx_pwr.h	/^#define PWR_WakeUp_Pin1 /;"	d
 PWR_WakeUp_Pin2	std_perif/inc/stm32f4xx_pwr.h	/^#define PWR_WakeUp_Pin2 /;"	d
 PWR_WakeUp_Pin3	std_perif/inc/stm32f4xx_pwr.h	/^#define PWR_WakeUp_Pin3 /;"	d
-P_f32	m_project_specific/src/extended_kalman_filter.c	/^float32_t P_f32[7*7];$/;"	v	typeref:typename:float32_t[]
+P_f32	m_project_specific/src/extended_kalman_filter.c	/^float32_t P_f32[7*7] =$/;"	v	typeref:typename:float32_t[]
 PacketSize	std_perif/inc/stm32f4xx_dsi.h	/^  uint32_t PacketSize;                   \/*!< Video packet size                                /;"	m	struct:__anon967edc350308	typeref:typename:uint32_t
 PendSV_IRQn	system/stm32f4xx.h	/^  PendSV_IRQn                 = -2,     \/*!< 14 Cortex-M4 Pend SV Interrupt                    /;"	e	enum:IRQn
 Q	cmsis/inc/core_cm0.h	/^    uint32_t Q:1;                        \/*!< bit:     27  Saturation condition flag          */;"	m	struct:__anone87a495a010a::__anone87a495a0208	typeref:typename:uint32_t:1
@@ -12015,8 +12027,10 @@ QUADSPI_SR_TCF	system/stm32f4xx.h	/^#define  QUADSPI_SR_TCF /;"	d
 QUADSPI_SR_TEF	system/stm32f4xx.h	/^#define  QUADSPI_SR_TEF /;"	d
 QUADSPI_SR_TOF	system/stm32f4xx.h	/^#define  QUADSPI_SR_TOF /;"	d
 QUADSPI_TypeDef	system/stm32f4xx.h	/^} QUADSPI_TypeDef;$/;"	t	typeref:struct:__anonbe95b8123208
+QUATERNION_STRUCT_TAG	m_math/inc/quaternion.h	/^	typedef struct QUATERNION_STRUCT_TAG$/;"	s
 Q_f32	m_project_specific/src/extended_kalman_filter.c	/^float32_t Q_f32[7*7] =$/;"	v	typeref:typename:float32_t[]
 R	m_project_specific/src/extended_kalman_filter.c	/^arm_matrix_instance_f32 R = {.numCols=3, .numRows=3, .pData=R_f32};$/;"	v	typeref:typename:arm_matrix_instance_f32
+RAD2DEG_CONV	m_math/inc/math.h	/^	#define RAD2DEG_CONV	/;"	d
 RASR	cmsis/inc/core_cm0plus.h	/^  __IO uint32_t RASR;                    \/*!< Offset: 0x010 (R\/W)  MPU Region Attribute and Si/;"	m	struct:__anon5f5259be0c08	typeref:typename:__IO uint32_t
 RASR	cmsis/inc/core_cm3.h	/^  __IO uint32_t RASR;                    \/*!< Offset: 0x010 (R\/W)  MPU Region Attribute and Si/;"	m	struct:__anone87a561d1108	typeref:typename:__IO uint32_t
 RASR	cmsis/inc/core_cm4.h	/^  __IO uint32_t RASR;                    \/*!< Offset: 0x010 (R\/W)  MPU Region Attribute and Si/;"	m	struct:__anone87a5a5e1108	typeref:typename:__IO uint32_t
@@ -12031,6 +12045,7 @@ RASR_A2	cmsis/inc/core_sc300.h	/^  __IO uint32_t RASR_A2;                 \/*!< 
 RASR_A3	cmsis/inc/core_cm3.h	/^  __IO uint32_t RASR_A3;                 \/*!< Offset: 0x028 (R\/W)  MPU Alias 3 Region Attribut/;"	m	struct:__anone87a561d1108	typeref:typename:__IO uint32_t
 RASR_A3	cmsis/inc/core_cm4.h	/^  __IO uint32_t RASR_A3;                 \/*!< Offset: 0x028 (R\/W)  MPU Alias 3 Region Attribut/;"	m	struct:__anone87a5a5e1108	typeref:typename:__IO uint32_t
 RASR_A3	cmsis/inc/core_sc300.h	/^  __IO uint32_t RASR_A3;                 \/*!< Offset: 0x028 (R\/W)  MPU Alias 3 Region Attribut/;"	m	struct:__anona8b8b8031108	typeref:typename:__IO uint32_t
+RAW_SENSORS_STRUCT_TAG	m_project_specific/inc/calibrate_sensors.h	/^typedef struct RAW_SENSORS_STRUCT_TAG$/;"	s
 RBAR	cmsis/inc/core_cm0plus.h	/^  __IO uint32_t RBAR;                    \/*!< Offset: 0x00C (R\/W)  MPU Region Base Address Reg/;"	m	struct:__anon5f5259be0c08	typeref:typename:__IO uint32_t
 RBAR	cmsis/inc/core_cm3.h	/^  __IO uint32_t RBAR;                    \/*!< Offset: 0x00C (R\/W)  MPU Region Base Address Reg/;"	m	struct:__anone87a561d1108	typeref:typename:__IO uint32_t
 RBAR	cmsis/inc/core_cm4.h	/^  __IO uint32_t RBAR;                    \/*!< Offset: 0x00C (R\/W)  MPU Region Base Address Reg/;"	m	struct:__anone87a5a5e1108	typeref:typename:__IO uint32_t
@@ -12950,6 +12965,7 @@ RDP_KEY	std_perif/inc/stm32f4xx_flash.h	/^#define RDP_KEY /;"	d
 RDTR	system/stm32f4xx.h	/^  __IO uint32_t RDTR; \/*!< CAN receive FIFO mailbox data length control and time stamp register/;"	m	struct:__anonbe95b8120708	typeref:typename:__IO uint32_t
 READ_BIT	system/stm32f4xx.h	/^#define READ_BIT(/;"	d
 READ_CHIP	make/tools.mk	/^READ_CHIP	:= $(PROGRAMMER) read$/;"	m
+READ_JOYSTICK_INTERNAL	m_project_specific/src/read_joystick.c	/^#define READ_JOYSTICK_INTERNAL$/;"	d	file:
 READ_REG	system/stm32f4xx.h	/^#define READ_REG(/;"	d
 RECALPF_TIMEOUT	std_perif/src/stm32f4xx_rtc.c	/^#define RECALPF_TIMEOUT /;"	d	file:
 REPLACE_ALPHA_VALUE	std_perif/inc/stm32f4xx_dma2d.h	/^#define REPLACE_ALPHA_VALUE /;"	d
@@ -15158,6 +15174,7 @@ SPI_NSS_Hard	std_perif/inc/stm32f4xx_spi.h	/^#define SPI_NSS_Hard /;"	d
 SPI_NSS_Soft	std_perif/inc/stm32f4xx_spi.h	/^#define SPI_NSS_Soft /;"	d
 SPI_RXCRCR_RXCRC	system/stm32f4xx.h	/^#define  SPI_RXCRCR_RXCRC /;"	d
 SPI_ReceiveData	std_perif/inc/stm32f4xx_spi.h	/^#define SPI_ReceiveData /;"	d
+SPI_Rx	main.c	/^uint8_t SPI_Rx(uint8_t address)$/;"	f	typeref:typename:uint8_t
 SPI_SR_BSY	system/stm32f4xx.h	/^#define  SPI_SR_BSY /;"	d
 SPI_SR_CHSIDE	system/stm32f4xx.h	/^#define  SPI_SR_CHSIDE /;"	d
 SPI_SR_CRCERR	system/stm32f4xx.h	/^#define  SPI_SR_CRCERR /;"	d
@@ -15173,6 +15190,7 @@ SPI_StructInit	std_perif/src/stm32f4xx_spi.c	/^void SPI_StructInit(SPI_InitTypeD
 SPI_TIModeCmd	std_perif/src/stm32f4xx_spi.c	/^void SPI_TIModeCmd(SPI_TypeDef* SPIx, FunctionalState NewState)$/;"	f	typeref:typename:void
 SPI_TXCRCR_TXCRC	system/stm32f4xx.h	/^#define  SPI_TXCRCR_TXCRC /;"	d
 SPI_TransmitCRC	std_perif/src/stm32f4xx_spi.c	/^void SPI_TransmitCRC(SPI_TypeDef* SPIx)$/;"	f	typeref:typename:void
+SPI_Tx	main.c	/^void SPI_Tx(uint8_t address, uint8_t data)$/;"	f	typeref:typename:void
 SPI_TypeDef	system/stm32f4xx.h	/^} SPI_TypeDef;$/;"	t	typeref:struct:__anonbe95b8123008
 SPPR	cmsis/inc/core_cm3.h	/^  __IO uint32_t SPPR;                    \/*!< Offset: 0x0F0 (R\/W)  Selected Pin Protocol Regis/;"	m	struct:__anone87a561d1008	typeref:typename:__IO uint32_t
 SPPR	cmsis/inc/core_cm4.h	/^  __IO uint32_t SPPR;                    \/*!< Offset: 0x0F0 (R\/W)  Selected Pin Protocol Regis/;"	m	struct:__anone87a5a5e1008	typeref:typename:__IO uint32_t
@@ -15661,9 +15679,13 @@ TEAcknowledgeRequest	std_perif/inc/stm32f4xx_dsi.h	/^  uint32_t TEAcknowledgeReq
 TER	cmsis/inc/core_cm3.h	/^  __IO uint32_t TER;                     \/*!< Offset: 0xE00 (R\/W)  ITM Trace Enable Register  /;"	m	struct:__anone87a561d0d08	typeref:typename:__IO uint32_t
 TER	cmsis/inc/core_cm4.h	/^  __IO uint32_t TER;                     \/*!< Offset: 0xE00 (R\/W)  ITM Trace Enable Register  /;"	m	struct:__anone87a5a5e0d08	typeref:typename:__IO uint32_t
 TER	cmsis/inc/core_sc300.h	/^  __IO uint32_t TER;                     \/*!< Offset: 0xE00 (R\/W)  ITM Trace Enable Register  /;"	m	struct:__anona8b8b8030d08	typeref:typename:__IO uint32_t
+TI1_Config	m_project_specific/src/read_joystick.c	/^static void TI1_Config(TIM_TypeDef* TIMx, uint16_t TIM_ICPolarity, uint16_t TIM_ICSelection,$/;"	f	typeref:typename:void	file:
 TI1_Config	std_perif/src/stm32f4xx_tim.c	/^static void TI1_Config(TIM_TypeDef* TIMx, uint16_t TIM_ICPolarity, uint16_t TIM_ICSelection,$/;"	f	typeref:typename:void	file:
+TI2_Config	m_project_specific/src/read_joystick.c	/^static void TI2_Config(TIM_TypeDef* TIMx, uint16_t TIM_ICPolarity, uint16_t TIM_ICSelection,$/;"	f	typeref:typename:void	file:
 TI2_Config	std_perif/src/stm32f4xx_tim.c	/^static void TI2_Config(TIM_TypeDef* TIMx, uint16_t TIM_ICPolarity, uint16_t TIM_ICSelection,$/;"	f	typeref:typename:void	file:
+TI3_Config	m_project_specific/src/read_joystick.c	/^static void TI3_Config(TIM_TypeDef* TIMx, uint16_t TIM_ICPolarity, uint16_t TIM_ICSelection,$/;"	f	typeref:typename:void	file:
 TI3_Config	std_perif/src/stm32f4xx_tim.c	/^static void TI3_Config(TIM_TypeDef* TIMx, uint16_t TIM_ICPolarity, uint16_t TIM_ICSelection,$/;"	f	typeref:typename:void	file:
+TI4_Config	m_project_specific/src/read_joystick.c	/^static void TI4_Config(TIM_TypeDef* TIMx, uint16_t TIM_ICPolarity, uint16_t TIM_ICSelection,$/;"	f	typeref:typename:void	file:
 TI4_Config	std_perif/src/stm32f4xx_tim.c	/^static void TI4_Config(TIM_TypeDef* TIMx, uint16_t TIM_ICPolarity, uint16_t TIM_ICSelection,$/;"	f	typeref:typename:void	file:
 TIM1	system/stm32f4xx.h	/^#define TIM1 /;"	d
 TIM10	system/stm32f4xx.h	/^#define TIM10 /;"	d
@@ -15687,12 +15709,14 @@ TIM1_UP_TIM10_IRQn	system/stm32f4xx.h	/^  TIM1_UP_TIM10_IRQn          = 25,     
 TIM2	system/stm32f4xx.h	/^#define TIM2 /;"	d
 TIM2_BASE	system/stm32f4xx.h	/^#define TIM2_BASE /;"	d
 TIM2_ETH_PTP	std_perif/inc/stm32f4xx_tim.h	/^#define TIM2_ETH_PTP /;"	d
+TIM2_IRQHandler	main.c	/^void TIM2_IRQHandler()$/;"	f	typeref:typename:void
 TIM2_IRQn	system/stm32f4xx.h	/^  TIM2_IRQn                   = 28,     \/*!< TIM2 global Interrupt                             /;"	e	enum:IRQn
 TIM2_TIM8_TRGO	std_perif/inc/stm32f4xx_tim.h	/^#define TIM2_TIM8_TRGO /;"	d
 TIM2_USBFS_SOF	std_perif/inc/stm32f4xx_tim.h	/^#define TIM2_USBFS_SOF /;"	d
 TIM2_USBHS_SOF	std_perif/inc/stm32f4xx_tim.h	/^#define TIM2_USBHS_SOF /;"	d
 TIM3	system/stm32f4xx.h	/^#define TIM3 /;"	d
 TIM3_BASE	system/stm32f4xx.h	/^#define TIM3_BASE /;"	d
+TIM3_IRQHandler	m_project_specific/src/read_joystick.c	/^void TIM3_IRQHandler()$/;"	f	typeref:typename:void
 TIM3_IRQn	system/stm32f4xx.h	/^  TIM3_IRQn                   = 29,     \/*!< TIM3 global Interrupt                             /;"	e	enum:IRQn
 TIM4	system/stm32f4xx.h	/^#define TIM4 /;"	d
 TIM4_BASE	system/stm32f4xx.h	/^#define TIM4_BASE /;"	d
@@ -15700,6 +15724,7 @@ TIM4_IRQn	system/stm32f4xx.h	/^  TIM4_IRQn                   = 30,     \/*!< TIM
 TIM5	system/stm32f4xx.h	/^#define TIM5 /;"	d
 TIM5_BASE	system/stm32f4xx.h	/^#define TIM5_BASE /;"	d
 TIM5_GPIO	std_perif/inc/stm32f4xx_tim.h	/^#define TIM5_GPIO /;"	d
+TIM5_IRQHandler	m_project_specific/src/read_joystick.c	/^void TIM5_IRQHandler()$/;"	f	typeref:typename:void
 TIM5_IRQn	system/stm32f4xx.h	/^  TIM5_IRQn                   = 50,     \/*!< TIM5 global Interrupt                             /;"	e	enum:IRQn
 TIM5_LSE	std_perif/inc/stm32f4xx_tim.h	/^#define TIM5_LSE /;"	d
 TIM5_LSI	std_perif/inc/stm32f4xx_tim.h	/^#define TIM5_LSI /;"	d
@@ -16076,6 +16101,11 @@ TIM_ICSelection_DirectTI	std_perif/inc/stm32f4xx_tim.h	/^#define TIM_ICSelection
 TIM_ICSelection_IndirectTI	std_perif/inc/stm32f4xx_tim.h	/^#define TIM_ICSelection_IndirectTI /;"	d
 TIM_ICSelection_TRC	std_perif/inc/stm32f4xx_tim.h	/^#define TIM_ICSelection_TRC /;"	d
 TIM_ICStructInit	std_perif/src/stm32f4xx_tim.c	/^void TIM_ICStructInit(TIM_ICInitTypeDef* TIM_ICInitStruct)$/;"	f	typeref:typename:void
+TIM_IC_CH_STATE	m_project_specific/inc/read_joystick.h	/^typedef enum TIM_IC_CH_STATE$/;"	g
+TIM_IC_CH_STATE_FALLING	m_project_specific/inc/read_joystick.h	/^	TIM_IC_CH_STATE_FALLING$/;"	e	enum:TIM_IC_CH_STATE
+TIM_IC_CH_STATE_FIRST	m_project_specific/inc/read_joystick.h	/^	TIM_IC_CH_STATE_FIRST = 0,$/;"	e	enum:TIM_IC_CH_STATE
+TIM_IC_CH_STATE_RISING	m_project_specific/inc/read_joystick.h	/^	TIM_IC_CH_STATE_RISING,$/;"	e	enum:TIM_IC_CH_STATE
+TIM_IC_CH_STRUCT	m_project_specific/inc/read_joystick.h	/^typedef struct TIM_IC_CH_STRUCT$/;"	s
 TIM_ITConfig	std_perif/src/stm32f4xx_tim.c	/^void TIM_ITConfig(TIM_TypeDef* TIMx, uint16_t TIM_IT, FunctionalState NewState)$/;"	f	typeref:typename:void
 TIM_ITRxExternalClockConfig	std_perif/src/stm32f4xx_tim.c	/^void TIM_ITRxExternalClockConfig(TIM_TypeDef* TIMx, uint16_t TIM_InputTriggerSource)$/;"	f	typeref:typename:void
 TIM_IT_Break	std_perif/inc/stm32f4xx_tim.h	/^#define TIM_IT_Break /;"	d
@@ -16524,6 +16554,7 @@ UFB_MODE_BB	std_perif/src/stm32f4xx_syscfg.c	/^#define UFB_MODE_BB /;"	d	file:
 UFB_MODE_BitNumber	std_perif/src/stm32f4xx_syscfg.c	/^#define UFB_MODE_BitNumber /;"	d	file:
 USART1	system/stm32f4xx.h	/^#define USART1 /;"	d
 USART1_BASE	system/stm32f4xx.h	/^#define USART1_BASE /;"	d
+USART1_IRQHandler	m_project_specific/src/usart.c	/^void USART1_IRQHandler(void)$/;"	f	typeref:typename:void
 USART1_IRQn	system/stm32f4xx.h	/^  USART1_IRQn                 = 37,     \/*!< USART1 global Interrupt                           /;"	e	enum:IRQn
 USART2	system/stm32f4xx.h	/^#define USART2 /;"	d
 USART2_BASE	system/stm32f4xx.h	/^#define USART2_BASE /;"	d
@@ -16659,6 +16690,17 @@ USART_Parity	std_perif/inc/stm32f4xx_usart.h	/^  uint16_t USART_Parity;         
 USART_Parity_Even	std_perif/inc/stm32f4xx_usart.h	/^#define USART_Parity_Even /;"	d
 USART_Parity_No	std_perif/inc/stm32f4xx_usart.h	/^#define USART_Parity_No /;"	d
 USART_Parity_Odd	std_perif/inc/stm32f4xx_usart.h	/^#define USART_Parity_Odd /;"	d
+USART_RCV_CLI_STATE_CMD_SET	m_project_specific/src/usart.c	/^	USART_RCV_CLI_STATE_CMD_SET,$/;"	e	enum:USART_RCV_CLI_STATE_ENUM	file:
+USART_RCV_CLI_STATE_CMD_SET_RPM	m_project_specific/src/usart.c	/^	USART_RCV_CLI_STATE_CMD_SET_RPM,$/;"	e	enum:USART_RCV_CLI_STATE_ENUM	file:
+USART_RCV_CLI_STATE_CMD_SET_RPM_A	m_project_specific/src/usart.c	/^	USART_RCV_CLI_STATE_CMD_SET_RPM_A,$/;"	e	enum:USART_RCV_CLI_STATE_ENUM	file:
+USART_RCV_CLI_STATE_CMD_SET_RPM_B	m_project_specific/src/usart.c	/^	USART_RCV_CLI_STATE_CMD_SET_RPM_B,$/;"	e	enum:USART_RCV_CLI_STATE_ENUM	file:
+USART_RCV_CLI_STATE_CMD_SET_RPM_C	m_project_specific/src/usart.c	/^	USART_RCV_CLI_STATE_CMD_SET_RPM_C,$/;"	e	enum:USART_RCV_CLI_STATE_ENUM	file:
+USART_RCV_CLI_STATE_CMD_SET_RPM_D	m_project_specific/src/usart.c	/^	USART_RCV_CLI_STATE_CMD_SET_RPM_D,$/;"	e	enum:USART_RCV_CLI_STATE_ENUM	file:
+USART_RCV_CLI_STATE_END	m_project_specific/src/usart.c	/^	USART_RCV_CLI_STATE_END$/;"	e	enum:USART_RCV_CLI_STATE_ENUM	file:
+USART_RCV_CLI_STATE_ENUM	m_project_specific/src/usart.c	/^typedef enum USART_RCV_CLI_STATE_ENUM$/;"	g	file:
+USART_RCV_CLI_STATE_ERR	m_project_specific/src/usart.c	/^	USART_RCV_CLI_STATE_ERR, \/*Mistake was made, redirectind to error message after the new line*\/$/;"	e	enum:USART_RCV_CLI_STATE_ENUM	file:
+USART_RCV_CLI_STATE_START	m_project_specific/src/usart.c	/^	USART_RCV_CLI_STATE_START,  \/*Start of command line*\/$/;"	e	enum:USART_RCV_CLI_STATE_ENUM	file:
+USART_RCV_CLI_STRUCT	m_project_specific/src/usart.c	/^typedef struct USART_RCV_CLI_STRUCT$/;"	s	file:
 USART_ReceiveData	std_perif/src/stm32f4xx_usart.c	/^uint16_t USART_ReceiveData(USART_TypeDef* USARTx)$/;"	f	typeref:typename:uint16_t
 USART_ReceiverWakeUpCmd	std_perif/src/stm32f4xx_usart.c	/^void USART_ReceiverWakeUpCmd(USART_TypeDef* USARTx, FunctionalState NewState)$/;"	f	typeref:typename:void
 USART_SR_CTS	system/stm32f4xx.h	/^#define  USART_SR_CTS /;"	d
@@ -17495,6 +17537,7 @@ __get_xPSR	cmsis/inc/core_cmFunc.h	/^__STATIC_INLINE uint32_t __get_xPSR(void)$/
 __get_xPSR	cmsis/inc/core_cmFunc.h	/^__attribute__( ( always_inline ) ) __STATIC_INLINE uint32_t __get_xPSR(void)$/;"	f	typeref:typename:__STATIC_INLINE uint32_t
 __init_array_end	linker/stm32_flash.ld	/^    PROVIDE_HIDDEN (__init_array_end = .);$/;"	s
 __init_array_start	linker/stm32_flash.ld	/^    PROVIDE_HIDDEN (__init_array_start = .);$/;"	s
+__int_log_msg	main.c	/^void __int_log_msg(volatile char *s)$/;"	f	typeref:typename:void
 __preinit_array_end	linker/stm32_flash.ld	/^    PROVIDE_HIDDEN (__preinit_array_end = .);$/;"	s
 __preinit_array_start	linker/stm32_flash.ld	/^    PROVIDE_HIDDEN (__preinit_array_start = .);$/;"	s
 __set_BASEPRI	cmsis/inc/core_cmFunc.h	/^__STATIC_INLINE void __set_BASEPRI(uint32_t basePri)$/;"	f	typeref:typename:__STATIC_INLINE void
@@ -17519,6 +17562,7 @@ _etext	linker/stm32_flash.ld	/^    _etext = .;        \/* define a global symbol
 _exit	linker/stm32_flash.ld	/^    _exit = .;$/;"	s
 _i2c3_io_struct	main.c	/^I2C_io_t _i2c3_io_struct  = { $/;"	v	typeref:typename:I2C_io_t
 _i2c3_io_struct	old/main_it_no.c	/^I2C_io_t _i2c3_io_struct  = { $/;"	v	typeref:typename:I2C_io_t
+_i2c3_io_struct_stage	main.c	/^I2C_io_t _i2c3_io_struct_stage  = { $/;"	v	typeref:typename:I2C_io_t
 _reserved0	cmsis/inc/core_cm0.h	/^    uint32_t _reserved0:15;              \/*!< bit:  9..23  Reserved                           */;"	m	struct:__anone87a495a050a::__anone87a495a0608	typeref:typename:uint32_t:15
 _reserved0	cmsis/inc/core_cm0.h	/^    uint32_t _reserved0:23;              \/*!< bit:  9..31  Reserved                           */;"	m	struct:__anone87a495a030a::__anone87a495a0408	typeref:typename:uint32_t:23
 _reserved0	cmsis/inc/core_cm0.h	/^    uint32_t _reserved0:27;              \/*!< bit:  0..26  Reserved                           */;"	m	struct:__anone87a495a010a::__anone87a495a0208	typeref:typename:uint32_t:27
@@ -17558,9 +17602,15 @@ _reserved1	cmsis/inc/core_sc300.h	/^    uint32_t _reserved1:4;               \/*
 _sbss	linker/stm32_flash.ld	/^    _sbss = .;         \/* define a global symbol at bss start *\/$/;"	s
 _sdata	linker/stm32_flash.ld	/^    _sdata = .;        \/* create a global symbol at data start *\/$/;"	s
 _sidata	linker/stm32_flash.ld	/^  _sidata = .;$/;"	s
+acc_x	m_project_specific/inc/calibrate_sensors.h	/^    float32_t acc_x;$/;"	m	struct:CALIBRATED_SENSORS_STRUCT_TAG	typeref:typename:float32_t
+acc_x	m_project_specific/inc/calibrate_sensors.h	/^    int16_t acc_x;$/;"	m	struct:RAW_SENSORS_STRUCT_TAG	typeref:typename:int16_t
+acc_y	m_project_specific/inc/calibrate_sensors.h	/^    float32_t acc_y;$/;"	m	struct:CALIBRATED_SENSORS_STRUCT_TAG	typeref:typename:float32_t
+acc_y	m_project_specific/inc/calibrate_sensors.h	/^    int16_t acc_y;$/;"	m	struct:RAW_SENSORS_STRUCT_TAG	typeref:typename:int16_t
+acc_z	m_project_specific/inc/calibrate_sensors.h	/^    float32_t acc_z;$/;"	m	struct:CALIBRATED_SENSORS_STRUCT_TAG	typeref:typename:float32_t
+acc_z	m_project_specific/inc/calibrate_sensors.h	/^    int16_t acc_z;$/;"	m	struct:RAW_SENSORS_STRUCT_TAG	typeref:typename:int16_t
 address	main.c	/^	__IO uint8_t  address;$/;"	m	struct:I2C_IO_STRUCT	typeref:typename:__IO uint8_t	file:
 address	old/main_it_no.c	/^    __IO uint8_t  address;$/;"	m	struct:I2C_IO_STRUCT	typeref:typename:__IO uint8_t	file:
-algorithm	.vscode/settings.json	/^        "algorithm": "c"$/;"	s	object:files.associations
+algorithm	.vscode/settings.json	/^        "algorithm": "c",$/;"	s	object:files.associations
 all	Makefile	/^all: $(PROJECT)$/;"	t
 arm_bilinear_interp_f32	cmsis/inc/arm_math.h	/^  static __INLINE float32_t arm_bilinear_interp_f32($/;"	f	typeref:typename:__INLINE float32_t
 arm_bilinear_interp_instance_f32	cmsis/inc/arm_math.h	/^  } arm_bilinear_interp_instance_f32;$/;"	t	typeref:struct:__anonf33cb1db1008
@@ -17699,13 +17749,18 @@ bitReverseFlag	cmsis/inc/arm_math.h	/^    uint8_t bitReverseFlag;          \/**<
 bitReverseFlagR	cmsis/inc/arm_math.h	/^    uint8_t bitReverseFlagR;                        \/**< flag that enables (bitReverseFlagR=1) /;"	m	struct:__anonf33cb1db1c08	typeref:typename:uint8_t
 bitReverseFlagR	cmsis/inc/arm_math.h	/^    uint8_t bitReverseFlagR;                      \/**< flag that enables (bitReverseFlagR=1) or/;"	m	struct:__anonf33cb1db1b08	typeref:typename:uint8_t
 bitReverseFlagR	cmsis/inc/arm_math.h	/^    uint8_t bitReverseFlagR;                    \/**< flag that enables (bitReverseFlagR=1) or d/;"	m	struct:__anonf33cb1db1d08	typeref:typename:uint8_t
+buffer	m_project_specific/src/usart.c	/^	char 	buffer[10];$/;"	m	struct:USART_RCV_CLI_STRUCT	typeref:typename:char[10]	file:
 buffer	main.c	/^	__IO uint8_t *buffer;$/;"	m	struct:I2C_IO_STRUCT	typeref:typename:__IO uint8_t *	file:
-buffer	main.c	/^uint8_t buffer[15];$/;"	v	typeref:typename:uint8_t[15]
+buffer	main.c	/^uint8_t buffer[16];$/;"	v	typeref:typename:uint8_t[16]
 buffer	old/main_it_no.c	/^    __IO uint8_t *buffer;$/;"	m	struct:I2C_IO_STRUCT	typeref:typename:__IO uint8_t *	file:
 buffer	old/main_it_no.c	/^uint8_t buffer[15];$/;"	v	typeref:typename:uint8_t[15]
 bytes_count	main.c	/^	__IO uint8_t  bytes_count;$/;"	m	struct:I2C_IO_STRUCT	typeref:typename:__IO uint8_t	file:
 bytes_count	old/main_it_no.c	/^    __IO uint8_t  bytes_count;$/;"	m	struct:I2C_IO_STRUCT	typeref:typename:__IO uint8_t	file:
 cStandard	.vscode/c_cpp_properties.json	/^            "cStandard": "gnu17",$/;"	s	object:configurations.0
+calibrate_sensors	m_project_specific/src/calibrate_sensors.c	/^void calibrate_sensors( raw_sensors_struct* raw_sensors_data, calibrated_sensors_struct *out_cal/;"	f	typeref:typename:void
+calibrated_sensors_buffer_1	m_project_specific/src/calibrate_sensors.c	/^static calibrated_sensors_struct calibrated_sensors_buffer_1;$/;"	v	typeref:typename:calibrated_sensors_struct	file:
+calibrated_sensors_buffer_2	m_project_specific/src/calibrate_sensors.c	/^static calibrated_sensors_struct calibrated_sensors_buffer_2;$/;"	v	typeref:typename:calibrated_sensors_struct	file:
+calibrated_sensors_struct	m_project_specific/inc/calibrate_sensors.h	/^} calibrated_sensors_struct;$/;"	t	typeref:struct:CALIBRATED_SENSORS_STRUCT_TAG
 clip_q31_to_q15	cmsis/inc/arm_math.h	/^  static __INLINE q15_t clip_q31_to_q15($/;"	f	typeref:typename:__INLINE q15_t
 clip_q31_to_q7	cmsis/inc/arm_math.h	/^  static __INLINE q7_t clip_q31_to_q7($/;"	f	typeref:typename:__INLINE q7_t
 clip_q63_to_q15	cmsis/inc/arm_math.h	/^  static __INLINE q15_t clip_q63_to_q15($/;"	f	typeref:typename:__INLINE q15_t
@@ -17713,14 +17768,22 @@ clip_q63_to_q31	cmsis/inc/arm_math.h	/^  static __INLINE q31_t clip_q63_to_q31($
 compilerArgs	.vscode/c_cpp_properties.json	/^            "compilerArgs": [$/;"	a	object:configurations.0
 compilerPath	.vscode/c_cpp_properties.json	/^            "compilerPath": "\/usr\/bin\/gcc",$/;"	s	object:configurations.0
 configurations	.vscode/c_cpp_properties.json	/^    "configurations": [$/;"	a
+count	m_project_specific/src/usart.c	/^	uint8_t count;$/;"	m	struct:USART_RCV_CLI_STRUCT	typeref:typename:uint8_t	file:
 cppStandard	.vscode/c_cpp_properties.json	/^            "cppStandard": "gnu++14",$/;"	s	object:configurations.0
+current_state	m_project_specific/inc/read_joystick.h	/^	__IO tim_ic_ch_state_enum current_state;$/;"	m	struct:TIM_IC_CH_STRUCT	typeref:typename:__IO tim_ic_ch_state_enum
 data	m_math/inc/matrix.h	/^		matrix_element_t*	data;$/;"	m	struct:MATRIX2D	typeref:typename:matrix_element_t *
 defines	.vscode/c_cpp_properties.json	/^            "defines": [$/;"	a	object:configurations.0
+degree	m_math/inc/polynomial.h	/^		uint8_t degree; \/*uint8_t degree of the polinomial*\/$/;"	m	struct:POLYNOMIAL_STRUCT_TAG	typeref:typename:uint8_t
+distance_sonar	m_project_specific/inc/calibrate_sensors.h	/^    float32_t distance_sonar; \/*cm*\/$/;"	m	struct:CALIBRATED_SENSORS_STRUCT_TAG	typeref:typename:float32_t
+distance_sonar	m_project_specific/inc/calibrate_sensors.h	/^    int16_t distance_sonar; $/;"	m	struct:RAW_SENSORS_STRUCT_TAG	typeref:typename:int16_t
 ekf_init	m_project_specific/src/extended_kalman_filter.c	/^void ekf_init()$/;"	f	typeref:typename:void
+ekf_next	m_project_specific/src/extended_kalman_filter.c	/^void ekf_next(calibrated_sensors_struct* calibrated_sensors, quaternion_struct_t * out_quaternio/;"	f	typeref:typename:void
+elipsoid_sphere_calibration	m_project_specific/src/calibrate_sensors.c	/^static void elipsoid_sphere_calibration(arm_matrix_instance_f32 *elipsoid, arm_matrix_instance_f/;"	f	typeref:typename:void	file:
 end	linker/stm32_flash.ld	/^    PROVIDE ( end = . );$/;"	s
 energy	cmsis/inc/arm_math.h	/^    float32_t energy;    \/**< saves previous frame energy. *\/$/;"	m	struct:__anonf33cb1db3308	typeref:typename:float32_t
 energy	cmsis/inc/arm_math.h	/^    q15_t energy;        \/**< saves previous frame energy. *\/$/;"	m	struct:__anonf33cb1db3508	typeref:typename:q15_t
 energy	cmsis/inc/arm_math.h	/^    q31_t energy;         \/**< saves previous frame energy. *\/$/;"	m	struct:__anonf33cb1db3408	typeref:typename:q31_t
+falling	m_project_specific/inc/read_joystick.h	/^	__IO int32_t falling;$/;"	m	struct:TIM_IC_CH_STRUCT	typeref:typename:__IO int32_t
 fftLen	cmsis/inc/arm_math.h	/^    uint16_t fftLen;                   \/**< length of the FFT. *\/$/;"	m	struct:__anonf33cb1db1808	typeref:typename:uint16_t
 fftLen	cmsis/inc/arm_math.h	/^    uint16_t fftLen;                   \/**< length of the FFT. *\/$/;"	m	struct:__anonf33cb1db1908	typeref:typename:uint16_t
 fftLen	cmsis/inc/arm_math.h	/^    uint16_t fftLen;                   \/**< length of the FFT. *\/$/;"	m	struct:__anonf33cb1db1a08	typeref:typename:uint16_t
@@ -17742,6 +17805,12 @@ float32_t	cmsis/inc/arm_math.h	/^  typedef float float32_t;$/;"	t	typeref:typena
 float64_t	cmsis/inc/arm_math.h	/^  typedef double float64_t;$/;"	t	typeref:typename:double
 float_to_str	m_math/src/convert.c	/^int float_to_str(float32_t number, char* out_str, uint8_t after_point, uint8_t before_point)$/;"	f	typeref:typename:int
 g_pfnVectors	startup/startup_stm32f4xx.s	/^g_pfnVectors:$/;"	l
+gyro_x	m_project_specific/inc/calibrate_sensors.h	/^    float32_t gyro_x;$/;"	m	struct:CALIBRATED_SENSORS_STRUCT_TAG	typeref:typename:float32_t
+gyro_x	m_project_specific/inc/calibrate_sensors.h	/^    int16_t gyro_x;$/;"	m	struct:RAW_SENSORS_STRUCT_TAG	typeref:typename:int16_t
+gyro_y	m_project_specific/inc/calibrate_sensors.h	/^    float32_t gyro_y;$/;"	m	struct:CALIBRATED_SENSORS_STRUCT_TAG	typeref:typename:float32_t
+gyro_y	m_project_specific/inc/calibrate_sensors.h	/^    int16_t gyro_y;$/;"	m	struct:RAW_SENSORS_STRUCT_TAG	typeref:typename:int16_t
+gyro_z	m_project_specific/inc/calibrate_sensors.h	/^    float32_t gyro_z;$/;"	m	struct:CALIBRATED_SENSORS_STRUCT_TAG	typeref:typename:float32_t
+gyro_z	m_project_specific/inc/calibrate_sensors.h	/^    int16_t gyro_z;$/;"	m	struct:RAW_SENSORS_STRUCT_TAG	typeref:typename:int16_t
 h	m_project_specific/src/extended_kalman_filter.c	/^arm_matrix_instance_f32 h = {.numCols=1, .numRows=3, .pData=h_f32};$/;"	v	typeref:typename:arm_matrix_instance_f32
 h_f32	m_project_specific/src/extended_kalman_filter.c	/^float32_t h_f32[3];$/;"	v	typeref:typename:float32_t[3]
 i2c_io_state_enum	main.c	/^} i2c_io_state_enum;$/;"	t	typeref:enum:I2C_IO_STATE_ENUM	file:
@@ -17768,8 +17837,19 @@ includePath	.vscode/c_cpp_properties.json	/^            "includePath": [$/;"	a	o
 int_to_str	m_math/src/convert.c	/^int int_to_str(int number, char *out_str, uint8_t digits)$/;"	f	typeref:typename:int
 intelliSenseMode	.vscode/c_cpp_properties.json	/^            "intelliSenseMode": "linux-gcc-x64",$/;"	s	object:configurations.0
 inv_int16_max	main.c	/^float32_t inv_int16_max = (float32_t) 1 \/ (float32_t) INT16_MAX;$/;"	v	typeref:typename:float32_t
-log_msg	main.c	/^void log_msg(volatile char *s)$/;"	f	typeref:typename:void
+is_in_irq	main.c	/^	__IO uint8_t  is_in_irq;$/;"	m	struct:I2C_IO_STRUCT	typeref:typename:__IO uint8_t	file:
+log_msg	main.c	/^	#define log_msg(/;"	d	file:
 log_msg	old/main_it_no.c	/^void log_msg(volatile char *s)$/;"	f	typeref:typename:void
+mag_x	m_project_specific/inc/calibrate_sensors.h	/^    float32_t mag_x;$/;"	m	struct:CALIBRATED_SENSORS_STRUCT_TAG	typeref:typename:float32_t
+mag_x	m_project_specific/inc/calibrate_sensors.h	/^    int16_t mag_x;$/;"	m	struct:RAW_SENSORS_STRUCT_TAG	typeref:typename:int16_t
+mag_y	m_project_specific/inc/calibrate_sensors.h	/^    float32_t mag_y;$/;"	m	struct:CALIBRATED_SENSORS_STRUCT_TAG	typeref:typename:float32_t
+mag_y	m_project_specific/inc/calibrate_sensors.h	/^    int16_t mag_y;$/;"	m	struct:RAW_SENSORS_STRUCT_TAG	typeref:typename:int16_t
+mag_z	m_project_specific/inc/calibrate_sensors.h	/^    float32_t mag_z;$/;"	m	struct:CALIBRATED_SENSORS_STRUCT_TAG	typeref:typename:float32_t
+mag_z	m_project_specific/inc/calibrate_sensors.h	/^    int16_t mag_z;$/;"	m	struct:RAW_SENSORS_STRUCT_TAG	typeref:typename:int16_t
+magnetometer_center	m_project_specific/src/calibrate_sensors.c	/^arm_matrix_instance_f32 magnetometer_center =$/;"	v	typeref:typename:arm_matrix_instance_f32
+magnetometer_center_f32	m_project_specific/src/calibrate_sensors.c	/^float32_t magnetometer_center_f32[3*1] = $/;"	v	typeref:typename:float32_t[]
+magnetometer_elipsoid	m_project_specific/src/calibrate_sensors.c	/^arm_matrix_instance_f32 magnetometer_elipsoid =$/;"	v	typeref:typename:arm_matrix_instance_f32
+magnetometer_elipsoid_f32	m_project_specific/src/calibrate_sensors.c	/^float32_t magnetometer_elipsoid_f32[3*3] = $/;"	v	typeref:typename:float32_t[]
 main	main.c	/^int main(void)$/;"	f	typeref:typename:int
 main	old/i2c_was_working.c	/^int main(void)$/;"	f	typeref:typename:int
 main	old/i2c_working_no_it.c	/^int main(void)$/;"	f	typeref:typename:int
@@ -17777,6 +17857,7 @@ main	old/main_RF.c	/^int main(void)$/;"	f	typeref:typename:int
 main	old/main_it_no.c	/^int main(void)$/;"	f	typeref:typename:int
 main	old/main_matrix.c	/^int main(void)$/;"	f	typeref:typename:int
 main	old/main_matrix2.c	/^int main(void)$/;"	f	typeref:typename:int
+matrix2d_t	m_math/inc/matrix.h	/^	} matrix2d_t;$/;"	t	typeref:struct:MATRIX2D
 matrix_element_t	m_math/inc/matrix.h	/^typedef	float	matrix_element_t;$/;"	t	typeref:typename:float
 matrix_index_t	m_math/inc/matrix.h	/^typedef	char	matrix_index_t;$/;"	t	typeref:typename:char
 maxDelay	cmsis/inc/arm_math.h	/^    uint16_t maxDelay;            \/**< maximum offset specified by the pTapDelay array. *\/$/;"	m	struct:__anonf33cb1db3608	typeref:typename:uint16_t
@@ -17848,6 +17929,7 @@ numTaps	cmsis/inc/arm_math.h	/^    uint16_t numTaps;    \/**< number of coeffici
 numTaps	cmsis/inc/arm_math.h	/^    uint16_t numTaps;    \/**< number of coefficients in the filter. *\/$/;"	m	struct:__anonf33cb1db3208	typeref:typename:uint16_t
 onebyfftLen	cmsis/inc/arm_math.h	/^    float32_t onebyfftLen;                 \/**< value of 1\/fftLen. *\/$/;"	m	struct:__anonf33cb1db1808	typeref:typename:float32_t
 onebyfftLen	cmsis/inc/arm_math.h	/^    float32_t onebyfftLen;                 \/**< value of 1\/fftLen. *\/$/;"	m	struct:__anonf33cb1db1908	typeref:typename:float32_t
+orientation_struct_t	m_project_specific/inc/extended_kalman_filter.h	/^} orientation_struct_t;$/;"	t	typeref:struct:ORIENTATION_STRUCT_TAG
 pBitRevTable	cmsis/inc/arm_math.h	/^    const uint16_t *pBitRevTable;      \/**< points to the bit reversal table. *\/$/;"	m	struct:__anonf33cb1db1a08	typeref:typename:const uint16_t *
 pBitRevTable	cmsis/inc/arm_math.h	/^    uint16_t *pBitRevTable;            \/**< points to the bit reversal table. *\/$/;"	m	struct:__anonf33cb1db1808	typeref:typename:uint16_t *
 pBitRevTable	cmsis/inc/arm_math.h	/^    uint16_t *pBitRevTable;            \/**< points to the bit reversal table. *\/$/;"	m	struct:__anonf33cb1db1908	typeref:typename:uint16_t *
@@ -17955,12 +18037,26 @@ pTwiddleBReal	cmsis/inc/arm_math.h	/^    q15_t *pTwiddleBReal;                  
 pTwiddleBReal	cmsis/inc/arm_math.h	/^    q31_t *pTwiddleBReal;                       \/**< points to the imag twiddle factor table. */;"	m	struct:__anonf33cb1db1c08	typeref:typename:q31_t *
 pTwiddleRFFT	cmsis/inc/arm_math.h	/^	float32_t * pTwiddleRFFT;					\/**< Twiddle factors real stage  *\/$/;"	m	struct:__anonf33cb1db1e08	typeref:typename:float32_t *
 pYData	cmsis/inc/arm_math.h	/^    float32_t *pYData;          \/**< pointer to the table of Y values *\/$/;"	m	struct:__anonf33cb1db0f08	typeref:typename:float32_t *
+p_x_coeaf_buffer	main.c	/^float32_t p_x_coeaf_buffer[] = {1 \/*x^0*\/, 1 \/*x_1*\/, 1 \/*x^2*\/};$/;"	v	typeref:typename:float32_t[]
+period	m_project_specific/inc/read_joystick.h	/^	__IO int32_t period;$/;"	m	struct:TIM_IC_CH_STRUCT	typeref:typename:__IO int32_t
 phaseLength	cmsis/inc/arm_math.h	/^    uint16_t phaseLength;           \/**< length of each polyphase filter component. *\/$/;"	m	struct:__anonf33cb1db2508	typeref:typename:uint16_t
 phaseLength	cmsis/inc/arm_math.h	/^    uint16_t phaseLength;           \/**< length of each polyphase filter component. *\/$/;"	m	struct:__anonf33cb1db2608	typeref:typename:uint16_t
 phaseLength	cmsis/inc/arm_math.h	/^    uint16_t phaseLength;          \/**< length of each polyphase filter component. *\/$/;"	m	struct:__anonf33cb1db2708	typeref:typename:uint16_t
+pitch	m_project_specific/inc/extended_kalman_filter.h	/^	float32_t pitch;$/;"	m	struct:ORIENTATION_STRUCT_TAG	typeref:typename:float32_t
 pkCoeffs	cmsis/inc/arm_math.h	/^    float32_t *pkCoeffs;                        \/**< points to the reflection coefficient array/;"	m	struct:__anonf33cb1db2f08	typeref:typename:float32_t *
 pkCoeffs	cmsis/inc/arm_math.h	/^    q15_t *pkCoeffs;                            \/**< points to the reflection coefficient array/;"	m	struct:__anonf33cb1db2d08	typeref:typename:q15_t *
 pkCoeffs	cmsis/inc/arm_math.h	/^    q31_t *pkCoeffs;                            \/**< points to the reflection coefficient array/;"	m	struct:__anonf33cb1db2e08	typeref:typename:q31_t *
+polinomial_compensation	m_project_specific/src/calibrate_sensors.c	/^static float32_t polinomial_compensation(polynomial_struct_t* polinomial, float32_t point_of_com/;"	f	typeref:typename:float32_t	file:
+polinomial_evaluate	m_math/src/polinomial.c	/^float32_t polinomial_evaluate(polynomial_struct_t *polinomial, float32_t x)$/;"	f	typeref:typename:float32_t
+poly_gyro_x_temp	m_project_specific/src/calibrate_sensors.c	/^static const polynomial_struct_t poly_gyro_x_temp =$/;"	v	typeref:typename:const polynomial_struct_t	file:
+poly_gyro_x_temp_f32	m_project_specific/src/calibrate_sensors.c	/^float32_t poly_gyro_x_temp_f32[] = $/;"	v	typeref:typename:float32_t[]
+poly_gyro_y_temp	m_project_specific/src/calibrate_sensors.c	/^static const polynomial_struct_t poly_gyro_y_temp =$/;"	v	typeref:typename:const polynomial_struct_t	file:
+poly_gyro_y_temp_f32	m_project_specific/src/calibrate_sensors.c	/^float32_t poly_gyro_y_temp_f32[] = $/;"	v	typeref:typename:float32_t[]
+poly_gyro_z_temp	m_project_specific/src/calibrate_sensors.c	/^static const polynomial_struct_t poly_gyro_z_temp =$/;"	v	typeref:typename:const polynomial_struct_t	file:
+poly_gyro_z_temp_f32	m_project_specific/src/calibrate_sensors.c	/^float32_t poly_gyro_z_temp_f32[] = $/;"	v	typeref:typename:float32_t[]
+polynomial.h	.vscode/settings.json	/^        "polynomial.h": "c"$/;"	s	object:files.associations
+polynomial_coeficients_p	m_math/inc/polynomial.h	/^		float32_t* polynomial_coeficients_p; \/*Pointer to alocated array of float32_t with size (self/;"	m	struct:POLYNOMIAL_STRUCT_TAG	typeref:typename:float32_t *
+polynomial_struct_t	m_math/inc/polynomial.h	/^	} polynomial_struct_t;$/;"	t	typeref:struct:POLYNOMIAL_STRUCT_TAG
 postShift	cmsis/inc/arm_math.h	/^    int8_t postShift;         \/**< Additional shift, in bits, applied to each output sample. *\/$/;"	m	struct:__anonf33cb1db0608	typeref:typename:int8_t
 postShift	cmsis/inc/arm_math.h	/^    uint32_t postShift;  \/**< bit shift applied to coefficients. *\/$/;"	m	struct:__anonf33cb1db3108	typeref:typename:uint32_t
 postShift	cmsis/inc/arm_math.h	/^    uint32_t postShift;  \/**< bit shift applied to coefficients. *\/$/;"	m	struct:__anonf33cb1db3208	typeref:typename:uint32_t
@@ -17968,7 +18064,6 @@ postShift	cmsis/inc/arm_math.h	/^    uint8_t postShift;       \/**< Additional s
 postShift	cmsis/inc/arm_math.h	/^    uint8_t postShift;       \/**< additional shift, in bits, applied to each output sample. *\/$/;"	m	struct:__anonf33cb1db2808	typeref:typename:uint8_t
 postShift	cmsis/inc/arm_math.h	/^    uint8_t postShift;    \/**< bit shift applied to coefficients. *\/$/;"	m	struct:__anonf33cb1db3408	typeref:typename:uint8_t
 postShift	cmsis/inc/arm_math.h	/^    uint8_t postShift;   \/**< bit shift applied to coefficients. *\/$/;"	m	struct:__anonf33cb1db3508	typeref:typename:uint8_t
-predict	m_project_specific/src/extended_kalman_filter.c	/^void predict()$/;"	f	typeref:typename:void
 pvCoeffs	cmsis/inc/arm_math.h	/^    float32_t *pvCoeffs;                        \/**< points to the ladder coefficient array. Th/;"	m	struct:__anonf33cb1db2f08	typeref:typename:float32_t *
 pvCoeffs	cmsis/inc/arm_math.h	/^    q15_t *pvCoeffs;                            \/**< points to the ladder coefficient array. Th/;"	m	struct:__anonf33cb1db2d08	typeref:typename:q15_t *
 pvCoeffs	cmsis/inc/arm_math.h	/^    q31_t *pvCoeffs;                            \/**< points to the ladder coefficient array. Th/;"	m	struct:__anonf33cb1db2e08	typeref:typename:q31_t *
@@ -17976,19 +18071,26 @@ q15_t	cmsis/inc/arm_math.h	/^  typedef int16_t q15_t;$/;"	t	typeref:typename:int
 q31_t	cmsis/inc/arm_math.h	/^  typedef int32_t q31_t;$/;"	t	typeref:typename:int32_t
 q63_t	cmsis/inc/arm_math.h	/^  typedef int64_t q63_t;$/;"	t	typeref:typename:int64_t
 q7_t	cmsis/inc/arm_math.h	/^  typedef int8_t q7_t;$/;"	t	typeref:typename:int8_t
+quaternion_struct_t	m_math/inc/quaternion.h	/^	} quaternion_struct_t;$/;"	t	typeref:struct:QUATERNION_STRUCT_TAG
+quaternion_to_orientation	m_project_specific/src/extended_kalman_filter.c	/^void quaternion_to_orientation(quaternion_struct_t * q, orientation_struct_t *out_orientation)$/;"	f	typeref:typename:void
+random	.vscode/settings.json	/^        "random": "c",$/;"	s	object:files.associations
+raw_sensors_struct	m_project_specific/inc/calibrate_sensors.h	/^} raw_sensors_struct;$/;"	t	typeref:struct:RAW_SENSORS_STRUCT_TAG
 recipTable	cmsis/inc/arm_math.h	/^    q15_t *recipTable;   \/**< Points to the reciprocal initial value table. *\/$/;"	m	struct:__anonf33cb1db3508	typeref:typename:q15_t *
 recipTable	cmsis/inc/arm_math.h	/^    q31_t *recipTable;    \/**< points to the reciprocal initial value table. *\/$/;"	m	struct:__anonf33cb1db3408	typeref:typename:q31_t *
 register_address	main.c	/^	__IO uint8_t  register_address;$/;"	m	struct:I2C_IO_STRUCT	typeref:typename:__IO uint8_t	file:
 register_address	old/main_it_no.c	/^    __IO uint8_t  register_address;$/;"	m	struct:I2C_IO_STRUCT	typeref:typename:__IO uint8_t	file:
-res	m_math/inc/matrix.h	/^	result_t matrix2d_add( matrix2d_t* a, matrix2d_t* b, matrix2d_t* res);$/;"	t	typeref:struct:MATRIX2D matrix2d_t result_t matrix2d_add (matrix2d_t * a,matrix2d_t * b,matrix2d_t *)
+result.h	.vscode/settings.json	/^        "result.h": "c",$/;"	s	object:files.associations
 result_t	m_common/inc/result.h	/^} result_t;$/;"	t	typeref:enum:RESULT
 reverse_str	m_math/src/convert.c	/^static void reverse_str(char * in_out_str, int string_length)$/;"	f	typeref:typename:void	file:
+rising	m_project_specific/inc/read_joystick.h	/^	__IO int32_t rising;$/;"	m	struct:TIM_IC_CH_STRUCT	typeref:typename:__IO int32_t
+roll	m_project_specific/inc/extended_kalman_filter.h	/^	float32_t roll;$/;"	m	struct:ORIENTATION_STRUCT_TAG	typeref:typename:float32_t
 s16	system/stm32f4xx.h	/^typedef int16_t s16;$/;"	t	typeref:typename:int16_t
 s32	system/stm32f4xx.h	/^typedef int32_t  s32;$/;"	t	typeref:typename:int32_t
 s8	system/stm32f4xx.h	/^typedef int8_t  s8;$/;"	t	typeref:typename:int8_t
 sFIFOMailBox	system/stm32f4xx.h	/^  CAN_FIFOMailBox_TypeDef    sFIFOMailBox[2];     \/*!< CAN FIFO MailBox,                    Add/;"	m	struct:__anonbe95b8120908	typeref:typename:CAN_FIFOMailBox_TypeDef[2]
 sFilterRegister	system/stm32f4xx.h	/^  CAN_FilterRegister_TypeDef sFilterRegister[28]; \/*!< CAN Filter Register,                 Add/;"	m	struct:__anonbe95b8120908	typeref:typename:CAN_FilterRegister_TypeDef[28]
 sTxMailBox	system/stm32f4xx.h	/^  CAN_TxMailBox_TypeDef      sTxMailBox[3];       \/*!< CAN Tx MailBox,                      Add/;"	m	struct:__anonbe95b8120908	typeref:typename:CAN_TxMailBox_TypeDef[3]
+s_select_buffer	m_project_specific/src/calibrate_sensors.c	/^static calibrated_sensors_struct* s_select_buffer()$/;"	f	typeref:typename:calibrated_sensors_struct *	file:
 sc16	system/stm32f4xx.h	/^typedef const int16_t sc16;  \/*!< Read Only *\/$/;"	t	typeref:typename:const int16_t
 sc32	system/stm32f4xx.h	/^typedef const int32_t sc32;  \/*!< Read Only *\/$/;"	t	typeref:typename:const int32_t
 sc8	system/stm32f4xx.h	/^typedef const int8_t sc8;   \/*!< Read Only *\/$/;"	t	typeref:typename:const int8_t
@@ -17996,6 +18098,7 @@ size	m_math/inc/matrix.h	/^		matrix_index_t		size[2];$/;"	m	struct:MATRIX2D	type
 state	cmsis/inc/arm_math.h	/^    float32_t state[3];    \/**< The state array of length 3. *\/$/;"	m	struct:__anonf33cb1db0e08	typeref:typename:float32_t[3]
 state	cmsis/inc/arm_math.h	/^    q15_t state[3];       \/**< The state array of length 3. *\/$/;"	m	struct:__anonf33cb1db0c08	typeref:typename:q15_t[3]
 state	cmsis/inc/arm_math.h	/^    q31_t state[3];      \/**< The state array of length 3. *\/$/;"	m	struct:__anonf33cb1db0d08	typeref:typename:q31_t[3]
+state	m_project_specific/src/usart.c	/^	usart_rcv_cli_state_enum_t state;$/;"	m	struct:USART_RCV_CLI_STRUCT	typeref:typename:usart_rcv_cli_state_enum_t	file:
 state	main.c	/^	__IO i2c_io_state_enum state;$/;"	m	struct:I2C_IO_STRUCT	typeref:typename:__IO i2c_io_state_enum	file:
 state	old/main_it_no.c	/^	__IO i2c_io_state_enum state;$/;"	m	struct:I2C_IO_STRUCT	typeref:typename:__IO i2c_io_state_enum	file:
 stateIndex	cmsis/inc/arm_math.h	/^    uint16_t stateIndex;          \/**< state buffer index.  Points to the oldest sample in the /;"	m	struct:__anonf33cb1db3608	typeref:typename:uint16_t
@@ -18004,9 +18107,20 @@ stateIndex	cmsis/inc/arm_math.h	/^    uint16_t stateIndex;          \/**< state 
 stateIndex	cmsis/inc/arm_math.h	/^    uint16_t stateIndex;          \/**< state buffer index.  Points to the oldest sample in the /;"	m	struct:__anonf33cb1db3908	typeref:typename:uint16_t
 stm32f4xx.h	.vscode/settings.json	/^        "stm32f4xx.h": "c",$/;"	s	object:files.associations
 stm32f4xx_conf.h	.vscode/settings.json	/^        "stm32f4xx_conf.h": "c",$/;"	s	object:files.associations
+str_to_int	m_math/src/convert.c	/^int str_to_int(char *str, int* number_out)$/;"	f	typeref:typename:int
 system_stm32f4xx.h	.vscode/settings.json	/^        "system_stm32f4xx.h": "c",$/;"	s	object:files.associations
 tags	make/rules.mk	/^tags:$/;"	t
+temperature	m_project_specific/inc/calibrate_sensors.h	/^    float32_t temperature; \/*DEG C*\/$/;"	m	struct:CALIBRATED_SENSORS_STRUCT_TAG	typeref:typename:float32_t
+temperature	m_project_specific/inc/calibrate_sensors.h	/^    int16_t temperature; $/;"	m	struct:RAW_SENSORS_STRUCT_TAG	typeref:typename:int16_t
 test.elf	Makefile	/^test.elf:   main.o $(PROJECT_DEPS)$/;"	t
+tim3_ch1	m_project_specific/src/read_joystick.c	/^tim_ic_ch_state_struct  tim3_ch1 = $/;"	v	typeref:typename:tim_ic_ch_state_struct
+tim3_ch2	m_project_specific/src/read_joystick.c	/^tim_ic_ch_state_struct  tim3_ch2 = $/;"	v	typeref:typename:tim_ic_ch_state_struct
+tim3_ch3	m_project_specific/src/read_joystick.c	/^tim_ic_ch_state_struct  tim3_ch3 = $/;"	v	typeref:typename:tim_ic_ch_state_struct
+tim3_ch4	m_project_specific/src/read_joystick.c	/^tim_ic_ch_state_struct  tim3_ch4 = $/;"	v	typeref:typename:tim_ic_ch_state_struct
+tim5_ch1	m_project_specific/src/read_joystick.c	/^tim_ic_ch_state_struct  tim5_ch1 = $/;"	v	typeref:typename:tim_ic_ch_state_struct
+tim5_ch4	m_project_specific/src/read_joystick.c	/^tim_ic_ch_state_struct  tim5_ch4 = $/;"	v	typeref:typename:tim_ic_ch_state_struct
+tim_ic_ch_state_enum	m_project_specific/inc/read_joystick.h	/^} tim_ic_ch_state_enum;$/;"	t	typeref:enum:TIM_IC_CH_STATE
+tim_ic_ch_state_struct	m_project_specific/inc/read_joystick.h	/^} tim_ic_ch_state_struct;$/;"	t	typeref:struct:TIM_IC_CH_STRUCT
 twidCoefModifier	cmsis/inc/arm_math.h	/^    uint16_t twidCoefModifier;         \/**< twiddle coefficient modifier that supports differen/;"	m	struct:__anonf33cb1db1808	typeref:typename:uint16_t
 twidCoefModifier	cmsis/inc/arm_math.h	/^    uint16_t twidCoefModifier;         \/**< twiddle coefficient modifier that supports differen/;"	m	struct:__anonf33cb1db1908	typeref:typename:uint16_t
 twidCoefModifier	cmsis/inc/arm_math.h	/^    uint16_t twidCoefModifier;       \/**< twiddle coefficient modifier that supports different /;"	m	struct:__anonf33cb1db1408	typeref:typename:uint16_t
@@ -18032,6 +18146,9 @@ u8	system/stm32f4xx.h	/^typedef uint8_t  u8;$/;"	t	typeref:typename:uint8_t
 uc16	system/stm32f4xx.h	/^typedef const uint16_t uc16;  \/*!< Read Only *\/$/;"	t	typeref:typename:const uint16_t
 uc32	system/stm32f4xx.h	/^typedef const uint32_t uc32;  \/*!< Read Only *\/$/;"	t	typeref:typename:const uint32_t
 uc8	system/stm32f4xx.h	/^typedef const uint8_t uc8;   \/*!< Read Only *\/$/;"	t	typeref:typename:const uint8_t
+usart_1_cmd_handler	m_project_specific/src/usart.c	/^usart_rcv_cli_struct_t usart_1_cmd_handler = $/;"	v	typeref:typename:usart_rcv_cli_struct_t
+usart_rcv_cli_state_enum_t	m_project_specific/src/usart.c	/^}usart_rcv_cli_state_enum_t;$/;"	t	typeref:enum:USART_RCV_CLI_STATE_ENUM	file:
+usart_rcv_cli_struct_t	m_project_specific/src/usart.c	/^}usart_rcv_cli_struct_t;$/;"	t	typeref:struct:USART_RCV_CLI_STRUCT	file:
 version	.vscode/c_cpp_properties.json	/^    "version": 4$/;"	n
 vs16	system/stm32f4xx.h	/^typedef __IO int16_t  vs16;$/;"	t	typeref:typename:__IO int16_t
 vs32	system/stm32f4xx.h	/^typedef __IO int32_t  vs32;$/;"	t	typeref:typename:__IO int32_t
@@ -18069,6 +18186,8 @@ w	cmsis/inc/core_sc300.h	/^  uint32_t w;                            \/*!< Type  
 w	cmsis/inc/core_sc300.h	/^  uint32_t w;                            \/*!< Type      used for word access                  */;"	m	union:__anona8b8b803030a	typeref:typename:uint32_t
 w	cmsis/inc/core_sc300.h	/^  uint32_t w;                            \/*!< Type      used for word access                  */;"	m	union:__anona8b8b803050a	typeref:typename:uint32_t
 w	cmsis/inc/core_sc300.h	/^  uint32_t w;                            \/*!< Type      used for word access                  */;"	m	union:__anona8b8b803070a	typeref:typename:uint32_t
+w	m_math/inc/quaternion.h	/^		float32_t w;$/;"	m	struct:QUATERNION_STRUCT_TAG	typeref:typename:float32_t
+x	m_math/inc/quaternion.h	/^		float32_t x;$/;"	m	struct:QUATERNION_STRUCT_TAG	typeref:typename:float32_t
 x	m_project_specific/src/extended_kalman_filter.c	/^arm_matrix_instance_f32 x = {.numCols=1, .numRows=7, .pData=x_f32};$/;"	v	typeref:typename:arm_matrix_instance_f32
 x0	cmsis/inc/arm_math.h	/^    float32_t x0;        \/**< saves previous input sample. *\/$/;"	m	struct:__anonf33cb1db3308	typeref:typename:float32_t
 x0	cmsis/inc/arm_math.h	/^    q15_t x0;            \/**< saves previous input sample. *\/$/;"	m	struct:__anonf33cb1db3508	typeref:typename:q15_t
@@ -18081,8 +18200,11 @@ xPSR_Type	cmsis/inc/core_cm4.h	/^} xPSR_Type;$/;"	t	typeref:union:__anone87a5a5e
 xPSR_Type	cmsis/inc/core_sc000.h	/^} xPSR_Type;$/;"	t	typeref:union:__anona8826e80050a
 xPSR_Type	cmsis/inc/core_sc300.h	/^} xPSR_Type;$/;"	t	typeref:union:__anona8b8b803050a
 xSpacing	cmsis/inc/arm_math.h	/^    float32_t xSpacing;         \/**< xSpacing *\/$/;"	m	struct:__anonf33cb1db0f08	typeref:typename:float32_t
-x_f32	m_project_specific/src/extended_kalman_filter.c	/^float32_t x_f32[7];$/;"	v	typeref:typename:float32_t[7]
+x_f32	m_project_specific/src/extended_kalman_filter.c	/^float32_t x_f32[7] = {1,0,0,0,0,0,0};$/;"	v	typeref:typename:float32_t[7]
+y	m_math/inc/quaternion.h	/^		float32_t y;$/;"	m	struct:QUATERNION_STRUCT_TAG	typeref:typename:float32_t
 y	m_project_specific/src/extended_kalman_filter.c	/^arm_matrix_instance_f32 y = {.numCols=1, .numRows=3, .pData=y_f32};$/;"	v	typeref:typename:arm_matrix_instance_f32
 y_f32	m_project_specific/src/extended_kalman_filter.c	/^float32_t y_f32[3];$/;"	v	typeref:typename:float32_t[3]
+yaw	m_project_specific/inc/extended_kalman_filter.h	/^	float32_t yaw;$/;"	m	struct:ORIENTATION_STRUCT_TAG	typeref:typename:float32_t
+z	m_math/inc/quaternion.h	/^		float32_t z;$/;"	m	struct:QUATERNION_STRUCT_TAG	typeref:typename:float32_t
 z	m_project_specific/src/extended_kalman_filter.c	/^arm_matrix_instance_f32 z = {.numCols=1, .numRows=3, .pData=z_f32};$/;"	v	typeref:typename:arm_matrix_instance_f32
 z_f32	m_project_specific/src/extended_kalman_filter.c	/^float32_t z_f32[3];$/;"	v	typeref:typename:float32_t[3]

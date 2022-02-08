@@ -15,14 +15,14 @@ static calibrated_sensors_struct calibrated_sensors_buffer_2;
 
 float32_t poly_gyro_x_temp_f32[] = 
 { 
-	-9.8393520e-04 /*x^0*/, 
-	-8.4714632e-04 /*x^1*/, 
-	-3.4361692e-05 /*x^2*/,
-	-6.9101105e-07 /*x^3*/,
-	-7.3368422e-09 /*x^4*/,
-	-3.9557652e-11 /*x^5*/,
-	-9.0997204e-14 /*x^6*/,
-	-3.8057584e-17 /*x^7*/
+	0.0137509 /*x^0*/, 
+	6.8506080e-04 /*x^1*/, 
+	2.6430291e-05 /*x^2*/,
+	4.6991656e-07 /*x^3*/,
+	3.5212322e-09 /*x^4*/,
+	9.4697491e-14 /*x^5*/,
+	-1.3444270e-13 /*x^6*/,
+	-4.9663850e-16 /*x^7*/
 };
 static const polynomial_struct_t poly_gyro_x_temp =
 {
@@ -32,14 +32,14 @@ static const polynomial_struct_t poly_gyro_x_temp =
 
 float32_t poly_gyro_y_temp_f32[] = 
 { 
-	 0.0056154 /*x^0*/, 
-	 0.0015251 /*x^1*/, 
-	 6.2525978e-05 /*x^2*/,
-	 1.2539944e-06 /*x^3*/,
-	 1.3248271e-08 /*x^4*/,
-	 7.0612030e-11 /*x^5*/,
-	 1.5667841e-13 /*x^6*/,
-	 4.7236212e-17 /*x^7*/
+	 -0.0214579 /*x^0*/, 
+	 -0.0012760 /*x^1*/, 
+	 -4.7865615e-05 /*x^2*/,
+	 -8.3421094e-07 /*x^3*/,
+	 -5.9833902e-09 /*x^4*/,
+	 3.2100889e-12 /*x^5*/,
+	 2.5291431e-13 /*x^6*/,
+	 8.9518084e-16 /*x^7*/
 };
 static const polynomial_struct_t poly_gyro_y_temp =
 {
@@ -49,14 +49,14 @@ static const polynomial_struct_t poly_gyro_y_temp =
 
 float32_t poly_gyro_z_temp_f32[] = 
 { 
-	-5.6591426e-04 /*x^0*/, 
-	 4.5805777e-04 /*x^1*/, 
-	 1.8339437e-05 /*x^2*/,
-	 3.6834075e-07 /*x^3*/,
-	 3.9355625e-09 /*x^4*/,
-	 2.1660148e-11 /*x^5*/,
-	 5.3144087e-14 /*x^6*/,
-	 3.3000864e-17 /*x^7*/
+	-0.0079808 /*x^0*/, 
+	-3.2266506e-04 /*x^1*/, 
+	-1.3153715e-05 /*x^2*/,
+	-2.4726185e-07 /*x^3*/,
+	-2.0426889e-09 /*x^4*/,
+	-2.3442576e-12 /*x^5*/,
+	 6.1749332e-14 /*x^6*/,
+	 2.5545603e-16 /*x^7*/
 };
 
 static const polynomial_struct_t poly_gyro_z_temp =
@@ -135,10 +135,15 @@ static void elipsoid_sphere_calibration(arm_matrix_instance_f32 *elipsoid, arm_m
 
 
 
-calibrated_sensors_struct* calibrate_sensors( raw_sensors_struct* raw_sensors_data )
+void calibrate_sensors( raw_sensors_struct* raw_sensors_data, calibrated_sensors_struct *out_calibrated_sensors_p)
 {
+	static int i = 0;
+	static float32_t gx =0.0;
+	static float32_t gy =0.0;
+	static float32_t gz =0.0;
+
+
 	float32_t tempval;
-	calibrated_sensors_struct *out_calibrated_sensors_p = s_select_buffer();
 	
 	/*calibrate gyro x*/
 	tempval = (float32_t)raw_sensors_data->gyro_x * INV_INT16_MAX;
@@ -155,17 +160,32 @@ calibrated_sensors_struct* calibrate_sensors( raw_sensors_struct* raw_sensors_da
 	tempval = polinomial_compensation(&poly_gyro_z_temp, raw_sensors_data->temperature, tempval);
 	out_calibrated_sensors_p->gyro_z = tempval /* * 500*/ /*dps*/;
 
+	if (i<50)
+	{
+		++i;
+
+		gz += out_calibrated_sensors_p->gyro_z;
+		gy += out_calibrated_sensors_p->gyro_y;
+		gx += out_calibrated_sensors_p->gyro_x;
+	}
+	else
+	{
+		out_calibrated_sensors_p->gyro_z -= gz/50.0;
+		out_calibrated_sensors_p->gyro_y -= gy/50.0;
+		out_calibrated_sensors_p->gyro_x -= gx/50.0;
+	}
+
 	/*calibrate acc x*/
 	tempval = (float32_t)raw_sensors_data->acc_x * INV_INT16_MAX;
-	out_calibrated_sensors_p->acc_x = tempval;
+	out_calibrated_sensors_p->acc_x = tempval*4;
 
 	/*calibrate acc y*/
 	tempval = (float32_t)raw_sensors_data->acc_y * INV_INT16_MAX;
-	out_calibrated_sensors_p->acc_y = tempval;
+	out_calibrated_sensors_p->acc_y = tempval*4;
 
 	/*calibrate acc z*/
 	tempval = (float32_t)raw_sensors_data->acc_z * INV_INT16_MAX;
-	out_calibrated_sensors_p->acc_z = tempval;
+	out_calibrated_sensors_p->acc_z = tempval*4;
 
 	/*calibrate MAGNETOMETER*/
 	tempval = (float32_t)raw_sensors_data->mag_x * INV_INT16_MAX;
@@ -176,13 +196,10 @@ calibrated_sensors_struct* calibrate_sensors( raw_sensors_struct* raw_sensors_da
 
 	tempval = (float32_t)raw_sensors_data->mag_z * INV_INT16_MAX;
 	out_calibrated_sensors_p->mag_z = tempval;
-
 	float32_t tmp_buff[3*1] = {out_calibrated_sensors_p->mag_x, out_calibrated_sensors_p->mag_y, out_calibrated_sensors_p->mag_z};
 	arm_matrix_instance_f32 tmp = {.numCols=1, .numRows=3, .pData=&tmp_buff};
 	elipsoid_sphere_calibration(&magnetometer_elipsoid, &magnetometer_center, &tmp_buff, &tmp_buff);
 	out_calibrated_sensors_p->mag_x = tmp_buff[0];
 	out_calibrated_sensors_p->mag_y = tmp_buff[1];
 	out_calibrated_sensors_p->mag_z = tmp_buff[2];
-
-	return out_calibrated_sensors_p;
 }

@@ -73,7 +73,7 @@ typedef struct CALIBRATED_SENSORS_STRUCT_TAG
  * FUNCTION DEFINITIONS
  **/
 
-calibrated_sensors_struct* calibrate_sensors( raw_sensors_struct *raw_sensor_data );
+void calibrate_sensors( raw_sensors_struct *raw_sensor_data,calibrated_sensors_struct* out_calibrated_sensors_p );
 
 
 

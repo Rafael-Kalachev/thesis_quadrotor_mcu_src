@@ -65,4 +65,7 @@ int str_to_int(char *str, int* number_out);
 
 
 
+
+
+
 #endif /*M_MATH_CONVERT_H*/

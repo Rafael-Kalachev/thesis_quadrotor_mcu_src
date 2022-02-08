@@ -555,11 +555,14 @@ int main(void)
 	USART_SendMatrix(&A_inv, 3);
 
 	USART_SendText(">");
-	ekf_init();
+	kf_init();
 	USART_SendText("<\n");
 
 
 	raw_sensors_struct raw_sensors_data;
+	quaternion_struct_t q;
+	orientation_struct_t orientation;
+	calibrated_sensors_struct calibrated_sensors;
 
 
 	while(1) // this function can be called slower as you add data to be sent
@@ -601,6 +604,8 @@ int main(void)
 		I2C_load(&_i2c3_io_struct_stage);
 		I2C_GenerateSTART(I2C3, ENABLE);
 
+		
+
 		while(!(_i2c3_io_struct.state == I2C_IO_STATE_REGISTER_READ_STOP || _i2c3_io_struct.state == I2C_IO_STATE_ERROR));
 
 		float32_t mag_x	      = ((int16_t)((int32_t) buffer[0]  + ((int32_t) buffer[1]  << 8 ))) * inv_int16_max;
@@ -611,39 +616,55 @@ int main(void)
 		raw_sensors_data.mag_y = ((int16_t)((int32_t) buffer[2]  + ((int32_t) buffer[3]  << 8 )));
 		raw_sensors_data.mag_z = ((int16_t)((int32_t) buffer[4]  + ((int32_t) buffer[5]  << 8 )));
 		
-		calibrated_sensors_struct* calibrated_sensors_p = calibrate_sensors(&raw_sensors_data);
+		calibrate_sensors(&raw_sensors_data, &calibrated_sensors);
 
 		
-
+		/*
 		USART_SendText("temp=");
 		USART_SendFloat(temperature, 5);
 
 		USART_SendText(" , gyro_x=");
-		USART_SendFloat(calibrated_sensors_p->gyro_x, 5);
+		USART_SendFloat(calibrated_sensors.gyro_x, 8);
 
 		USART_SendText(" , gyro_y=");
-		USART_SendFloat(calibrated_sensors_p->gyro_y, 5);
+		USART_SendFloat(calibrated_sensors.gyro_y, 8);
 
 		USART_SendText(" , gyro_z=");
-		USART_SendFloat(calibrated_sensors_p->gyro_z, 5);
+		USART_SendFloat(calibrated_sensors.gyro_z, 8);
 
 		USART_SendText(" , acc_x=");
-		USART_SendFloat(calibrated_sensors_p->acc_x, 5);
+		USART_SendFloat(calibrated_sensors.acc_x, 5);
 
 		USART_SendText(" , acc_y=");
-		USART_SendFloat(calibrated_sensors_p->acc_y, 5);
+		USART_SendFloat(calibrated_sensors.acc_y, 5);
 
 		USART_SendText(" , acc_z=");
-		USART_SendFloat(calibrated_sensors_p->acc_z, 5);
+		USART_SendFloat(calibrated_sensors.acc_z, 5);
 		
 		USART_SendText(" ,  mag_x=");
-		USART_SendFloat(calibrated_sensors_p->mag_x, 5);
+		USART_SendFloat(calibrated_sensors.mag_x, 5);
 
 		USART_SendText(" , mag_y=");
-		USART_SendFloat(calibrated_sensors_p->mag_y, 5);
+		USART_SendFloat(calibrated_sensors.mag_y, 5);
 
 		USART_SendText(" , mag_z=");
-		USART_SendFloat(calibrated_sensors_p->mag_z, 5);
+		USART_SendFloat(calibrated_sensors.mag_z, 5);
+
+		USART_SendText("\n");
+		*/
+	
+
+
+		kf_next(&calibrated_sensors, &orientation);
+
+		USART_SendText("pitch=");
+		USART_SendFloat(orientation.pitch, 5);
+
+		USART_SendText(" , roll=");
+		USART_SendFloat(orientation.roll, 5);
+
+		USART_SendText(" , yaw=");
+		USART_SendFloat(orientation.yaw, 5);
 
 		USART_SendText("\n");
 
@@ -690,11 +711,7 @@ int main(void)
 				__NOP;
 			}
 
-			/*for(a=0; a < 50000000; ++a)
-			{
-				__NOP;
-			}
-			*/
+			
 
 			TIM2->CCR1 = p34/4.01;
 			TIM2->CCR2 = p34/4.01;
