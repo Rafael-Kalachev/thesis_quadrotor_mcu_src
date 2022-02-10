@@ -337,12 +337,12 @@ void quaternion_to_orientation(quaternion_struct_t * q, orientation_struct_t *ou
 }
 
 
-#define Q_phi  10.0
-#define Q_psi  10.0
-#define Q_bp   0.1
-#define Q_bq   0.1
-#define R_phi  50.0
-#define R_psi  50.0
+#define Q_phi  2.0
+#define Q_psi  2.0
+#define Q_bp   0.005
+#define Q_bq   0.005
+#define R_phi  150.0
+#define R_psi  150.0
 
 float32_t Q_kf_f32[4*4] = 
 {
@@ -578,8 +578,8 @@ typedef struct hist_rec {
 
 void kf_next(calibrated_sensors_struct* calibrated_sensors, orientation_struct_t * out_orientation)
 {
-    float32_t phi_acc = atan2f(calibrated_sensors->acc_x, calibrated_sensors->acc_z) * 360.0/PI;
-    float32_t psi_acc = atan2f(calibrated_sensors->acc_y, calibrated_sensors->acc_z) * 360.0/PI;
+    float32_t phi_acc = atan2f(calibrated_sensors->acc_x, calibrated_sensors->acc_z) * RAD2DEG_CONV;
+    float32_t psi_acc = atan2f(calibrated_sensors->acc_y, calibrated_sensors->acc_z) * RAD2DEG_CONV;
     float32_t phi_dot = calibrated_sensors->gyro_x;
     float32_t psi_dot = calibrated_sensors->gyro_y;
 
