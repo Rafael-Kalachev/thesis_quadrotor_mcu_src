@@ -17,6 +17,8 @@ PROJECT_DEPS += m_math/src/convert.o
 PROJECT_DEPS += m_math/src/polinomial.o
 
 PROJECT_DEPS += m_control/src/PID.o
+PROJECT_DEPS += m_control/src/limit.o
+
 
 
 # Project specific modules

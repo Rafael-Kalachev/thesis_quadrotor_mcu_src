@@ -4,6 +4,7 @@
 #include "m_math/inc/convert.h"
 #include "m_math/inc/polynomial.h"
 #include "m_control/inc/PID.h"
+#include "m_control/inc/limit.h"
 #include "m_project_specific/inc/usart.h"
 #include "m_project_specific/inc/extended_kalman_filter.h"
 #include "m_project_specific/inc/read_joystick.h"
@@ -570,9 +571,9 @@ int main(void)
 	arm_pid_instance_f32 roll_pid = {.Kp = 1.3, .Ki=0.003, .Kd=0.02};
 	arm_pid_init_f32(&roll_pid, 1);
 
-	pid_controller_t pid_pitch = {.Kp =0, .Ki=0.000, .Kd=0.6, .limMax=200, .limMin=-200, .limMaxInt=20, .limMinInt=-20, .tau=0.5, .T=0.02};
+	pid_controller_t pid_pitch = {.Kp =2.5, .Ki=0.000, .Kd=0.5, .limMax=300, .limMin=-300, .limMaxInt=20, .limMinInt=-20, .tau=0.5, .T=0.02};
 	PIDController_Init(&pid_pitch);
-	pid_controller_t pid_roll = {.Kp =0, .Ki=0.00, .Kd=0.6, .limMax=200, .limMin=-200, .limMaxInt=20, .limMinInt=-20, .tau=0.5, .T=0.02};
+	pid_controller_t pid_roll = {.Kp =2.5, .Ki=0.00, .Kd=0.5, .limMax=300, .limMin=-300, .limMaxInt=20, .limMinInt=-20, .tau=0.5, .T=0.02};
 	PIDController_Init(&pid_roll);
 
 
@@ -759,10 +760,10 @@ int main(void)
 			}
 			else
 			{
-				TIM2->CCR1 = -pid_roll.out + -pid_pitch.out + (p34/4.01); 
-				TIM2->CCR2 = -pid_roll.out +  pid_pitch.out + (p34/4.01); 
-				TIM2->CCR3 =  pid_roll.out + -pid_pitch.out + (p34/4.01); 
- 				TIM2->CCR4 =  pid_roll.out +  pid_pitch.out + (p34/4.01); 
+				TIM2->CCR1 = limit_max_min(-pid_roll.out + -pid_pitch.out + (p34/4.01), 1950.0, 950.0); 
+				TIM2->CCR2 = limit_max_min(-pid_roll.out +  pid_pitch.out + (p34/4.01), 1950.0, 950.0); 
+				TIM2->CCR3 = limit_max_min( pid_roll.out + -pid_pitch.out + (p34/4.01), 1950.0, 950.0); 
+ 				TIM2->CCR4 = limit_max_min( pid_roll.out +  pid_pitch.out + (p34/4.01), 1950.0, 950.0);
 			}
 		
 
