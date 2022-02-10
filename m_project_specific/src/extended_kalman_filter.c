@@ -336,11 +336,20 @@ void quaternion_to_orientation(quaternion_struct_t * q, orientation_struct_t *ou
 
 }
 
-
+/*
 #define Q_phi  2.0
 #define Q_psi  2.0
 #define Q_bp   0.005
 #define Q_bq   0.005
+#define R_phi  150.0
+#define R_psi  150.0
+*/
+
+
+#define Q_phi  0.5
+#define Q_psi  0.5
+#define Q_bp   0.001
+#define Q_bq   0.001
 #define R_phi  150.0
 #define R_psi  150.0
 
@@ -519,10 +528,145 @@ float32_t tmp3_4_4_kf_f32[4*4] =
 };
 arm_matrix_instance_f32 tmp3_4_4_kf = {.numCols=4, .numRows=4, .pData=tmp3_4_4_kf_f32};
 
+uint8_t zero_kf;
+float32_t zero_pitch, zero_roll;
+
+
+
+
+
+
+#define STOPPER (-33)                                      /* Smaller than any datum */
+#define MEDIAN_FILTER_SIZE    (20)
+
+ struct pair
+ {
+   struct pair   *point;                              /* Pointers forming list linked in sorted order */
+   float32_t  value;                                   /* Values to sort */
+ };
+
+typedef struct MEDIAN_FILTER_TAG
+{
+    struct pair *buffer; /* Buffer of nwidth pairs */
+    struct pair *datpoint;               /* Pointer into circular buffer of data */
+    struct pair small;          /* Chain stopper */
+    struct pair big;                /* Pointer to head (largest) of linked list.*/
+    uint8_t  median_filter_size;
+} median_filter_t;
+
+
+float32_t median_filter(float32_t datum, median_filter_t *state)
+{
+
+ struct pair *successor;                              /* Pointer to successor of replaced data item */
+ struct pair *scan;                                   /* Pointer used to scan down the sorted list */
+ struct pair *scanold;                                /* Previous value of scan */
+ struct pair *median;                                 /* Pointer to median */
+ uint16_t i;
+
+ if (datum == STOPPER)
+ {
+   datum = STOPPER + 1;                             /* No stoppers allowed. */
+ }
+
+ if ( (++state->datpoint - state->buffer) >= state->median_filter_size)
+ {
+   state->datpoint = state->buffer;                               /* Increment and wrap data in pointer.*/
+ }
+
+ state->datpoint->value = datum;                           /* Copy in new datum */
+ successor = state->datpoint->point;                       /* Save pointer to old value's successor */
+ median = &state->big;                                     /* Median initially to first in chain */
+ scanold = NULL;                                    /* Scanold initially null. */
+ scan = &state->big;                                       /* Points to pointer to first (largest) datum in chain */
+
+ /* Handle chain-out of first item in chain as special case */
+ if (scan->point == state->datpoint)
+ {
+   scan->point = successor;
+ }
+ scanold = scan;                                     /* Save this pointer and   */
+ scan = scan->point ;                                /* step down chain */
+
+ /* Loop through the chain, normal loop exit via break. */
+ for (i = 0 ; i < state->median_filter_size; ++i)
+ {
+   /* Handle odd-numbered item in chain  */
+   if (scan->point == state->datpoint)
+   {
+     scan->point = successor;                      /* Chain out the old datum.*/
+   }
+
+   if (scan->value < datum)                        /* If datum is larger than scanned value,*/
+   {
+     state->datpoint->point = scanold->point;             /* Chain it in here.  */
+     scanold->point = state->datpoint;                    /* Mark it chained in. */
+     datum = STOPPER;
+   };
+
+   /* Step median pointer down chain after doing odd-numbered element */
+   median = median->point;                       /* Step median pointer.  */
+   if (scan == &state->small)
+   {
+     break;                                      /* Break at end of chain  */
+   }
+   scanold = scan;                               /* Save this pointer and   */
+   scan = scan->point;                           /* step down chain */
+
+   /* Handle even-numbered item in chain.  */
+   if (scan->point == state->datpoint)
+   {
+     scan->point = successor;
+   }
+
+   if (scan->value < datum)
+   {
+     state->datpoint->point = scanold->point;
+     scanold->point = state->datpoint;
+     datum = STOPPER;
+   }
+
+   if (scan == &state->small)
+   {
+     break;
+   }
+
+   scanold = scan;
+   scan = scan->point;
+ }
+ return median->value;
+}
+
+
+struct pair buffer_medfilt_pitch[MEDIAN_FILTER_SIZE] = {0};
+struct pair buffer_medfilt_roll[MEDIAN_FILTER_SIZE] = {0};
+
+median_filter_t median_filter_pitch;
+median_filter_t median_filter_roll;
+
+
+
+
 
 void kf_init()
 {
- __NOP;
+    __NOP;
+    zero_kf = 0;
+    zero_pitch = 0.0;
+    zero_roll = 0.0;
+
+    median_filter_pitch.buffer=buffer_medfilt_pitch;
+    median_filter_pitch.datpoint=buffer_medfilt_pitch;
+    median_filter_pitch.small = (struct pair){.point=NULL, .value=STOPPER};
+    median_filter_pitch.big= (struct pair) {.point=&median_filter_pitch.small, .value=0};
+    median_filter_pitch.median_filter_size= MEDIAN_FILTER_SIZE;
+
+    median_filter_roll.buffer=buffer_medfilt_roll;
+    median_filter_roll.datpoint=buffer_medfilt_roll;
+    median_filter_roll.small = (struct pair){.point=NULL, .value=STOPPER};
+    median_filter_roll.big= (struct pair) {.point=&median_filter_roll.small, .value=0};
+    median_filter_roll.median_filter_size= MEDIAN_FILTER_SIZE;
+
 
 }
 
@@ -573,6 +717,11 @@ typedef struct hist_rec {
   float *basis[3];
   int pos;
 } hist_rec;
+
+
+
+
+
 
 
 
@@ -682,11 +831,36 @@ void kf_next(calibrated_sensors_struct* calibrated_sensors, orientation_struct_t
     arm_mat_mult_f32(&P_kf, &tmp2_4_4_kf, &tmp1_1_4_kf);
     arm_mat_scale_f32(&tmp1_1_4_kf, 1.00, &P_kf);
 
-    out_orientation->pitch = x_kf.pData[0];
-    out_orientation->roll = x_kf.pData[1];
+    if(zero_kf < 100 )
+    {
+
+        ++zero_kf;
+        out_orientation->pitch = x_kf.pData[0];
+        out_orientation->roll = x_kf.pData[1];
+
+        if(zero_kf > 20)
+        {
+            zero_pitch = zero_pitch + x_kf.pData[0];
+            zero_roll = zero_roll +x_kf.pData[1];
+        }
+    }
+    else
+    {
+        out_orientation->pitch = median_filter( x_kf.pData[0] - (zero_pitch / (float32_t) zero_kf), &median_filter_pitch) ;
+        out_orientation->roll = median_filter(x_kf.pData[1] - (zero_roll / (float32_t) zero_kf), &median_filter_roll );
+
+        /*   
+        out_orientation->pitch =  x_kf.pData[0] - (zero_pitch / (float32_t) zero_kf) ;
+        out_orientation->roll = x_kf.pData[1] - (zero_roll / (float32_t) zero_kf);
+        */
+        
+    }
+
+
+
+
 
 }
-
 
 
 
@@ -707,3 +881,7 @@ void pinv(float32_t *a, int m, int n, float32_t *X)
         }
     }
 }
+
+
+
+

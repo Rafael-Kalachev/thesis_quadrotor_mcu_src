@@ -3,6 +3,7 @@
 #include "cmsis/inc/arm_math.h"
 #include "m_math/inc/convert.h"
 #include "m_math/inc/polynomial.h"
+#include "m_control/inc/PID.h"
 #include "m_project_specific/inc/usart.h"
 #include "m_project_specific/inc/extended_kalman_filter.h"
 #include "m_project_specific/inc/read_joystick.h"
@@ -93,7 +94,7 @@ float32_t inv_int16_max = (float32_t) 1 / (float32_t) INT16_MAX;
 float32_t p_x_coeaf_buffer[] = {1 /*x^0*/, 1 /*x_1*/, 1 /*x^2*/};
 
 
-
+uint8_t err_flag =0;
 
 
  
@@ -563,6 +564,19 @@ int main(void)
 	quaternion_struct_t q;
 	orientation_struct_t orientation;
 	calibrated_sensors_struct calibrated_sensors;
+	
+	arm_pid_instance_f32 pitch_pid = {.Kp = 10, .Ki=0.003, .Kd=0.02};
+	arm_pid_init_f32(&pitch_pid, 1);
+	arm_pid_instance_f32 roll_pid = {.Kp = 1.3, .Ki=0.003, .Kd=0.02};
+	arm_pid_init_f32(&roll_pid, 1);
+
+	pid_controller_t pid_pitch = {.Kp =0, .Ki=0.000, .Kd=0.6, .limMax=200, .limMin=-200, .limMaxInt=20, .limMinInt=-20, .tau=0.5, .T=0.02};
+	PIDController_Init(&pid_pitch);
+	pid_controller_t pid_roll = {.Kp =0, .Ki=0.00, .Kd=0.6, .limMax=200, .limMin=-200, .limMaxInt=20, .limMinInt=-20, .tau=0.5, .T=0.02};
+	PIDController_Init(&pid_roll);
+
+
+
 
 
 	while(1) // this function can be called slower as you add data to be sent
@@ -660,15 +674,14 @@ int main(void)
 		USART_SendText("pitch=");
 		USART_SendFloat(orientation.pitch, 5);
 
-		USART_SendText(" , roll=");
+		USART_SendText(",\troll=");
 		USART_SendFloat(orientation.roll, 5);
 
-		USART_SendText(" , yaw=");
+		USART_SendText(",\tyaw=");
 		USART_SendFloat(orientation.yaw, 5);
 
-		USART_SendText("\n");
 
-
+		
 			float32_t p51 = tim5_ch1.period;
 			float32_t p54 = tim5_ch4.period;
 			float32_t p31 = tim3_ch1.period;
@@ -711,12 +724,48 @@ int main(void)
 				__NOP;
 			}
 
+			/*
+			float32_t out_p = arm_pid_f32(&pitch_pid, 0 - orientation.pitch );
+			USART_SendText("pid_p=");
+			USART_SendFloat(out_p, 5);
+
+			float32_t out_r = arm_pid_f32(&roll_pid, 0 - orientation.roll );
+			USART_SendText("pid_r=");
+			USART_SendFloat(out_r, 5);
+			*/
+
+			PIDController_Update(&pid_roll, 0, orientation.roll);
+			PIDController_Update(&pid_pitch, 0, orientation.pitch);
+
+			USART_SendText(",\tpid_roll=");
+			USART_SendFloat(pid_roll.out, 5);
+			USART_SendText(",\tpid_pitch=");
+			USART_SendFloat(pid_pitch.out, 5);
+
+			USART_SendText("\n");
+			
 			
 
-			TIM2->CCR1 = p34/4.01;
-			TIM2->CCR2 = p34/4.01;
-			TIM2->CCR3 = p34/4.01;
-			TIM2->CCR4 = p34/4.01;
+
+
+
+			if(orientation.roll > 33.0 || orientation.pitch > 33.0  || orientation.roll < -33.0 || orientation.pitch < -33.0 || err_flag != 0)
+			{
+				err_flag = 1;
+				TIM2->CCR1 = 950; 
+				TIM2->CCR2 = 950; 
+				TIM2->CCR3 = 950; 
+ 				TIM2->CCR4 = 950; 
+			}
+			else
+			{
+				TIM2->CCR1 = -pid_roll.out + -pid_pitch.out + (p34/4.01); 
+				TIM2->CCR2 = -pid_roll.out +  pid_pitch.out + (p34/4.01); 
+				TIM2->CCR3 =  pid_roll.out + -pid_pitch.out + (p34/4.01); 
+ 				TIM2->CCR4 =  pid_roll.out +  pid_pitch.out + (p34/4.01); 
+			}
+		
+
 			/*
 			USART_SendText("PERIOD34: ");
 			USART_SendFloat(p34/4,1);
@@ -734,7 +783,7 @@ int main(void)
 			TIM2->CCR4 = 1100;
 
 			for(a=0; a < 50000000; ++a)
-			{
+			{arm_pid_init_f32(&pitch_pid, 1);
 				__NOP;
 			}
 			TIM2->CCR1 = 1200;
