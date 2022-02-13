@@ -345,13 +345,21 @@ void quaternion_to_orientation(quaternion_struct_t * q, orientation_struct_t *ou
 #define R_psi  150.0
 */
 
-
-#define Q_phi  0.5
-#define Q_psi  0.5
-#define Q_bp   0.001
-#define Q_bq   0.001
+/*
+#define Q_phi  8.0
+#define Q_psi  8.0
+#define Q_bp   0.0005
+#define Q_bq   0.0005
 #define R_phi  150.0
 #define R_psi  150.0
+*/
+
+#define Q_phi  10.0
+#define Q_psi  10.0
+#define Q_bp   0.0005
+#define Q_bq   0.0005
+#define R_phi  180.0
+#define R_psi  180.0
 
 float32_t Q_kf_f32[4*4] = 
 {
@@ -536,8 +544,8 @@ float32_t zero_pitch, zero_roll;
 
 
 
-#define STOPPER (-33)                                      /* Smaller than any datum */
-#define MEDIAN_FILTER_SIZE    (20)
+#define STOPPER (-45)                                      /* Smaller than any datum */
+#define MEDIAN_FILTER_SIZE    (8)
 
  struct pair
  {
@@ -641,8 +649,14 @@ float32_t median_filter(float32_t datum, median_filter_t *state)
 struct pair buffer_medfilt_pitch[MEDIAN_FILTER_SIZE] = {0};
 struct pair buffer_medfilt_roll[MEDIAN_FILTER_SIZE] = {0};
 
+struct pair buffer_medfilt_acc_z[MEDIAN_FILTER_SIZE] = {0};
+struct pair buffer_medfilt_acc_x[MEDIAN_FILTER_SIZE] = {0};
+
 median_filter_t median_filter_pitch;
+median_filter_t median_filter_acc_z;
 median_filter_t median_filter_roll;
+median_filter_t median_filter_acc_x;
+
 
 
 
@@ -651,7 +665,7 @@ median_filter_t median_filter_roll;
 void kf_init()
 {
     __NOP;
-    zero_kf = 0;
+    zero_kf = 1;
     zero_pitch = 0.0;
     zero_roll = 0.0;
 
@@ -666,6 +680,18 @@ void kf_init()
     median_filter_roll.small = (struct pair){.point=NULL, .value=STOPPER};
     median_filter_roll.big= (struct pair) {.point=&median_filter_roll.small, .value=0};
     median_filter_roll.median_filter_size= MEDIAN_FILTER_SIZE;
+
+    median_filter_acc_x.buffer=buffer_medfilt_acc_x;
+    median_filter_acc_x.datpoint=buffer_medfilt_acc_x;
+    median_filter_acc_x.small = (struct pair){.point=NULL, .value=STOPPER};
+    median_filter_acc_x.big= (struct pair) {.point=&median_filter_acc_x.small, .value=0};
+    median_filter_acc_x.median_filter_size= 8;
+
+    median_filter_acc_z.buffer=buffer_medfilt_acc_z;
+    median_filter_acc_z.datpoint=buffer_medfilt_acc_z;
+    median_filter_acc_z.small = (struct pair){.point=NULL, .value=STOPPER};
+    median_filter_acc_z.big= (struct pair) {.point=&median_filter_acc_z.small, .value=0};
+    median_filter_acc_z.median_filter_size= 8;
 
 
 }
@@ -727,7 +753,9 @@ typedef struct hist_rec {
 
 void kf_next(calibrated_sensors_struct* calibrated_sensors, orientation_struct_t * out_orientation)
 {
-    float32_t phi_acc = atan2f(calibrated_sensors->acc_x, calibrated_sensors->acc_z) * RAD2DEG_CONV;
+    float32_t acc_x = median_filter(calibrated_sensors->acc_x, &median_filter_acc_x);
+    float32_t acc_z = median_filter(calibrated_sensors->acc_z, &median_filter_acc_z);
+    float32_t phi_acc = atan2f(acc_x, acc_z) * RAD2DEG_CONV;
     float32_t psi_acc = atan2f(calibrated_sensors->acc_y, calibrated_sensors->acc_z) * RAD2DEG_CONV;
     float32_t phi_dot = calibrated_sensors->gyro_x;
     float32_t psi_dot = calibrated_sensors->gyro_y;
@@ -831,7 +859,7 @@ void kf_next(calibrated_sensors_struct* calibrated_sensors, orientation_struct_t
     arm_mat_mult_f32(&P_kf, &tmp2_4_4_kf, &tmp1_1_4_kf);
     arm_mat_scale_f32(&tmp1_1_4_kf, 1.00, &P_kf);
 
-    if(zero_kf < 100 )
+    /*if(zero_kf < 100 )
     {
 
         ++zero_kf;
@@ -844,12 +872,13 @@ void kf_next(calibrated_sensors_struct* calibrated_sensors, orientation_struct_t
             zero_roll = zero_roll +x_kf.pData[1];
         }
     }
-    else
+    else*/
     {
+        
         out_orientation->pitch = median_filter( x_kf.pData[0] - (zero_pitch / (float32_t) zero_kf), &median_filter_pitch) ;
         out_orientation->roll = median_filter(x_kf.pData[1] - (zero_roll / (float32_t) zero_kf), &median_filter_roll );
 
-        /*   
+         /*
         out_orientation->pitch =  x_kf.pData[0] - (zero_pitch / (float32_t) zero_kf) ;
         out_orientation->roll = x_kf.pData[1] - (zero_roll / (float32_t) zero_kf);
         */

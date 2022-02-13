@@ -571,9 +571,10 @@ int main(void)
 	arm_pid_instance_f32 roll_pid = {.Kp = 1.3, .Ki=0.003, .Kd=0.02};
 	arm_pid_init_f32(&roll_pid, 1);
 
-	pid_controller_t pid_pitch = {.Kp =2.5, .Ki=0.000, .Kd=0.5, .limMax=300, .limMin=-300, .limMaxInt=20, .limMinInt=-20, .tau=0.5, .T=0.02};
+	//pid_controller_t pid_pitch = {.Kp =0.4, .Ki=0.00, .Kd=3, .limMax=300, .limMin=-300, .limMaxInt=20, .limMinInt=-20, .tau=0.26, .T=0.02};
+	pid_controller_t pid_pitch = {.Kp =0.45, .Ki=0.0, .Kd=2.0, .limMax=200, .limMin=-200, .limMaxInt=10, .limMinInt=-10, .tau=0.22, .T=0.02};
 	PIDController_Init(&pid_pitch);
-	pid_controller_t pid_roll = {.Kp =2.5, .Ki=0.00, .Kd=0.5, .limMax=300, .limMin=-300, .limMaxInt=20, .limMinInt=-20, .tau=0.5, .T=0.02};
+	pid_controller_t pid_roll = {.Kp =0.0, .Ki=0.005, .Kd=0.4, .limMax=300, .limMin=-300, .limMaxInt=20, .limMinInt=-20, .tau=0.1, .T=0.02};
 	PIDController_Init(&pid_roll);
 
 
@@ -634,53 +635,31 @@ int main(void)
 		calibrate_sensors(&raw_sensors_data, &calibrated_sensors);
 
 		
-		/*
-		USART_SendText("temp=");
-		USART_SendFloat(temperature, 5);
+		USART_SendText("T=");
+		USART_SendFloat(temperature, 1);
 
-		USART_SendText(" , gyro_x=");
+		USART_SendText(",\tgyro_x=");
 		USART_SendFloat(calibrated_sensors.gyro_x, 8);
 
-		USART_SendText(" , gyro_y=");
+		USART_SendText(",\tgyro_y=");
 		USART_SendFloat(calibrated_sensors.gyro_y, 8);
 
-		USART_SendText(" , gyro_z=");
+		USART_SendText(",\tgyro_z=");
 		USART_SendFloat(calibrated_sensors.gyro_z, 8);
 
-		USART_SendText(" , acc_x=");
+		USART_SendText(",\tacc_x=");
 		USART_SendFloat(calibrated_sensors.acc_x, 5);
 
-		USART_SendText(" , acc_y=");
+		USART_SendText(",\tacc_y=");
 		USART_SendFloat(calibrated_sensors.acc_y, 5);
 
-		USART_SendText(" , acc_z=");
+		USART_SendText(",\tacc_z=");
 		USART_SendFloat(calibrated_sensors.acc_z, 5);
-		
-		USART_SendText(" ,  mag_x=");
-		USART_SendFloat(calibrated_sensors.mag_x, 5);
-
-		USART_SendText(" , mag_y=");
-		USART_SendFloat(calibrated_sensors.mag_y, 5);
-
-		USART_SendText(" , mag_z=");
-		USART_SendFloat(calibrated_sensors.mag_z, 5);
-
-		USART_SendText("\n");
-		*/
-	
-
 
 		kf_next(&calibrated_sensors, &orientation);
 
-		USART_SendText("pitch=");
+		USART_SendText(",\tpitch=");
 		USART_SendFloat(orientation.pitch, 5);
-
-		USART_SendText(",\troll=");
-		USART_SendFloat(orientation.roll, 5);
-
-		USART_SendText(",\tyaw=");
-		USART_SendFloat(orientation.yaw, 5);
-
 
 		
 			float32_t p51 = tim5_ch1.period;
@@ -720,10 +699,7 @@ int main(void)
 			USART_SendText("\n");
 */
 
-			for(a=0; a < 7000; ++a)
-			{
-				__NOP;
-			}
+
 
 			/*
 			float32_t out_p = arm_pid_f32(&pitch_pid, 0 - orientation.pitch );
@@ -738,19 +714,12 @@ int main(void)
 			PIDController_Update(&pid_roll, 0, orientation.roll);
 			PIDController_Update(&pid_pitch, 0, orientation.pitch);
 
-			USART_SendText(",\tpid_roll=");
-			USART_SendFloat(pid_roll.out, 5);
-			USART_SendText(",\tpid_pitch=");
+			USART_SendText(",\tpid_p=");
 			USART_SendFloat(pid_pitch.out, 5);
 
-			USART_SendText("\n");
-			
-			
 
 
-
-
-			if(orientation.roll > 33.0 || orientation.pitch > 33.0  || orientation.roll < -33.0 || orientation.pitch < -33.0 || err_flag != 0)
+			if(orientation.roll > 50.0 || orientation.pitch > 50.0  || orientation.roll < -50.0 || orientation.pitch < -50.0 || err_flag != 0)
 			{
 				err_flag = 1;
 				TIM2->CCR1 = 950; 
@@ -760,12 +729,31 @@ int main(void)
 			}
 			else
 			{
+			/*
 				TIM2->CCR1 = limit_max_min(-pid_roll.out + -pid_pitch.out + (p34/4.01), 1950.0, 950.0); 
 				TIM2->CCR2 = limit_max_min(-pid_roll.out +  pid_pitch.out + (p34/4.01), 1950.0, 950.0); 
 				TIM2->CCR3 = limit_max_min( pid_roll.out + -pid_pitch.out + (p34/4.01), 1950.0, 950.0); 
  				TIM2->CCR4 = limit_max_min( pid_roll.out +  pid_pitch.out + (p34/4.01), 1950.0, 950.0);
+				 */
+				TIM2->CCR1 = limit_max_min( -pid_pitch.out + (p34/4.1), 1950.0, 950.0); 
+				TIM2->CCR2 = limit_max_min(pid_pitch.out + (p34/4.1), 1950.0, 950.0);
+
+				USART_SendText(",\tCCR1=");
+				USART_SendNumber(limit_max_min( -pid_pitch.out + (p34/4.1), 1950.0, 950.0));
+				USART_SendText(",\tCCR2=");
+				USART_SendNumber(limit_max_min( -pid_pitch.out + (p34/4.1), 1950.0, 950.0));
+
+				
+				
+
 			}
-		
+
+						USART_SendText("\n");			
+
+			for(a=0; a < 25000; ++a)
+			{
+				__NOP;
+			}
 
 			/*
 			USART_SendText("PERIOD34: ");

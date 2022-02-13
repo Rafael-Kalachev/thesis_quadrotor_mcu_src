@@ -148,17 +148,17 @@ void calibrate_sensors( raw_sensors_struct* raw_sensors_data, calibrated_sensors
 	/*calibrate gyro x*/
 	tempval = (float32_t)raw_sensors_data->gyro_x * INV_INT16_MAX;
 	tempval = polinomial_compensation(&poly_gyro_x_temp, raw_sensors_data->temperature, tempval);
-	out_calibrated_sensors_p->gyro_x = tempval /* * 500*/ /*dps*/; /*others use 64 for 500 and 32 for 1000 ? check*/
+	out_calibrated_sensors_p->gyro_x = tempval *32/* * 500*/ /*dps*/; /*others use 64 for 500 and 32 for 1000 ? check*/
 
 	/*calibrate gyro y*/
 	tempval = (float32_t)raw_sensors_data->gyro_y * INV_INT16_MAX;
 	tempval = polinomial_compensation(&poly_gyro_y_temp, raw_sensors_data->temperature, tempval);
-	out_calibrated_sensors_p->gyro_y = tempval /* * 500*/ /*dps*/;
+	out_calibrated_sensors_p->gyro_y = tempval *32/* * 500*/ /*dps*/;
 
 	/*calibrate gyro z*/
 	tempval = (float32_t)raw_sensors_data->gyro_z * INV_INT16_MAX;
 	tempval = polinomial_compensation(&poly_gyro_z_temp, raw_sensors_data->temperature, tempval);
-	out_calibrated_sensors_p->gyro_z = tempval /* * 500*/ /*dps*/;
+	out_calibrated_sensors_p->gyro_z = tempval *32/* * 500*/ /*dps*/;
 
 	if (i<50)
 	{
